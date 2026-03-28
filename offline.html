@@ -1,0 +1,96 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Offline | Lenox French Academy</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+    }
+    
+    .offline-container {
+      text-align: center;
+      padding: 2rem;
+    }
+    
+    .offline-icon {
+      font-size: 5rem;
+      margin-bottom: 1rem;
+    }
+    
+    h1 {
+      margin-bottom: 1rem;
+    }
+    
+    p {
+      margin-bottom: 2rem;
+      opacity: 0.9;
+    }
+    
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      background: white;
+      color: #667eea;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: transform 0.3s;
+    }
+    
+    .btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .saved-content {
+      margin-top: 2rem;
+      padding: 1rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+    }
+  </style>
+</head>
+<body>
+  <div class="offline-container">
+    <div class="offline-icon">📡</div>
+    <h1>You're Offline</h1>
+    <p>Don't worry! You can still access your saved lessons and continue learning.</p>
+    
+    <button class="btn" onclick="showSavedContent()">View Saved Lessons</button>
+    
+    <div id="savedContent" class="saved-content" style="display: none;">
+      <h3>📚 Available Offline Content:</h3>
+      <ul id="offlineLessons" style="text-align: left; margin-top: 1rem;"></ul>
+    </div>
+    
+    <p style="margin-top: 2rem; font-size: 0.9rem;">
+      Once you're back online, your progress will sync automatically!
+    </p>
+  </div>
+  
+  <script>
+    async function showSavedContent() {
+      const cache = await caches.open('lenox-static-v1');
+      const keys = await cache.keys();
+      const lessonPages = keys
+        .filter(key => key.url.includes('/levels/'))
+        .map(key => key.url.split('/').pop());
+      
+      const container = document.getElementById('savedContent');
+      const list = document.getElementById('offlineLessons');
+      
+      list.innerHTML = lessonPages.map(page => `<li>${page}</li>`).join('');
+      container.style.display = 'block';
+    }
+  </script>
+</body>
+</html>

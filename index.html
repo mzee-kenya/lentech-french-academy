@@ -5,6 +5,29 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Lenox French Academy | Learn French Online</title>
     <link rel="stylesheet" href="styles/main.css">
+    <!-- PWA Meta Tags -->
+<link rel="manifest" href="/manifest.json">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="French Academy">
+<link rel="apple-touch-icon" href="/assets/icons/icon-192x192.png">
+<meta name="theme-color" content="#2e7d32">
+<meta name="mobile-web-app-capable" content="yes">
+
+<!-- iOS Icons -->
+<link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/icon-57x57.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/icon-114x114.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/icon-144x144.png">
+
+<!-- Windows Tile -->
+<meta name="msapplication-TileColor" content="#2e7d32">
+<meta name="msapplication-TileImage" content="/assets/icons/icon-144x144.png">
+
+<!-- Description for search engines -->
+<meta name="description" content="Learn French from A1 to B2 with interactive lessons, quizzes, and certificates">
+<meta name="keywords" content="French, learn French, French lessons, A1, A2, B1, B2, French language">
+<meta name="author" content="Lenox Otieno">
     <style>
         .hero {
             text-align: center;
@@ -111,5 +134,20 @@
             </div>
         </div>
     </div>
+    <!-- Register Service Worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('Service Worker registered:', registration);
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
 </body>
+
 </html>

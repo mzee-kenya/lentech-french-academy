@@ -251,5 +251,19 @@
         // Expose for other parts of app (e.g., level completion hooks)
         window.showShareModal = showShareModal;
     </script>
+    <!-- Register Service Worker -->
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js')
+        .then(registration => {
+          console.log('Service Worker registered:', registration);
+        })
+        .catch(error => {
+          console.log('Service Worker registration failed:', error);
+        });
+    });
+  }
+</script>
 </body>
 </html>

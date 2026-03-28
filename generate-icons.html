@@ -1,0 +1,425 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Icon Generator - Lenox French Academy</title>
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      min-height: 100vh;
+      padding: 2rem;
+      color: #333;
+    }
+    
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      background: white;
+      border-radius: 20px;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+    }
+    
+    h1 {
+      color: #2e7d32;
+      margin-bottom: 1rem;
+    }
+    
+    .icon-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1.5rem;
+      margin: 2rem 0;
+    }
+    
+    .icon-card {
+      text-align: center;
+      padding: 1rem;
+      background: #f8f9fa;
+      border-radius: 12px;
+      transition: transform 0.3s;
+    }
+    
+    .icon-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    }
+    
+    .icon-preview {
+      width: 100%;
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .icon-preview svg {
+      width: 100%;
+      height: auto;
+    }
+    
+    .icon-name {
+      font-weight: bold;
+      margin: 0.5rem 0;
+    }
+    
+    .icon-size {
+      color: #666;
+      font-size: 0.8rem;
+    }
+    
+    button {
+      background: #2e7d32;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      transition: background 0.3s;
+    }
+    
+    button:hover {
+      background: #1b5e20;
+    }
+    
+    .code-section {
+      background: #f5f5f5;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 1rem 0;
+      overflow-x: auto;
+    }
+    
+    pre {
+      margin: 0;
+      white-space: pre-wrap;
+      word-wrap: break-word;
+    }
+    
+    .tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      border-bottom: 2px solid #e0e0e0;
+    }
+    
+    .tab {
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      background: none;
+      color: #666;
+      margin: 0;
+    }
+    
+    .tab.active {
+      color: #2e7d32;
+      border-bottom: 2px solid #2e7d32;
+      margin-bottom: -2px;
+    }
+    
+    .download-all {
+      background: linear-gradient(135deg, #2e7d32, #66bb6a);
+      padding: 1rem 2rem;
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎨 Lenox French Academy - Icon Generator</h1>
+    <p>Generate all required icons for your PWA. Click on any icon to download it as PNG.</p>
+    
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('icons')">Icons</button>
+      <button class="tab" onclick="switchTab('splash')">Splash Screens</button>
+      <button class="tab" onclick="switchTab('code')">HTML Code</button>
+    </div>
+    
+    <div id="icons-tab">
+      <div class="icon-grid" id="iconGrid"></div>
+      <button class="download-all" onclick="downloadAllIcons()">📦 Download All Icons (ZIP)</button>
+    </div>
+    
+    <div id="splash-tab" style="display: none;">
+      <div class="icon-grid" id="splashGrid"></div>
+    </div>
+    
+    <div id="code-tab" style="display: none;">
+      <h3>📋 Add to your HTML pages</h3>
+      <div class="code-section">
+        <pre id="htmlCode"></pre>
+      </div>
+      
+      <h3>📋 Add to manifest.json</h3>
+      <div class="code-section">
+        <pre id="manifestCode"></pre>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+  
+  <script>
+    // Icon definitions
+    const icons = [
+      { size: 72, name: 'icon-72x72' },
+      { size: 96, name: 'icon-96x96' },
+      { size: 128, name: 'icon-128x128' },
+      { size: 144, name: 'icon-144x144' },
+      { size: 152, name: 'icon-152x152' },
+      { size: 192, name: 'icon-192x192' },
+      { size: 384, name: 'icon-384x384' },
+      { size: 512, name: 'icon-512x512' }
+    ];
+    
+    const splashScreens = [
+      { size: 640, name: 'splash-640x1136', width: 640, height: 1136 },
+      { size: 750, name: 'splash-750x1334', width: 750, height: 1334 },
+      { size: 828, name: 'splash-828x1792', width: 828, height: 1792 },
+      { size: 1125, name: 'splash-1125x2436', width: 1125, height: 2436 },
+      { size: 1242, name: 'splash-1242x2688', width: 1242, height: 2688 }
+    ];
+    
+    // Create SVG icon
+    function createIconSVG(size) {
+      const fontSize = size * 0.4;
+      const bookSize = size * 0.3;
+      const eiffelSize = size * 0.25;
+      
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}">
+        <defs>
+          <linearGradient id="grad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2e7d32;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#66bb6a;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        
+        <!-- Background -->
+        <rect width="${size}" height="${size}" fill="url(#grad)" rx="${size * 0.2}" ry="${size * 0.2}"/>
+        
+        <!-- French Flag -->
+        <rect x="${size * 0.1}" y="${size * 0.1}" width="${size * 0.25}" height="${size * 0.25}" fill="#0055A4" rx="${size * 0.03}"/>
+        <rect x="${size * 0.1 + size * 0.25}" y="${size * 0.1}" width="${size * 0.25}" height="${size * 0.25}" fill="white" rx="${size * 0.03}"/>
+        <rect x="${size * 0.1 + size * 0.5}" y="${size * 0.1}" width="${size * 0.25}" height="${size * 0.25}" fill="#EF4135" rx="${size * 0.03}"/>
+        
+        <!-- Book/Open Book -->
+        <path d="M ${size * 0.5 - bookSize * 0.5} ${size * 0.55} L ${size * 0.5} ${size * 0.55 + bookSize * 0.3} L ${size * 0.5 + bookSize * 0.5} ${size * 0.55}" fill="none" stroke="white" stroke-width="${size * 0.03}" stroke-linecap="round"/>
+        <path d="M ${size * 0.5 - bookSize * 0.4} ${size * 0.55} L ${size * 0.5} ${size * 0.55 + bookSize * 0.25} L ${size * 0.5 + bookSize * 0.4} ${size * 0.55}" fill="none" stroke="white" stroke-width="${size * 0.025}"/>
+        
+        <!-- Graduation Cap -->
+        <polygon points="${size * 0.5},${size * 0.7} ${size * 0.5 - eiffelSize * 0.4},${size * 0.7 - eiffelSize * 0.2} ${size * 0.5},${size * 0.7 - eiffelSize * 0.3} ${size * 0.5 + eiffelSize * 0.4},${size * 0.7 - eiffelSize * 0.2}" fill="white" opacity="0.9"/>
+        <rect x="${size * 0.5 - eiffelSize * 0.1}" y="${size * 0.7 - eiffelSize * 0.05}" width="${eiffelSize * 0.2}" height="${eiffelSize * 0.2}" fill="white"/>
+        
+        <!-- Eiffel Tower Silhouette -->
+        <path d="M ${size * 0.5} ${size * 0.75} L ${size * 0.5 - eiffelSize * 0.15} ${size * 0.85} L ${size * 0.5 + eiffelSize * 0.15} ${size * 0.85} Z" fill="white" opacity="0.8"/>
+        <rect x="${size * 0.5 - eiffelSize * 0.05}" y="${size * 0.75}" width="${eiffelSize * 0.1}" height="${eiffelSize * 0.1}" fill="white"/>
+        
+        <!-- Text: FRA -->
+        <text x="${size * 0.5}" y="${size * 0.95}" text-anchor="middle" fill="white" font-size="${fontSize * 0.8}" font-weight="bold" font-family="Arial, sans-serif">FRA</text>
+      </svg>`;
+    }
+    
+    // Create splash screen SVG
+    function createSplashSVG(width, height) {
+      const fontSize = Math.min(width, height) * 0.08;
+      const logoSize = Math.min(width, height) * 0.2;
+      
+      return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${width} ${height}">
+        <defs>
+          <linearGradient id="splashGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+            <stop offset="0%" style="stop-color:#2e7d32;stop-opacity:1" />
+            <stop offset="100%" style="stop-color:#66bb6a;stop-opacity:1" />
+          </linearGradient>
+        </defs>
+        
+        <rect width="${width}" height="${height}" fill="url(#splashGrad)"/>
+        
+        <!-- Logo Circle -->
+        <circle cx="${width/2}" cy="${height/2 - logoSize * 0.5}" r="${logoSize}" fill="white" opacity="0.9"/>
+        
+        <!-- French Flag in Logo -->
+        <rect x="${width/2 - logoSize * 0.3}" y="${height/2 - logoSize * 0.8}" width="${logoSize * 0.2}" height="${logoSize * 0.4}" fill="#0055A4" rx="${logoSize * 0.03}"/>
+        <rect x="${width/2 - logoSize * 0.1}" y="${height/2 - logoSize * 0.8}" width="${logoSize * 0.2}" height="${logoSize * 0.4}" fill="white" rx="${logoSize * 0.03}"/>
+        <rect x="${width/2 + logoSize * 0.1}" y="${height/2 - logoSize * 0.8}" width="${logoSize * 0.2}" height="${logoSize * 0.4}" fill="#EF4135" rx="${logoSize * 0.03}"/>
+        
+        <!-- Text -->
+        <text x="${width/2}" y="${height/2 + logoSize * 0.5}" text-anchor="middle" fill="white" font-size="${fontSize}" font-weight="bold" font-family="Poppins, sans-serif">Lenox French Academy</text>
+        <text x="${width/2}" y="${height/2 + logoSize * 0.5 + fontSize}" text-anchor="middle" fill="white" font-size="${fontSize * 0.6}" font-family="Poppins, sans-serif">Learn French from A1 to B2</text>
+        
+        <!-- Loading Animation -->
+        <circle cx="${width/2}" cy="${height - fontSize * 2}" r="${fontSize * 0.3}" fill="none" stroke="white" stroke-width="3">
+          <animate attributeName="r" values="${fontSize * 0.2};${fontSize * 0.4};${fontSize * 0.2}" dur="1s" repeatCount="indefinite"/>
+        </circle>
+      </svg>`;
+    }
+    
+    // Convert SVG to PNG and download
+    async function svgToPNG(svgString, filename, width, height) {
+      return new Promise((resolve, reject) => {
+        const img = new Image();
+        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+        
+        img.onload = () => {
+          const canvas = document.createElement('canvas');
+          canvas.width = width;
+          canvas.height = height;
+          const ctx = canvas.getContext('2d');
+          ctx.drawImage(img, 0, 0, width, height);
+          
+          canvas.toBlob((blob) => {
+            URL.revokeObjectURL(url);
+            resolve({ blob, filename: `${filename}.png` });
+          }, 'image/png');
+        };
+        
+        img.onerror = reject;
+        img.src = url;
+      });
+    }
+    
+    // Render icons
+    function renderIcons() {
+      const grid = document.getElementById('iconGrid');
+      grid.innerHTML = '';
+      
+      icons.forEach(icon => {
+        const svg = createIconSVG(icon.size);
+        const card = document.createElement('div');
+        card.className = 'icon-card';
+        card.innerHTML = `
+          <div class="icon-preview">
+            ${svg}
+          </div>
+          <div class="icon-name">${icon.name}</div>
+          <div class="icon-size">${icon.size}x${icon.size}</div>
+          <button onclick="downloadIcon(${icon.size}, '${icon.name}')">Download PNG</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    
+    function renderSplash() {
+      const grid = document.getElementById('splashGrid');
+      grid.innerHTML = '';
+      
+      splashScreens.forEach(splash => {
+        const svg = createSplashSVG(splash.width, splash.height);
+        const card = document.createElement('div');
+        card.className = 'icon-card';
+        card.innerHTML = `
+          <div class="icon-preview">
+            ${svg}
+          </div>
+          <div class="icon-name">${splash.name}</div>
+          <div class="icon-size">${splash.width}x${splash.height}</div>
+          <button onclick="downloadSplash(${splash.width}, ${splash.height}, '${splash.name}')">Download PNG</button>
+        `;
+        grid.appendChild(card);
+      });
+    }
+    
+    window.downloadIcon = async (size, name) => {
+      const svg = createIconSVG(size);
+      const result = await svgToPNG(svg, name, size, size);
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(result.blob);
+      link.download = result.filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    };
+    
+    window.downloadSplash = async (width, height, name) => {
+      const svg = createSplashSVG(width, height);
+      const result = await svgToPNG(svg, name, width, height);
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(result.blob);
+      link.download = result.filename;
+      link.click();
+      URL.revokeObjectURL(link.href);
+    };
+    
+    window.downloadAllIcons = async () => {
+      const zip = new JSZip();
+      const folder = zip.folder('lenox-french-icons');
+      
+      for (const icon of icons) {
+        const svg = createIconSVG(icon.size);
+        const result = await svgToPNG(svg, icon.name, icon.size, icon.size);
+        folder.file(result.filename, result.blob);
+      }
+      
+      for (const splash of splashScreens) {
+        const svg = createSplashSVG(splash.width, splash.height);
+        const result = await svgToPNG(svg, splash.name, splash.width, splash.height);
+        folder.file(result.filename, result.blob);
+      }
+      
+      const content = await zip.generateAsync({ type: 'blob' });
+      saveAs(content, 'lenox-french-academy-icons.zip');
+    };
+    
+    window.switchTab = (tab) => {
+      document.getElementById('icons-tab').style.display = tab === 'icons' ? 'block' : 'none';
+      document.getElementById('splash-tab').style.display = tab === 'splash' ? 'block' : 'none';
+      document.getElementById('code-tab').style.display = tab === 'code' ? 'block' : 'none';
+      
+      document.querySelectorAll('.tab').forEach(btn => btn.classList.remove('active'));
+      event.target.classList.add('active');
+      
+      if (tab === 'code') {
+        updateCodeSnippets();
+      }
+    };
+    
+    function updateCodeSnippets() {
+      // HTML meta tags code
+      const htmlCode = `<!-- Add to <head> section of all HTML pages -->
+<link rel="apple-touch-icon" sizes="57x57" href="/assets/icons/icon-57x57.png">
+<link rel="apple-touch-icon" sizes="72x72" href="/assets/icons/icon-72x72.png">
+<link rel="apple-touch-icon" sizes="114x114" href="/assets/icons/icon-114x114.png">
+<link rel="apple-touch-icon" sizes="144x144" href="/assets/icons/icon-144x144.png">
+<link rel="icon" type="image/png" sizes="192x192" href="/assets/icons/icon-192x192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/assets/icons/icon-512x512.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="French Academy">
+<meta name="theme-color" content="#2e7d32">
+<link rel="manifest" href="/manifest.json">`;
+      
+      // Manifest code
+      const manifestCode = `{
+  "name": "Lenox French Academy",
+  "short_name": "French Academy",
+  "description": "Learn French from A1 to B2 with interactive lessons",
+  "start_url": "/index.html",
+  "display": "standalone",
+  "background_color": "#2e7d32",
+  "theme_color": "#2e7d32",
+  "icons": [
+    ${icons.map(icon => `{
+      "src": "/assets/icons/${icon.name}.png",
+      "sizes": "${icon.size}x${icon.size}",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }`).join(',\n    ')}
+  ]
+}`;
+      
+      document.getElementById('htmlCode').textContent = htmlCode;
+      document.getElementById('manifestCode').textContent = manifestCode;
+    }
+    
+    // Initialize
+    renderIcons();
+    renderSplash();
+    updateCodeSnippets();
+  </script>
+</body>
+</html>
