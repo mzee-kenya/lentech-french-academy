@@ -1,0 +1,364 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Lesson 2: Greetings | Lenox French Academy</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        .greeting-card {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .greeting-card:hover {
+            transform: scale(1.02);
+        }
+        
+        .dialogue {
+            background: #f9f9f9;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+        }
+        
+        .dialogue-line {
+            margin: 1rem 0;
+            padding: 0.5rem;
+            border-left: 3px solid var(--primary);
+        }
+        
+        .flashcard {
+            background: white;
+            border-radius: var(--radius);
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .flashcard:hover {
+            transform: rotateY(10deg);
+        }
+        
+        .word-match {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin: 1rem 0;
+        }
+        
+        .match-item {
+            background: var(--light);
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .match-item.selected {
+            background: var(--primary);
+            color: white;
+        }
+        
+        .match-item.matched {
+            background: var(--success);
+            color: white;
+            cursor: default;
+            opacity: 0.7;
+        }
+        
+        .pronunciation-tip {
+            background: #fff3e0;
+            border-left: 4px solid var(--warning);
+            padding: 1rem;
+            margin: 1rem 0;
+            border-radius: var(--radius);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+            <div class="nav-links">
+                <a href="../../dashboard.html">Dashboard</a>
+                <a href="index.html">← Back to A1</a>
+                <span id="userName"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>👋 Lesson 2: French Greetings</h1>
+        
+        <!-- Video Section -->
+        <div class="video-container" style="margin: 2rem 0;">
+            <iframe 
+                src="https://www.youtube.com/embed/lwmrMVsU3uU" 
+                frameborder="0" 
+                allowfullscreen>
+            </iframe>
+        </div>
+        
+        <!-- Greetings Cards -->
+        <h2>📖 Common Greetings</h2>
+        <div class="greeting-card" onclick="speakFrench('Bonjour')">
+            <h3>Bonjour</h3>
+            <p>Hello / Good morning</p>
+            <small>🔊 Click to hear pronunciation</small>
+        </div>
+        
+        <div class="greeting-card" onclick="speakFrench('Bonsoir')">
+            <h3>Bonsoir</h3>
+            <p>Good evening</p>
+        </div>
+        
+        <div class="greeting-card" onclick="speakFrench('Salut')">
+            <h3>Salut</h3>
+            <p>Hi (informal)</p>
+        </div>
+        
+        <div class="greeting-card" onclick="speakFrench('Ça va ?')">
+            <h3>Ça va ?</h3>
+            <p>How are you?</p>
+        </div>
+        
+        <div class="greeting-card" onclick="speakFrench('Au revoir')">
+            <h3>Au revoir</h3>
+            <p>Goodbye</p>
+        </div>
+        
+        <!-- Pronunciation Tips -->
+        <div class="pronunciation-tip">
+            <h3>🎤 Pronunciation Tip</h3>
+            <p>The French "r" is pronounced at the back of the throat. Practice with "Bonjour" - it should sound like "bohn-zhoor".</p>
+            <button class="btn btn-primary" onclick="speakFrench('Bonjour', true)">Practice with me →</button>
+        </div>
+        
+        <!-- Dialogue Practice -->
+        <h2>🗣️ Dialogue Practice</h2>
+        <div class="dialogue">
+            <div class="dialogue-line">
+                <strong>Marie:</strong> Bonjour ! Comment ça va ? 
+                <button class="btn btn-outline" onclick="speakFrench('Bonjour ! Comment ça va ?')">🔊</button>
+            </div>
+            <div class="dialogue-line">
+                <strong>Pierre:</strong> Ça va bien, merci. Et toi ?
+                <button class="btn btn-outline" onclick="speakFrench('Ça va bien, merci. Et toi ?')">🔊</button>
+            </div>
+            <div class="dialogue-line">
+                <strong>Marie:</strong> Ça va super ! Au revoir !
+                <button class="btn btn-outline" onclick="speakFrench('Ça va super ! Au revoir !')">🔊</button>
+            </div>
+            <div class="dialogue-line">
+                <strong>Pierre:</strong> Au revoir, à bientôt !
+                <button class="btn btn-outline" onclick="speakFrench('Au revoir, à bientôt !')">🔊</button>
+            </div>
+        </div>
+        
+        <!-- Word Match Game -->
+        <h2>🎮 Match the Greetings</h2>
+        <div class="word-match" id="matchGame"></div>
+        
+        <!-- Quiz Section -->
+        <h2>📝 Quiz</h2>
+        <div id="quiz"></div>
+        
+        <div id="completionMessage" style="display: none; text-align: center; margin-top: 2rem;">
+            <p style="color: var(--success); font-size: 1.2rem;">✅ Félicitations! You've mastered French greetings!</p>
+            <button class="btn btn-primary" onclick="completeLesson()">Next Lesson →</button>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/sounds.js"></script>
+    <script src="../../js/confetti-loader.js"></script>
+    <script src="../../js/gamification.js"></script>
+    <script>
+        if (!auth.currentUser) {
+            window.location.href = '../../login.html';
+        }
+        
+        document.getElementById('userName').innerHTML = `👤 ${auth.currentUser.username}`;
+        
+        // Speech function
+        function speakFrench(text, slow = false) {
+            const utterance = new SpeechSynthesisUtterance(text);
+            utterance.lang = 'fr-FR';
+            utterance.rate = slow ? 0.7 : 0.9;
+            speechSynthesis.speak(utterance);
+        }
+        
+        // Word match game
+        const frenchWords = ['Bonjour', 'Bonsoir', 'Salut', 'Ça va', 'Au revoir'];
+        const englishWords = ['Hello', 'Good evening', 'Hi', 'How are you', 'Goodbye'];
+        
+        let selectedFrench = null;
+        let matchedPairs = [];
+        
+        function renderMatchGame() {
+            const container = document.getElementById('matchGame');
+            container.innerHTML = '';
+            
+            // Shuffle arrays
+            const shuffledFrench = [...frenchWords].sort(() => Math.random() - 0.5);
+            const shuffledEnglish = [...englishWords].sort(() => Math.random() - 0.5);
+            
+            const frenchCol = document.createElement('div');
+            frenchCol.innerHTML = '<h4>French</h4>';
+            shuffledFrench.forEach((word, idx) => {
+                const isMatched = matchedPairs.some(p => p.french === word);
+                const div = document.createElement('div');
+                div.className = `match-item ${isMatched ? 'matched' : ''}`;
+                div.textContent = word;
+                if (!isMatched) {
+                    div.onclick = () => selectFrench(word, div);
+                }
+                frenchCol.appendChild(div);
+            });
+            
+            const englishCol = document.createElement('div');
+            englishCol.innerHTML = '<h4>English</h4>';
+            shuffledEnglish.forEach((word, idx) => {
+                const isMatched = matchedPairs.some(p => p.english === word);
+                const div = document.createElement('div');
+                div.className = `match-item ${isMatched ? 'matched' : ''}`;
+                div.textContent = word;
+                if (!isMatched) {
+                    div.onclick = () => matchEnglish(word, div);
+                }
+                englishCol.appendChild(div);
+            });
+            
+            container.appendChild(frenchCol);
+            container.appendChild(englishCol);
+        }
+        
+        function selectFrench(word, element) {
+            // Clear previous selection
+            document.querySelectorAll('.match-item.selected').forEach(el => {
+                el.classList.remove('selected');
+            });
+            element.classList.add('selected');
+            selectedFrench = { word, element };
+        }
+        
+        function matchEnglish(english, element) {
+            if (!selectedFrench) {
+                auth.showToast('First select a French word!', 'info');
+                return;
+            }
+            
+            const frenchIndex = frenchWords.indexOf(selectedFrench.word);
+            const englishIndex = englishWords.indexOf(english);
+            
+            if (frenchIndex === englishIndex) {
+                // Correct match
+                matchedPairs.push({ french: selectedFrench.word, english });
+                selectedFrench.element.classList.add('matched');
+                element.classList.add('matched');
+                selectedFrench.element.onclick = null;
+                element.onclick = null;
+                selectedFrench = null;
+                auth.showToast('✅ Correct match!', 'success');
+                
+                if (matchedPairs.length === frenchWords.length) {
+                    auth.showToast('🎉 Perfect! You matched all greetings!', 'success');
+                    if (window.lenoxGamification) {
+                        lenoxGamification.addXp(80);
+                    }
+                }
+            } else {
+                auth.showToast('❌ Wrong match! Try again!', 'error');
+                selectedFrench.element.classList.remove('selected');
+                selectedFrench = null;
+            }
+        }
+        
+        // Quiz
+        const quizQuestions = [
+            { text: 'What does "Bonjour" mean?', options: ['Goodbye', 'Hello', 'Thank you'], correct: 1 },
+            { text: 'How do you say "How are you?" in French?', options: ['Au revoir', 'Ça va', 'Merci'], correct: 1 },
+            { text: 'Which greeting is informal?', options: ['Bonjour', 'Bonsoir', 'Salut'], correct: 2 },
+            { text: 'What is "Good evening" in French?', options: ['Bonsoir', 'Bonjour', 'Bonne nuit'], correct: 0 },
+            { text: 'How do you say "Goodbye"?', options: ['Salut', 'Au revoir', 'Ça va'], correct: 1 }
+        ];
+        
+        let quizHTML = '';
+        quizQuestions.forEach((q, idx) => {
+            quizHTML += `
+                <div class="quiz-question" style="background: #f9f9f9; padding: 1rem; border-radius: var(--radius); margin: 1rem 0;">
+                    <p><strong>${idx + 1}. ${q.text}</strong></p>
+                    ${q.options.map((opt, optIdx) => `
+                        <label>
+                            <input type="radio" name="q${idx}" value="${optIdx}"> ${opt}
+                        </label><br>
+                    `).join('')}
+                </div>
+            `;
+        });
+        quizHTML += '<button class="btn btn-primary" onclick="checkQuiz()">Submit Answers</button>';
+        document.getElementById('quiz').innerHTML = quizHTML;
+        
+        function checkQuiz() {
+            let score = 0;
+            quizQuestions.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) {
+                    score++;
+                    if (window.lenoxSounds) lenoxSounds.playSound('correct');
+                }
+            });
+            
+            if (score >= 4) {
+                document.getElementById('completionMessage').style.display = 'block';
+                if (auth.updateProgress) auth.updateProgress('A1', 'lesson2', 100);
+                auth.showToast(`🎉 Great job! ${score}/5 correct!`, 'success');
+                if (window.lenoxGamification) {
+                    lenoxGamification.addXp(150);
+                    lenoxGamification.awardBadge('a1-lesson2','A1 Lesson 2 Complete','Completed Lesson 2: Greetings','👋');
+                }
+            } else {
+                auth.showToast(`You got ${score}/5. Try again!`, 'error');
+                if (window.lenoxSounds) lenoxSounds.playSound('incorrect');
+            }
+        }
+        
+        function completeLesson() {
+            if (window.lenoxGamification) lenoxGamification.addXp(40);
+            window.location.href = 'lesson3.html';
+        }
+        
+        // Check if already completed
+        const progress = auth.getProgress();
+        if (progress && progress.A1 && progress.A1.lessons && progress.A1.lessons['lesson2']) {
+            document.getElementById('completionMessage').style.display = 'block';
+        }
+
+        // Keyboard shortcuts
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                const cm = document.getElementById('completionMessage');
+                if (cm && cm.style.display !== 'none') { e.preventDefault(); completeLesson(); }
+            }
+            if (e.key === 'ArrowRight') {
+                // try to navigate to next lesson
+                window.location.href = 'lesson3.html';
+            }
+            if (e.key === 'ArrowLeft') {
+                window.location.href = 'index.html';
+            }
+        });
+
+        renderMatchGame();
+    </script>
+</body>
+</html>

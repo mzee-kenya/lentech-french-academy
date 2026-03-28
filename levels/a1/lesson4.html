@@ -1,0 +1,692 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A1 Lesson 4: Numbers | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>
+    .lesson-content {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    
+    /* Number Grid Styles */
+    .numbers-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .number-card {
+      background: white;
+      padding: 1rem;
+      text-align: center;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      border: 2px solid transparent;
+    }
+    
+    .number-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      border-color: var(--primary);
+    }
+    
+    .number-digit {
+      font-size: 2rem;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .number-word {
+      font-size: 1.2rem;
+      margin-top: 0.5rem;
+    }
+    
+    /* Math Game Styles */
+    .math-game {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      color: white;
+    }
+    
+    .math-question {
+      font-size: 2rem;
+      text-align: center;
+      padding: 1rem;
+      background: rgba(255,255,255,0.2);
+      border-radius: 12px;
+      margin: 1rem 0;
+    }
+    
+    .math-input {
+      text-align: center;
+      margin: 1rem 0;
+    }
+    
+    .math-input input {
+      padding: 0.75rem;
+      font-size: 1.2rem;
+      width: 150px;
+      text-align: center;
+      border: none;
+      border-radius: 8px;
+    }
+    
+    /* Bingo Game */
+    .bingo-card {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+    }
+    
+    .bingo-cell {
+      background: #f0f0f0;
+      padding: 0.75rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+    
+    .bingo-cell.selected {
+      background: var(--success);
+      color: white;
+      text-decoration: line-through;
+    }
+    
+    .bingo-cell.bingo {
+      background: gold;
+      animation: pulse 0.5s ease;
+    }
+    
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+    
+    /* Listening Game */
+    .listening-game {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+    }
+    
+    .option-buttons {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    
+    .option-btn {
+      flex: 1;
+      min-width: 80px;
+      padding: 0.75rem;
+      background: white;
+      border: 2px solid var(--primary);
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+      font-weight: bold;
+    }
+    
+    .option-btn:hover {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .option-btn.correct {
+      background: var(--success);
+      border-color: var(--success);
+      color: white;
+    }
+    
+    .option-btn.wrong {
+      background: var(--danger);
+      border-color: var(--danger);
+      color: white;
+    }
+    
+    /* Number Writing Practice */
+    .writing-practice {
+      background: #fff3e0;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+    }
+    
+    .number-input-group {
+      display: flex;
+      gap: 1rem;
+      align-items: center;
+      flex-wrap: wrap;
+      margin: 1rem 0;
+    }
+    
+    /* Pronunciation Tips */
+    .pronunciation-tip {
+      background: #e8f5e9;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      border-left: 4px solid var(--primary);
+    }
+    
+    /* Progress Tracker */
+    .progress-tracker {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+      .bingo-card {
+        grid-template-columns: repeat(3, 1fr);
+      }
+      .option-buttons {
+        flex-direction: column;
+      }
+      .numbers-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="../../dashboard.html">Dashboard</a>
+        <a href="index.html">← Back to A1</a>
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="logout()" style="margin-left: 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="lesson-content container">
+    <h1>🔢 Lesson 4: French Numbers 1-20</h1>
+    <p>Master counting in French with interactive games, listening exercises, and pronunciation practice!</p>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker" id="progressTracker">
+      <span>📊 Lesson Progress</span>
+      <div class="progress-container" style="flex: 1; margin: 0 1rem;">
+        <div class="progress-bar" id="lessonProgress" style="width: 0%;"></div>
+      </div>
+      <span id="progressPercent">0%</span>
+    </div>
+
+    <!-- Numbers 1-20 Grid -->
+    <section aria-labelledby="numbers-title">
+      <h2 id="numbers-title">🔢 Numbers 1-20</h2>
+      <p>Click any number to hear its pronunciation. Numbers marked with 🔊 have special pronunciation rules!</p>
+      
+      <div class="numbers-grid" id="numbersGrid"></div>
+      
+      <label>🎧 Speech rate: <input id="rate" type="range" min="0.6" max="1.6" step="0.1" value="1"> <span id="rateValue">1.0x</span></label>
+    </section>
+
+    <!-- Pronunciation Tips -->
+    <div class="pronunciation-tip">
+      <span>🎤</span>
+      <div>
+        <strong>Pronunciation Tips:</strong>
+        <ul style="margin: 0.5rem 0 0 1.5rem;">
+          <li><strong>5 (cinq)</strong> - The final 'q' is pronounced like a soft 'k'</li>
+          <li><strong>6 (six)</strong> - The 'x' is pronounced like 's' when alone, but silent in combinations</li>
+          <li><strong>10 (dix)</strong> - Similar to 'dees' with a soft 's'</li>
+          <li><strong>17 (dix-sept)</strong> - Pronounced "dee-set" with a silent 'p'</li>
+        </ul>
+        <button class="btn btn-sm" onclick="speak('cinq six dix dix-sept', true)" style="margin-top: 0.5rem;">Practice these numbers →</button>
+      </div>
+    </div>
+
+    <!-- Math Challenge Game -->
+    <div class="math-game">
+      <h3>🧮 Math Challenge</h3>
+      <p>Solve the math problem and type the answer in French!</p>
+      <div class="math-question" id="mathQuestion">un + deux = ?</div>
+      <div class="math-input">
+        <input type="text" id="mathAnswer" placeholder="Type number in French (e.g., trois)">
+        <button class="btn btn-primary" onclick="checkMathAnswer()">Check Answer</button>
+      </div>
+      <div id="mathFeedback"></div>
+      <div id="mathScore" style="margin-top: 0.5rem;">Score: 0/10</div>
+    </div>
+
+    <!-- Listening Game -->
+    <div class="listening-game">
+      <h3>👂 Listening Challenge</h3>
+      <p>Listen to the number and select the correct option!</p>
+      <button class="btn" id="playListeningNumber" onclick="playListeningNumber()">🔊 Play Number</button>
+      <div class="option-buttons" id="listeningOptions"></div>
+      <div id="listeningFeedback"></div>
+      <div id="listeningScore" style="margin-top: 0.5rem;">Score: 0/10</div>
+    </div>
+
+    <!-- Bingo Game -->
+    <div class="listening-game">
+      <h3>🎯 Number Bingo!</h3>
+      <p>Click on numbers as you hear them. Get 5 in a row to win!</p>
+      <button class="btn" onclick="playBingoNumber()">🎲 Call Next Number</button>
+      <button class="btn btn-outline" onclick="resetBingo()">New Card</button>
+      <div class="bingo-card" id="bingoCard"></div>
+      <div id="bingoMessage" style="margin-top: 1rem; font-weight: bold;"></div>
+    </div>
+
+    <!-- Writing Practice -->
+    <div class="writing-practice">
+      <h3>✍️ Number Writing Practice</h3>
+      <p>Write the French word for each number:</p>
+      <div id="writingExercises"></div>
+    </div>
+
+    <!-- Quiz Section -->
+    <h2>📝 Final Quiz</h2>
+    <div id="quiz"></div>
+    <div id="quiz-feedback" style="margin-top: 1rem;"></div>
+    <div id="done" style="display:none; text-align:center; margin-top: 2rem;">
+      <button class="btn btn-primary" onclick="completeLesson()">✅ Complete Lesson & Continue →</button>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/sounds.js"></script>
+  <script src="../../js/gamification.js"></script>
+  <script src="../../js/flashcards.js"></script>
+  <script>
+    // ========== DATA ==========
+    const numbers = [
+      { digit: 1, word: 'un', special: false },
+      { digit: 2, word: 'deux', special: false },
+      { digit: 3, word: 'trois', special: false },
+      { digit: 4, word: 'quatre', special: false },
+      { digit: 5, word: 'cinq', special: true, tip: 'soft k sound' },
+      { digit: 6, word: 'six', special: true, tip: 's sound' },
+      { digit: 7, word: 'sept', special: false },
+      { digit: 8, word: 'huit', special: false },
+      { digit: 9, word: 'neuf', special: false },
+      { digit: 10, word: 'dix', special: true, tip: 'dees' },
+      { digit: 11, word: 'onze', special: false },
+      { digit: 12, word: 'douze', special: false },
+      { digit: 13, word: 'treize', special: false },
+      { digit: 14, word: 'quatorze', special: false },
+      { digit: 15, word: 'quinze', special: false },
+      { digit: 16, word: 'seize', special: false },
+      { digit: 17, word: 'dix-sept', special: true, tip: 'dee-set' },
+      { digit: 18, word: 'dix-huit', special: true, tip: 'deez-weet' },
+      { digit: 19, word: 'dix-neuf', special: true, tip: 'deez-nuff' },
+      { digit: 20, word: 'vingt', special: false }
+    ];
+    
+    let lessonProgress = 0;
+    let mathScore = 0;
+    let listeningScore = 0;
+    let currentMathQuestion = null;
+    let currentListeningNumber = null;
+    let bingoNumbers = [];
+    let selectedBingoCells = [];
+    
+    // ========== INITIALIZATION ==========
+    if (!auth.currentUser) {
+      window.location.href = '../../login.html';
+    }
+    document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+    
+    // Speech rate display
+    const rateSlider = document.getElementById('rate');
+    const rateValue = document.getElementById('rateValue');
+    rateSlider.addEventListener('input', () => {
+      rateValue.textContent = `${rateSlider.value}x`;
+    });
+    
+    // ========== SPEECH FUNCTIONS ==========
+    function getVoice(langPrefix) {
+      const voices = speechSynthesis.getVoices();
+      return voices.find(v => v.lang && v.lang.startsWith(langPrefix)) || voices[0];
+    }
+    
+    function speak(text, slow = false) {
+      const rate = slow ? 0.7 : parseFloat(document.getElementById('rate').value || 1);
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = getVoice('fr');
+      utterance.lang = 'fr-FR';
+      utterance.rate = rate;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+    
+    // ========== RENDER NUMBERS GRID ==========
+    function renderNumbersGrid() {
+      const grid = document.getElementById('numbersGrid');
+      grid.innerHTML = numbers.map(num => `
+        <div class="number-card" onclick="speakNumber('${num.word}')">
+          <div class="number-digit">${num.digit}</div>
+          <div class="number-word">${num.word}${num.special ? ' 🔊' : ''}</div>
+        </div>
+      `).join('');
+    }
+    
+    function speakNumber(word) {
+      speak(word);
+      // Add to flashcards
+      if (window.lenoxFlashcards && window.lenoxFlashcards.addCard) {
+        const number = numbers.find(n => n.word === word);
+        window.lenoxFlashcards.addCard({
+          front: `Number ${number.digit}`,
+          back: word,
+          level: 'A1',
+          category: 'Numbers'
+        });
+      }
+    }
+    
+    window.speakNumber = speakNumber;
+    
+    // ========== MATH CHALLENGE ==========
+    function generateMathQuestion() {
+      const num1 = Math.floor(Math.random() * 15) + 1;
+      const num2 = Math.floor(Math.random() * 15) + 1;
+      const operators = ['+', '-'];
+      const op = operators[Math.floor(Math.random() * operators.length)];
+      let result;
+      
+      if (op === '+') {
+        result = num1 + num2;
+      } else {
+        result = Math.abs(num1 - num2);
+      }
+      
+      if (result > 20) return generateMathQuestion();
+      
+      const num1Word = numbers.find(n => n.digit === num1)?.word || num1;
+      const num2Word = numbers.find(n => n.digit === num2)?.word || num2;
+      
+      return {
+        num1: num1,
+        num2: num2,
+        num1Word: num1Word,
+        num2Word: num2Word,
+        operator: op,
+        result: result,
+        resultWord: numbers.find(n => n.digit === result)?.word || result
+      };
+    }
+    
+    function updateMathQuestion() {
+      currentMathQuestion = generateMathQuestion();
+      const opSymbol = currentMathQuestion.operator === '+' ? '+' : '−';
+      document.getElementById('mathQuestion').innerHTML = 
+        `${currentMathQuestion.num1Word} ${opSymbol} ${currentMathQuestion.num2Word} = ?`;
+      document.getElementById('mathAnswer').value = '';
+      document.getElementById('mathFeedback').innerHTML = '';
+    }
+    
+    function checkMathAnswer() {
+      const answer = document.getElementById('mathAnswer').value.trim().toLowerCase();
+      const correct = currentMathQuestion.resultWord;
+      
+      if (answer === correct) {
+        mathScore++;
+        document.getElementById('mathFeedback').innerHTML = '<span style="color: green;">✅ Correct! +10 XP</span>';
+        document.getElementById('mathScore').textContent = `Score: ${mathScore}/10`;
+        if (window.lenoxGamification) window.lenoxGamification.addXp(10);
+        if (window.lenoxSounds) window.lenoxSounds.playSound('correct');
+        
+        if (mathScore >= 10) {
+          document.getElementById('mathFeedback').innerHTML += '<br>🎉 Math Master! You\'ve completed the challenge!';
+          updateProgress();
+        }
+        updateMathQuestion();
+      } else {
+        document.getElementById('mathFeedback').innerHTML = `<span style="color: red;">❌ Incorrect. The answer is "${correct}". Try again!</span>`;
+        if (window.lenoxSounds) window.lenoxSounds.playSound('incorrect');
+      }
+    }
+    
+    window.checkMathAnswer = checkMathAnswer;
+    
+    // ========== LISTENING GAME ==========
+    function generateListeningOptions() {
+      const correctNumber = numbers[Math.floor(Math.random() * numbers.length)];
+      const otherNumbers = numbers.filter(n => n.word !== correctNumber.word);
+      const options = [correctNumber];
+      while (options.length < 4) {
+        const random = otherNumbers[Math.floor(Math.random() * otherNumbers.length)];
+        if (!options.includes(random)) options.push(random);
+      }
+      return { correct: correctNumber, options: options.sort(() => Math.random() - 0.5) };
+    }
+    
+    function playListeningNumber() {
+      const game = generateListeningOptions();
+      currentListeningNumber = game.correct;
+      speak(game.correct.word);
+      
+      const optionsDiv = document.getElementById('listeningOptions');
+      optionsDiv.innerHTML = game.options.map(opt => `
+        <button class="option-btn" onclick="checkListeningAnswer('${opt.word}')">${opt.digit} - ${opt.word}</button>
+      `).join('');
+      document.getElementById('listeningFeedback').innerHTML = '';
+    }
+    
+    function checkListeningAnswer(selectedWord) {
+      if (selectedWord === currentListeningNumber.word) {
+        listeningScore++;
+        document.getElementById('listeningFeedback').innerHTML = '<span style="color: green;">✅ Correct! +10 XP</span>';
+        document.getElementById('listeningScore').textContent = `Score: ${listeningScore}/10`;
+        if (window.lenoxGamification) window.lenoxGamification.addXp(10);
+        if (window.lenoxSounds) window.lenoxSounds.playSound('correct');
+        
+        if (listeningScore >= 10) {
+          document.getElementById('listeningFeedback').innerHTML += '<br>🎉 Listening Master! You\'ve completed the challenge!';
+          updateProgress();
+        }
+        playListeningNumber();
+      } else {
+        document.getElementById('listeningFeedback').innerHTML = `<span style="color: red;">❌ Incorrect. It was "${currentListeningNumber.word}" (${currentListeningNumber.digit}). Try again!</span>`;
+        if (window.lenoxSounds) window.lenoxSounds.playSound('incorrect');
+      }
+    }
+    
+    window.checkListeningAnswer = checkListeningAnswer;
+    
+    // ========== BINGO GAME ==========
+    function generateBingoCard() {
+      const shuffled = [...numbers].sort(() => Math.random() - 0.5);
+      return shuffled.slice(0, 9);
+    }
+    
+    function renderBingoCard() {
+      const card = document.getElementById('bingoCard');
+      card.innerHTML = bingoNumbers.map(num => `
+        <div class="bingo-cell" data-word="${num.word}" onclick="selectBingoCell('${num.word}')">
+          ${num.digit}<br><small>${num.word}</small>
+        </div>
+      `).join('');
+    }
+    
+    function playBingoNumber() {
+      const available = bingoNumbers.filter(num => !selectedBingoCells.includes(num.word));
+      if (available.length === 0) {
+        document.getElementById('bingoMessage').innerHTML = '🎉 BINGO! You won! Click "New Card" to play again!';
+        return;
+      }
+      const random = available[Math.floor(Math.random() * available.length)];
+      speak(random.word);
+      document.getElementById('bingoMessage').innerHTML = `Called: ${random.digit} - ${random.word}`;
+    }
+    
+    function selectBingoCell(word) {
+      if (selectedBingoCells.includes(word)) return;
+      selectedBingoCells.push(word);
+      const cell = document.querySelector(`.bingo-cell[data-word="${word}"]`);
+      cell.classList.add('selected');
+      
+      // Check for bingo (all 9 selected)
+      if (selectedBingoCells.length === 9) {
+        document.getElementById('bingoMessage').innerHTML = '🎉 BINGO! Congratulations! +50 XP! 🎉';
+        if (window.lenoxGamification) window.lenoxGamification.addXp(50);
+        if (window.lenoxSounds) window.lenoxSounds.playSound('levelComplete');
+        updateProgress();
+      }
+    }
+    
+    function resetBingo() {
+      bingoNumbers = generateBingoCard();
+      selectedBingoCells = [];
+      renderBingoCard();
+      document.getElementById('bingoMessage').innerHTML = 'New card ready! Click "Call Next Number" to start!';
+    }
+    
+    window.playBingoNumber = playBingoNumber;
+    window.selectBingoCell = selectBingoCell;
+    window.resetBingo = resetBingo;
+    
+    // ========== WRITING PRACTICE ==========
+    function renderWritingExercises() {
+      const container = document.getElementById('writingExercises');
+      const exercises = numbers.slice(0, 10);
+      container.innerHTML = exercises.map(num => `
+        <div class="number-input-group">
+          <span style="width: 60px;">${num.digit} =</span>
+          <input type="text" id="write_${num.digit}" placeholder="Write in French" style="flex: 1;">
+          <button class="btn btn-sm" onclick="checkWriting(${num.digit}, '${num.word}')">Check</button>
+          <span id="check_${num.digit}"></span>
+        </div>
+      `).join('');
+    }
+    
+    function checkWriting(digit, correctWord) {
+      const input = document.getElementById(`write_${digit}`);
+      const resultSpan = document.getElementById(`check_${digit}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      
+      if (userAnswer === correctWord) {
+        resultSpan.innerHTML = '✅';
+        resultSpan.style.color = 'green';
+        if (window.lenoxGamification) window.lenoxGamification.addXp(5);
+      } else {
+        resultSpan.innerHTML = `❌ Correct: ${correctWord}`;
+        resultSpan.style.color = 'red';
+      }
+    }
+    
+    window.checkWriting = checkWriting;
+    
+    // ========== QUIZ ==========
+    const quizQuestions = [
+      { q: 'What is "5" in French?', opts: ['cinq', 'six', 'sept'], correct: 0 },
+      { q: 'What is "10" in French?', opts: ['neuf', 'onze', 'dix'], correct: 2 },
+      { q: 'How do you say "15" in French?', opts: ['quinze', 'quatorze', 'seize'], correct: 0 },
+      { q: 'What number is "dix-sept"?', opts: ['16', '17', '18'], correct: 1 },
+      { q: 'What is "20" in French?', opts: ['vingt', 'dix', 'huit'], correct: 0 },
+      { q: 'Which number has a silent "p"?', opts: ['sept', 'dix', 'six'], correct: 0 },
+      { q: 'What is "deux + trois"?', opts: ['cinq', 'quatre', 'six'], correct: 0 },
+      { q: 'How do you say "8" in French?', opts: ['huit', 'neuf', 'sept'], correct: 0 }
+    ];
+    
+    function renderQuiz() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = quizQuestions.map((q, i) => `
+        <div style="background: #f9f9f9; padding: 1rem; border-radius: 12px; margin: 1rem 0;">
+          <p><strong>${i + 1}. ${q.q}</strong></p>
+          ${q.opts.map((opt, oi) => `
+            <label><input type="radio" name="q${i}" value="${oi}"> ${opt}</label><br>
+          `).join('')}
+        </div>
+      `).join('') + '<button class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>';
+    }
+    
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.innerHTML = `<strong>Score: ${score}/${quizQuestions.length}</strong>`;
+      
+      if (score >= 6) {
+        feedback.innerHTML += '<p style="color: green;">🎉 Great job! You\'ve mastered French numbers!</p>';
+        document.getElementById('done').style.display = 'block';
+        updateProgress(100);
+        if (window.lenoxGamification) {
+          window.lenoxGamification.addXp(100);
+          window.lenoxGamification.awardBadge('numbers-master', 'Numbers Master', 'Mastered French numbers 1-20', '🔢');
+        }
+        if (window.lenoxSounds) window.lenoxSounds.playSound('levelComplete');
+      } else {
+        feedback.innerHTML += '<p style="color: orange;">Review the numbers and try again to earn your badge!</p>';
+      }
+    }
+    
+    window.submitQuiz = submitQuiz;
+    
+    // ========== PROGRESS TRACKING ==========
+    function updateProgress(increment = 0) {
+      const activities = [mathScore >= 10, listeningScore >= 10, selectedBingoCells.length === 9];
+      const completedActivities = activities.filter(Boolean).length;
+      lessonProgress = Math.min(100, (completedActivities / 3) * 100);
+      
+      document.getElementById('lessonProgress').style.width = `${lessonProgress}%`;
+      document.getElementById('progressPercent').textContent = `${Math.round(lessonProgress)}%`;
+      
+      if (lessonProgress >= 100) {
+        document.getElementById('done').style.display = 'block';
+      }
+    }
+    
+    // ========== COMPLETE LESSON ==========
+    function completeLesson() {
+      if (auth.updateProgress) {
+        auth.updateProgress('A1', 'lesson4', lessonProgress);
+      }
+      window.location.href = 'lesson5.html';
+    }
+    
+    window.completeLesson = completeLesson;
+    
+    function logout() {
+      auth.logout();
+      window.location.href = '../../index.html';
+    }
+    
+    window.logout = logout;
+    
+    // ========== INITIALIZE ==========
+    renderNumbersGrid();
+    updateMathQuestion();
+    renderWritingExercises();
+    renderQuiz();
+    resetBingo();
+    
+    // Load voices
+    window.speechSynthesis.onvoiceschanged = () => {
+      console.log('Voices ready');
+    };
+  </script>
+</body>
+</html>

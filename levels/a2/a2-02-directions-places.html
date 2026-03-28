@@ -1,0 +1,616 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A2 Lesson: Directions & Places | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>
+    .lesson {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    
+    /* Enhanced Styles */
+    .places-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .place-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .place-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background: var(--primary-light);
+      color: white;
+    }
+    
+    .place-icon {
+      font-size: 2rem;
+      margin-bottom: 0.5rem;
+    }
+    
+    .place-french {
+      font-weight: 600;
+      margin-bottom: 0.25rem;
+    }
+    
+    .place-english {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+    
+    .place-card:hover .place-english {
+      color: white;
+    }
+    
+    .directions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .direction-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 12px;
+      padding: 1rem;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .direction-card:hover {
+      transform: scale(1.02);
+    }
+    
+    .map-container {
+      background: #f8f9fa;
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 1.5rem 0;
+      text-align: center;
+    }
+    
+    .simple-map {
+      background: #e9ecef;
+      border-radius: 12px;
+      padding: 1rem;
+      margin: 1rem 0;
+      position: relative;
+      min-height: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    
+    .map-location {
+      position: absolute;
+      background: white;
+      padding: 0.25rem 0.5rem;
+      border-radius: 20px;
+      font-size: 0.7rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .dialogue-practice {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .dialogue-line {
+      display: flex;
+      margin: 1rem 0;
+      gap: 1rem;
+    }
+    
+    .speaker {
+      min-width: 80px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .speech-bubble {
+      flex: 1;
+      background: #f0f0f0;
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+    }
+    
+    .fill-blank {
+      background: #fff3e0;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 0.5rem 0;
+    }
+    
+    .fill-blank input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin: 0 0.5rem;
+      width: 150px;
+    }
+    
+    .progress-tracker {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .preposition-note {
+      background: #e8f5e9;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      border-left: 4px solid var(--success);
+    }
+    
+    @media (max-width: 768px) {
+      .dialogue-line {
+        flex-direction: column;
+      }
+      .speaker {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="../../dashboard.html">Dashboard</a>
+        <a href="index.html">← Back to A2</a>
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="logout()" style="margin-left: 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="lesson container">
+    <h1>📍 Lesson 2: Directions & Places</h1>
+    <p>Learn to ask for directions, identify places in town, and navigate French cities with confidence!</p>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker" id="progressTracker">
+      <span>📊 Lesson Progress</span>
+      <div class="progress-container" style="flex: 1; margin: 0 1rem;">
+        <div class="progress-bar" id="lessonProgress" style="width: 0%;"></div>
+      </div>
+      <span id="progressPercent">0%</span>
+    </div>
+
+    <!-- Places in Town -->
+    <h2>🏙️ Places in Town (Les endroits en ville)</h2>
+    <p>Click any place to hear its pronunciation. Click the flashcard icon to save for later!</p>
+    <div class="places-grid" id="placesGrid"></div>
+
+    <!-- Direction Vocabulary -->
+    <h2>➡️ Direction Words (Les directions)</h2>
+    <div class="directions-grid" id="directionsGrid"></div>
+
+    <!-- Prepositions Note -->
+    <div class="preposition-note">
+      <strong>📍 Important Prepositions for Directions:</strong>
+      <ul style="margin: 0.5rem 0 0 1.5rem;">
+        <li><strong>À côté de</strong> - next to</li>
+        <li><strong>En face de</strong> - opposite</li>
+        <li><strong>Près de</strong> - near</li>
+        <li><strong>Loin de</strong> - far from</li>
+        <li><strong>Entre</strong> - between</li>
+        <li><strong>Derrière</strong> - behind</li>
+        <li><strong>Devant</strong> - in front of</li>
+      </ul>
+      <button class="btn btn-sm" onclick="speakFrench('La banque est à côté de la poste')">🔊 Example: "The bank is next to the post office"</button>
+    </div>
+
+    <!-- Interactive Map Practice -->
+    <div class="map-container">
+      <h3>🗺️ Interactive Map Practice</h3>
+      <p>Imagine you are at the <strong>park</strong> (le parc). Answer the questions below:</p>
+      
+      <div class="simple-map" id="simpleMap">
+        <div style="text-align: center; width: 100%;">
+          <div style="display: inline-block; text-align: left;">
+            <div>📍 <strong>Le parc</strong> (You are here)</div>
+            <div>← 🏦 La banque</div>
+            <div>→ 🏫 L'école</div>
+            <div>↑ 🏛️ Le musée</div>
+            <div>↓ 🚉 La gare</div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="fill-blank">
+        <p>1. How do you say "Where is the train station?"</p>
+        <input type="text" id="map1" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkMapQuestion(1, 'Où est la gare?')">Check</button>
+        <span id="mapResult1"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>2. To go to the school, you should turn right. How do you say "Turn right"?</p>
+        <input type="text" id="map2" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkMapQuestion(2, 'Tournez à droite')">Check</button>
+        <span id="mapResult2"></span>
+      </div>
+    </div>
+
+    <!-- Dialogue Practice -->
+    <div class="dialogue-practice">
+      <h3>🗣️ Dialogue: Asking for Directions</h3>
+      
+      <div class="dialogue-line">
+        <div class="speaker">👤 Tourist:</div>
+        <div class="speech-bubble">Excusez-moi, où est la gare?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Excusez-moi, où est la gare?')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👩 Local:</div>
+        <div class="speech-bubble">La gare est tout droit. Ensuite, tournez à gauche.</div>
+        <button class="btn btn-sm" onclick="speakFrench('La gare est tout droit. Ensuite, tournez à gauche.')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👤 Tourist:</div>
+        <div class="speech-bubble">Merci beaucoup! Et la banque?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Merci beaucoup! Et la banque?')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👩 Local:</div>
+        <div class="speech-bubble">La banque est à côté de la poste, en face du musée.</div>
+        <button class="btn btn-sm" onclick="speakFrench('La banque est à côté de la poste, en face du musée.')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👤 Tourist:</div>
+        <div class="speech-bubble">Parfait! Merci et bonne journée!</div>
+        <button class="btn btn-sm" onclick="speakFrench('Parfait! Merci et bonne journée!')">🔊</button>
+      </div>
+      
+      <button class="btn btn-primary" onclick="playFullDialogue()">▶️ Listen to Full Dialogue</button>
+      <button class="btn btn-outline" onclick="rolePlay()">🎭 Practice Role-Play</button>
+    </div>
+
+    <!-- Fill in the Blanks Exercises -->
+    <div class="preposition-note" style="background: #f8f9fa;">
+      <h3>📝 Complete the Sentences</h3>
+      
+      <div class="fill-blank">
+        <p>1. Pour aller à la gare, _____ (turn left) au prochain carrefour.</p>
+        <input type="text" id="blank1" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(1, 'tournez à gauche')">Check</button>
+        <span id="blankResult1"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>2. Le musée est _____ (next to) la banque.</p>
+        <input type="text" id="blank2" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(2, 'à côté de')">Check</button>
+        <span id="blankResult2"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>3. La poste est _____ (opposite) l'école.</p>
+        <input type="text" id="blank3" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(3, 'en face de')">Check</button>
+        <span id="blankResult3"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>4. Allez _____ (straight ahead) jusqu'au feu.</p>
+        <input type="text" id="blank4" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(4, 'tout droit')">Check</button>
+        <span id="blankResult4"></span>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <h2>📝 Final Quiz</h2>
+    <div id="quiz"></div>
+    <div id="quiz-feedback" style="margin-top: 1rem;"></div>
+    
+    <div id="completion" style="display:none; text-align:center; margin-top: 2rem;">
+      <button class="btn btn-primary" onclick="completeLesson()">✅ Complete Lesson & Continue →</button>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/gamification.js"></script>
+  <script src="../../js/sounds.js"></script>
+  <script src="../../js/flashcards.js"></script>
+  <script>
+    // ========== INITIALIZATION ==========
+    if (!auth.currentUser) {
+      window.location.href = '../../login.html';
+    }
+    document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+    
+    let lessonProgress = 0;
+    let blankScore = 0;
+    let mapScore = 0;
+    let quizCompleted = false;
+    
+    // ========== PLACES DATA ==========
+    const places = [
+      { icon: '🚉', french: 'la gare', english: 'train station' },
+      { icon: '🏦', french: 'la banque', english: 'bank' },
+      { icon: '🏛️', french: 'le musée', english: 'museum' },
+      { icon: '🏫', french: 'l\'école', english: 'school' },
+      { icon: '🏥', french: 'l\'hôpital', english: 'hospital' },
+      { icon: '📮', french: 'la poste', english: 'post office' },
+      { icon: '🍽️', french: 'le restaurant', english: 'restaurant' },
+      { icon: '🏨', french: 'l\'hôtel', english: 'hotel' },
+      { icon: '⛪', french: 'l\'église', english: 'church' },
+      { icon: '🛒', french: 'le supermarché', english: 'supermarket' }
+    ];
+    
+    const directions = [
+      { icon: '⬆️', french: 'tout droit', english: 'straight ahead' },
+      { icon: '⬅️', french: 'à gauche', english: 'to the left' },
+      { icon: '➡️', french: 'à droite', english: 'to the right' },
+      { icon: '🔄', french: 'tournez à gauche', english: 'turn left' },
+      { icon: '🔄', french: 'tournez à droite', english: 'turn right' },
+      { icon: '🚦', french: 'au coin', english: 'at the corner' },
+      { icon: '🏁', french: 'au prochain carrefour', english: 'at the next intersection' }
+    ];
+    
+    // ========== RENDER FUNCTIONS ==========
+    function renderPlaces() {
+      const container = document.getElementById('placesGrid');
+      container.innerHTML = places.map(place => `
+        <div class="place-card" onclick="speakFrench('${place.french}')">
+          <div class="place-icon">${place.icon}</div>
+          <div class="place-french">${place.french}</div>
+          <div class="place-english">${place.english}</div>
+          <button class="btn btn-sm" onclick="event.stopPropagation(); addFlashcard('${place.french}', '${place.english}')">📚 +Flashcard</button>
+        </div>
+      `).join('');
+    }
+    
+    function renderDirections() {
+      const container = document.getElementById('directionsGrid');
+      container.innerHTML = directions.map(dir => `
+        <div class="direction-card" onclick="speakFrench('${dir.french}')">
+          <div style="font-size: 2rem;">${dir.icon}</div>
+          <div style="font-weight: bold;">${dir.french}</div>
+          <div style="font-size: 0.8rem;">${dir.english}</div>
+        </div>
+      `).join('');
+    }
+    
+    // ========== SPEECH FUNCTIONS ==========
+    function getVoice() {
+      const voices = speechSynthesis.getVoices();
+      return voices.find(v => v.lang && v.lang.startsWith('fr')) || voices[0];
+    }
+    
+    function speakFrench(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = getVoice();
+      utterance.lang = 'fr-FR';
+      utterance.rate = 0.8;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+    
+    window.speakFrench = speakFrench;
+    
+    function playFullDialogue() {
+      const dialogue = [
+        "Excusez-moi, où est la gare?",
+        "La gare est tout droit. Ensuite, tournez à gauche.",
+        "Merci beaucoup! Et la banque?",
+        "La banque est à côté de la poste, en face du musée.",
+        "Parfait! Merci et bonne journée!"
+      ];
+      
+      let index = 0;
+      function speakNext() {
+        if (index < dialogue.length) {
+          speakFrench(dialogue[index]);
+          index++;
+          setTimeout(speakNext, 2500);
+        }
+      }
+      speakNext();
+    }
+    
+    window.playFullDialogue = playFullDialogue;
+    
+    function rolePlay() {
+      const lines = [
+        "You: Excusez-moi, où est la gare?",
+        "Local: La gare est tout droit.",
+        "You: Merci! Et la banque?",
+        "Local: La banque est à côté de la poste."
+      ];
+      alert("🎭 Role-Play Practice:\n\n" + lines.join("\n\n") + "\n\nTry saying these lines aloud!");
+    }
+    
+    window.rolePlay = rolePlay;
+    
+    // ========== FLASHCARDS ==========
+    function addFlashcard(french, english) {
+      if (window.lenoxFlashcards && window.lenoxFlashcards.addCard) {
+        window.lenoxFlashcards.addCard({
+          front: french,
+          back: english,
+          level: 'A2',
+          category: 'Directions & Places'
+        });
+        if (auth.showToast) auth.showToast(`📚 Added "${french}" to flashcards!`, 'success');
+      } else {
+        let saved = JSON.parse(localStorage.getItem('study_list') || '[]');
+        saved.push({ french, english, level: 'A2' });
+        localStorage.setItem('study_list', JSON.stringify(saved));
+        if (auth.showToast) auth.showToast(`📚 Saved "${french}" to study list!`, 'success');
+      }
+    }
+    
+    window.addFlashcard = addFlashcard;
+    
+    // ========== CHECK FUNCTIONS ==========
+    function checkMapQuestion(number, correctAnswer) {
+      const input = document.getElementById(`map${number}`);
+      const resultSpan = document.getElementById(`mapResult${number}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      const normalizedCorrect = correctAnswer.toLowerCase();
+      
+      if (userAnswer === normalizedCorrect) {
+        resultSpan.innerHTML = '✅ Correct!';
+        resultSpan.style.color = 'green';
+        if (!input.hasAttribute('data-completed')) {
+          mapScore++;
+          input.setAttribute('data-completed', 'true');
+          if (window.lenoxGamification) window.lenoxGamification.addXp(15);
+          updateProgress();
+        }
+      } else {
+        resultSpan.innerHTML = `❌ Incorrect. Correct: "${correctAnswer}"`;
+        resultSpan.style.color = 'red';
+      }
+    }
+    
+    function checkBlank(number, correctAnswer) {
+      const input = document.getElementById(`blank${number}`);
+      const resultSpan = document.getElementById(`blankResult${number}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      const normalizedCorrect = correctAnswer.toLowerCase();
+      
+      if (userAnswer === normalizedCorrect) {
+        resultSpan.innerHTML = '✅ Correct!';
+        resultSpan.style.color = 'green';
+        if (!input.hasAttribute('data-completed')) {
+          blankScore++;
+          input.setAttribute('data-completed', 'true');
+          if (window.lenoxGamification) window.lenoxGamification.addXp(15);
+          updateProgress();
+        }
+      } else {
+        resultSpan.innerHTML = `❌ Incorrect. Correct: "${correctAnswer}"`;
+        resultSpan.style.color = 'red';
+      }
+    }
+    
+    window.checkMapQuestion = checkMapQuestion;
+    window.checkBlank = checkBlank;
+    
+    // ========== QUIZ ==========
+    const quizQuestions = [
+      { q: 'What does "la gare" mean?', opts: ['the bank', 'the train station', 'the museum'], correct: 1 },
+      { q: 'How do you say "turn left" in French?', opts: ['tournez à droite', 'tournez à gauche', 'tout droit'], correct: 1 },
+      { q: 'What is "tout droit" in English?', opts: ['to the left', 'to the right', 'straight ahead'], correct: 2 },
+      { q: 'How do you ask "Where is the bank?"', opts: ['Où est la banque?', 'Où est la gare?', 'Où est le musée?'], correct: 0 },
+      { q: 'What does "à côté de" mean?', opts: ['far from', 'next to', 'opposite'], correct: 1 },
+      { q: 'How do you say "the museum" in French?', opts: ['le musée', 'la banque', 'l\'école'], correct: 0 }
+    ];
+    
+    function renderQuiz() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = quizQuestions.map((q, i) => `
+        <div style="background: #f9f9f9; padding: 1rem; border-radius: 12px; margin: 1rem 0;">
+          <p><strong>${i + 1}. ${q.q}</strong></p>
+          ${q.opts.map((opt, oi) => `
+            <label><input type="radio" name="q${i}" value="${oi}"> ${opt}</label><br>
+          `).join('')}
+        </div>
+      `).join('') + '<button class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>';
+    }
+    
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.innerHTML = `<strong>Score: ${score}/${quizQuestions.length}</strong>`;
+      
+      if (score >= 5) {
+        feedback.innerHTML += '<p style="color: green;">🎉 Excellent! You can now navigate French cities!</p>';
+        document.getElementById('completion').style.display = 'block';
+        quizCompleted = true;
+        updateProgress();
+        if (window.lenoxGamification) {
+          window.lenoxGamification.addXp(100);
+        }
+        if (window.lenoxSounds) window.lenoxSounds.playSound('levelComplete');
+      } else {
+        feedback.innerHTML += '<p style="color: orange;">Review the directions and places and try again!</p>';
+      }
+    }
+    
+    window.submitQuiz = submitQuiz;
+    
+    // ========== PROGRESS TRACKING ==========
+    function updateProgress() {
+      const activities = [
+        blankScore >= 4,
+        mapScore >= 2,
+        quizCompleted
+      ];
+      const completedActivities = activities.filter(Boolean).length;
+      lessonProgress = Math.min(100, (completedActivities / 3) * 100);
+      
+      document.getElementById('lessonProgress').style.width = `${lessonProgress}%`;
+      document.getElementById('progressPercent').textContent = `${Math.round(lessonProgress)}%`;
+    }
+    
+    // ========== COMPLETE LESSON ==========
+    function completeLesson() {
+      if (auth.updateProgress) {
+        auth.updateProgress('A2', 'lesson2', lessonProgress);
+      }
+      if (window.lenoxGamification) {
+        window.lenoxGamification.addXp(100);
+        window.lenoxGamification.awardBadge('a2-directions', 'Directions & Places', 'Completed Directions & Places lesson', '🗺️');
+      }
+      if (auth.showToast) auth.showToast('🎉 Lesson completed! Moving to Past Tense...', 'success');
+      setTimeout(() => {
+        window.location.href = 'a2-03-past-tense.html';
+      }, 1000);
+    }
+    
+    window.completeLesson = completeLesson;
+    
+    function logout() {
+      auth.logout();
+      window.location.href = '../../index.html';
+    }
+    
+    window.logout = logout;
+    
+    // ========== INITIALIZE ==========
+    renderPlaces();
+    renderDirections();
+    renderQuiz();
+    
+    window.speechSynthesis.onvoiceschanged = () => {
+      console.log('Voices ready');
+    };
+  </script>
+</body>
+</html>

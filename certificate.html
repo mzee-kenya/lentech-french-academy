@@ -1,0 +1,255 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Certificates | Lenox French Academy</title>
+    <!-- Open Graph / Social Preview (base values, updated dynamically for shared links) -->
+    <meta property="og:title" content="Lenox French Academy Certificate" />
+    <meta property="og:description" content="Celebrate achievements in learning French — view and share certificates." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="" id="og-url" />
+    <meta property="og:image" content="/images/cert-share.png" id="og-image" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="stylesheet" href="styles/main.css">
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <style>
+        .certificates-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .certificate-card {
+            background: white;
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .certificate-preview {
+            background: white;
+            border: 10px solid var(--secondary);
+            padding: 1.5rem;
+            text-align: center;
+        }
+        
+        .certificate-preview h3 {
+            color: var(--primary);
+            margin: 0.5rem 0;
+        }
+        
+        .btn-download {
+            background: var(--success);
+            color: white;
+            width: 100%;
+            border-radius: 0;
+            padding: 1rem;
+        }
+        .share-buttons { display:flex; gap:.5rem; margin-top:.75rem; }
+        .share-btn { flex:1; padding:.5rem; border-radius:6px; font-size:.9rem; cursor:pointer }
+        .share-btn.copy { background:#444; color:#fff }
+        .share-btn.twitter { background:#1da1f2; color:#fff }
+        .share-btn.fb { background:#1877f2; color:#fff }
+        .share-btn.linkedin { background:#0a66c2; color:#fff }
+        .share-btn.wa { background:#25D366; color:#fff }
+
+        /* Share modal */
+        .modal { position:fixed; inset:0; display:none; align-items:center; justify-content:center; background:rgba(0,0,0,.6); z-index:9999 }
+        .modal.show { display:flex }
+        .modal-card { background:#fff; padding:1.25rem; border-radius:8px; max-width:420px; width:100% }
+        .modal-card h3 { margin-top:0 }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="levels/a1/index.html">Learning</a>
+                <span id="userName"></span>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>🎓 My Certificates</h1>
+        <p>Congratulations on your achievements! Here are your earned certificates.</p>
+        
+        <div id="certificatesGrid" class="certificates-grid"></div>
+        
+        <div id="noCertificates" style="text-align: center; padding: 3rem; display: none;">
+            <p>📚 Complete all lessons in a level to earn your certificate!</p>
+            <button class="btn btn-primary" onclick="location.href='levels/a1/index.html'">Start Learning →</button>
+        </div>
+    </div>
+
+    <!-- Share modal (used by share actions and level completion hooks) -->
+    <div id="shareModal" class="modal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
+        <div class="modal-card">
+            <h3 id="shareModalTitle">Share your achievement</h3>
+            <p id="shareModalText">Share your certificate with friends and celebrate your progress.</p>
+            <div class="share-buttons" id="modalShareButtons">
+                <button class="share-btn twitter" data-provider="twitter">Twitter</button>
+                <button class="share-btn fb" data-provider="facebook">Facebook</button>
+                <button class="share-btn linkedin" data-provider="linkedin">LinkedIn</button>
+                <button class="share-btn wa" data-provider="whatsapp">WhatsApp</button>
+                <button class="share-btn copy" id="modalCopyLink" data-provider="copy">Copy link</button>
+            </div>
+            <div style="margin-top:.75rem; text-align:right;">
+                <button class="btn btn-outline" id="modalClose">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/share.js"></script>
+    <script>
+        // Allow public certificate view when URL contains ?user=...&level=...
+        const params = new URLSearchParams(location.search);
+        const publicUser = params.get('user');
+        const publicLevel = params.get('level');
+
+        if (!auth.currentUser && !publicUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Show logged-in user name when available
+        if (auth.currentUser) {
+            document.getElementById('userName').innerHTML = `👤 ${auth.currentUser.username}`;
+        }
+
+        const grid = document.getElementById('certificatesGrid');
+
+        function renderCertificateCard(cert, isPublic=false) {
+            const card = document.createElement('div');
+            card.className = 'certificate-card';
+            const student = cert.studentName || cert.user || (auth.currentUser && auth.currentUser.username) || 'Learner';
+            card.innerHTML = `
+                <div class="certificate-preview" id="cert-${cert.id}">
+                    <h2>LENOX FRENCH ACADEMY</h2>
+                    <h3>CERTIFICATE OF COMPLETION</h3>
+                    <p>This is to certify that</p>
+                    <h3>${student}</h3>
+                    <p>has successfully completed the</p>
+                    <h3 style="color: var(--primary);">${cert.levelName || cert.level} (${cert.level || ''})</h3>
+                    <p>of the French Language Program</p>
+                    <p><small>Earned on ${new Date(cert.earnedAt || Date.now()).toLocaleDateString()}</small></p>
+                    <div style="margin-top: 1rem;">
+                        <hr>
+                        <p>Lenox Otieno<br>Founder</p>
+                    </div>
+                </div>
+                <button class="btn btn-download" onclick="downloadCertificate('cert-${cert.id}', '${cert.level || ''}')">
+                    📥 Download Certificate
+                </button>
+                <div class="share-buttons">
+                    <button class="share-btn twitter" data-user="${encodeURIComponent(student)}" data-level="${encodeURIComponent(cert.level || '')}">Twitter</button>
+                    <button class="share-btn fb" data-user="${encodeURIComponent(student)}" data-level="${encodeURIComponent(cert.level || '')}">Facebook</button>
+                    <button class="share-btn linkedin" data-user="${encodeURIComponent(student)}" data-level="${encodeURIComponent(cert.level || '')}">LinkedIn</button>
+                    <button class="share-btn wa" data-user="${encodeURIComponent(student)}" data-level="${encodeURIComponent(cert.level || '')}">WhatsApp</button>
+                    <button class="share-btn copy" data-user="${encodeURIComponent(student)}" data-level="${encodeURIComponent(cert.level || '')}">Copy</button>
+                </div>
+            `;
+            grid.appendChild(card);
+        }
+
+        // Handle public share link view
+        if (publicUser) {
+            document.getElementById('noCertificates').style.display = 'none';
+            // build a public certificate from params (non-authenticated preview)
+            const publicCert = {
+                id: 'public',
+                studentName: decodeURIComponent(publicUser),
+                level: publicLevel || params.get('levelName') || 'A1',
+                levelName: params.get('levelName') || (publicLevel ? `Level ${publicLevel}` : 'Level A1'),
+                earnedAt: params.get('date') || Date.now()
+            };
+            renderCertificateCard(publicCert, true);
+            // update meta tags for shared preview (best-effort for client-side)
+            const shareUrl = buildShareUrl(publicCert.studentName, publicCert.level);
+            updateMetaTags({
+                title: `${publicCert.studentName} — ${publicCert.levelName} Certificate`,
+                description: `${publicCert.studentName} completed ${publicCert.levelName} at Lenox French Academy.`,
+                url: shareUrl
+            });
+            // open modal to encourage sharing (only for public preview)
+            setTimeout(()=> showShareModal(publicCert.studentName, publicCert.levelName, shareUrl), 600);
+        }
+
+        // Authenticated user: render their certificates
+        if (auth.currentUser && Array.isArray(auth.currentUser.certificates)) {
+            const certificates = auth.currentUser.certificates;
+            if (certificates.length === 0) {
+                document.getElementById('noCertificates').style.display = 'block';
+            } else {
+                certificates.forEach(cert => renderCertificateCard(cert));
+            }
+        }
+
+        async function downloadCertificate(elementId, level) {
+            const element = document.getElementById(elementId);
+            const canvas = await html2canvas(element, { scale: 2 });
+            const link = document.createElement('a');
+            link.download = `lenox-french-${level}-certificate.png`;
+            link.href = canvas.toDataURL('image/png');
+            link.click();
+            if (auth && auth.showToast) auth.showToast('Certificate downloaded!', 'success');
+        }
+
+        function logout() {
+            if (auth) auth.logout();
+            window.location.href = 'index.html';
+        }
+
+        // Delegated share button handler
+        grid.addEventListener('click', (e) => {
+            const btn = e.target.closest('.share-btn');
+            if (!btn) return;
+            const provider = btn.classList.contains('twitter') ? 'twitter'
+                : btn.classList.contains('fb') ? 'facebook'
+                : btn.classList.contains('linkedin') ? 'linkedin'
+                : btn.classList.contains('wa') ? 'whatsapp'
+                : btn.classList.contains('copy') ? 'copy' : null;
+            const user = decodeURIComponent(btn.dataset.user || (auth.currentUser && auth.currentUser.username) || 'Learner');
+            const level = decodeURIComponent(btn.dataset.level || 'A1');
+            const url = buildShareUrl(user, level);
+            const text = `${user} completed ${level} at Lenox French Academy!`;
+            if (provider === 'copy') {
+                copyToClipboard(url).then(ok => {
+                    if (ok && auth && auth.showToast) auth.showToast('Link copied to clipboard', 'success');
+                });
+            } else {
+                shareToProvider(provider, url, text);
+            }
+        });
+
+        // Modal behaviour (exposed for other scripts to call on level completion)
+        const shareModal = document.getElementById('shareModal');
+        const modalText = document.getElementById('shareModalText');
+        document.getElementById('modalClose').addEventListener('click', () => shareModal.classList.remove('show'));
+        document.getElementById('modalShareButtons').addEventListener('click', (e) => {
+            const btn = e.target.closest('.share-btn');
+            if (!btn) return;
+            const provider = btn.dataset.provider;
+            const url = shareModal.dataset.url;
+            const text = shareModal.dataset.text;
+            if (provider === 'copy') copyToClipboard(url).then(()=> { if (auth && auth.showToast) auth.showToast('Link copied', 'success'); });
+            else shareToProvider(provider, url, text || '');
+        });
+
+        function showShareModal(user, level, url) {
+            shareModal.dataset.url = url || buildShareUrl(user, level);
+            shareModal.dataset.text = `${user} completed ${level} at Lenox French Academy!`;
+            modalText.textContent = `${user} just completed ${level}. Share your achievement with friends!`;
+            shareModal.classList.add('show');
+        }
+
+        // Expose for other parts of app (e.g., level completion hooks)
+        window.showShareModal = showShareModal;
+    </script>
+</body>
+</html>

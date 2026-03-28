@@ -1,0 +1,290 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Profile | Lenox French Academy</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .profile-header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .avatar {
+            width: 100px;
+            height: 100px;
+            background: white;
+            border-radius: 50%;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .achievement-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .achievement-card {
+            background: white;
+            padding: 1rem;
+            border-radius: var(--radius);
+            text-align: center;
+            transition: all 0.3s;
+        }
+        
+        .achievement-card.earned {
+            background: linear-gradient(135deg, var(--success), var(--primary-light));
+            color: white;
+        }
+        
+        .achievement-card.locked {
+            opacity: 0.5;
+            filter: grayscale(0.5);
+        }
+        
+        .achievement-icon {
+            font-size: 2rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .settings-form {
+            background: white;
+            padding: 2rem;
+            border-radius: var(--radius);
+            margin-top: 2rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+        }
+        
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ddd;
+            border-radius: var(--radius);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="levels/a1/index.html">Learning</a>
+                <a href="certificate.html">Certificates</a>
+                <a href="profile.html" class="active">Profile</a>
+                <span id="userName"></span>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="profile-header">
+            <div class="avatar" id="avatar">👤</div>
+            <h1 id="profileName"></h1>
+            <p id="profileTitle">French Learner</p>
+            <div class="stats-grid">
+                <div class="stat-card" style="background: rgba(255,255,255,0.2);">
+                    <div class="stat-number" id="totalXP">0</div>
+                    <div>Total XP</div>
+                </div>
+                <div class="stat-card" style="background: rgba(255,255,255,0.2);">
+                    <div class="stat-number" id="streakDays">0</div>
+                    <div>Day Streak</div>
+                </div>
+                <div class="stat-card" style="background: rgba(255,255,255,0.2);">
+                    <div class="stat-number" id="levelTitle">0</div>
+                    <div>Level</div>
+                </div>
+            </div>
+        </div>
+
+        <h2>🏆 Achievements</h2>
+        <div class="achievement-grid" id="achievementsGrid"></div>
+
+        <h2>⚙️ Settings</h2>
+        <div class="settings-form">
+            <div class="form-group">
+                <label>Username</label>
+                <input type="text" id="usernameInput" placeholder="Username">
+            </div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="emailInput" placeholder="Email">
+            </div>
+            <div class="form-group">
+                <label>Theme</label>
+                <select id="themeSelect">
+                    <option value="light">Light</option>
+                    <option value="dark">Dark</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label>Email Notifications</label>
+                <input type="checkbox" id="notificationsToggle"> Receive daily reminders
+            </div>
+            <button class="btn btn-primary" onclick="saveSettings()">Save Settings</button>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/gamification.js"></script>
+    <script>
+        if (!auth || !auth.currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        document.getElementById('userName').innerHTML = `👤 ${auth.currentUser.username}`;
+
+        // Load profile data (prefer server/auth, fallback to localStorage)
+        const xp = (auth.currentUser && Number(auth.currentUser.xp)) || parseInt(localStorage.getItem(`xp_${(auth.currentUser && auth.currentUser.id) || 'anon'}`)) || 0;
+        let streak = 0;
+        try {
+            if (typeof tracker !== 'undefined' && typeof tracker.updateStreak === 'function') streak = tracker.updateStreak();
+        } catch (e) { console.warn('tracker.updateStreak not available', e); }
+
+        const userTitle = (auth.currentUser && auth.currentUser.title) || localStorage.getItem('user_title') || 'French Learner';
+        const userLevel = (auth.currentUser && auth.currentUser.level) || localStorage.getItem('user_level') || 0;
+
+        document.getElementById('profileName').textContent = auth.currentUser.username || 'Learner';
+        document.getElementById('profileTitle').textContent = userTitle;
+        // ARIA live for accessible updates
+        const xpEl = document.getElementById('totalXP'); xpEl.setAttribute('aria-live','polite'); xpEl.textContent = xp;
+        const streakEl = document.getElementById('streakDays'); streakEl.setAttribute('aria-live','polite'); streakEl.textContent = streak;
+        const levelEl = document.getElementById('levelTitle'); levelEl.setAttribute('aria-live','polite'); levelEl.textContent = userLevel;
+
+        // Load achievements (guard tracker API)
+        const grid = document.getElementById('achievementsGrid');
+        try {
+            const achievements = (typeof tracker !== 'undefined' && typeof tracker.getAchievements === 'function') ? tracker.getAchievements() : (auth.currentUser && auth.currentUser.badges) || [];
+            if (achievements && achievements.length) {
+                achievements.forEach(ach => {
+                    const card = document.createElement('div');
+                    card.className = `achievement-card ${ach.earned ? 'earned' : 'locked'}`;
+                    card.innerHTML = `
+                        <div class="achievement-icon" aria-hidden="true">${ach.icon || '🏅'}</div>
+                        <h4>${ach.name || ach.title}</h4>
+                        <p>${ach.description || ''}</p>
+                    `;
+                    grid.appendChild(card);
+                });
+            } else {
+                grid.innerHTML = '<p style="color:#666">No achievements yet — keep learning!</p>';
+            }
+        } catch (e) { console.warn('Failed to load achievements', e); }
+
+        // Load settings and UI controls
+        const settings = JSON.parse(localStorage.getItem('user_settings') || '{}');
+        document.getElementById('usernameInput').value = auth.currentUser.username || '';
+        document.getElementById('emailInput').value = auth.currentUser.email || '';
+        document.getElementById('themeSelect').value = settings.theme || 'light';
+        document.getElementById('notificationsToggle').checked = settings.notifications || false;
+
+        // Add high-contrast and RTL controls dynamically
+        const settingsForm = document.querySelector('.settings-form');
+        const extraControls = document.createElement('div');
+        extraControls.className = 'form-group';
+        extraControls.innerHTML = `
+            <label><input type="checkbox" id="highContrastToggle"> High contrast mode</label>
+            <label style="margin-left:1rem"><input type="checkbox" id="rtlToggle"> RTL (Right-to-Left)</label>
+        `;
+        settingsForm.insertBefore(extraControls, settingsForm.children[settingsForm.children.length-1]);
+
+        // Sync and export buttons
+        const extraRow = document.createElement('div'); extraRow.style.marginTop='1rem';
+        extraRow.innerHTML = `<button class="btn btn-outline" id="syncBtn">Sync now</button> <button class="btn" id="exportBtn">Export progress</button> <a class="btn btn-outline" href="badges.html">View Badges</a> <a class="btn btn-outline" href="flashcards.html">Flashcards</a>`;
+        settingsForm.appendChild(extraRow);
+
+        // Apply persisted UI state
+        if (settings.theme === 'dark') document.documentElement.classList.add('theme-dark');
+        if (settings.highContrast) document.documentElement.classList.add('high-contrast');
+        if (settings.rtl) document.documentElement.setAttribute('dir','rtl');
+
+        function applyTheme(theme) {
+            if (theme === 'dark') document.documentElement.classList.add('theme-dark'); else document.documentElement.classList.remove('theme-dark');
+        }
+
+        function applyHighContrast(enable){ if (enable) document.documentElement.classList.add('high-contrast'); else document.documentElement.classList.remove('high-contrast'); }
+        function applyRTL(enable){ if (enable) document.documentElement.setAttribute('dir','rtl'); else document.documentElement.removeAttribute('dir'); }
+
+        function saveSettings() {
+            const newSettings = {
+                theme: document.getElementById('themeSelect').value,
+                notifications: document.getElementById('notificationsToggle').checked,
+                highContrast: document.getElementById('highContrastToggle').checked,
+                rtl: document.getElementById('rtlToggle').checked
+            };
+            localStorage.setItem('user_settings', JSON.stringify(newSettings));
+            applyTheme(newSettings.theme);
+            applyHighContrast(newSettings.highContrast);
+            applyRTL(newSettings.rtl);
+            if (auth && typeof auth.showToast === 'function') auth.showToast('Settings saved!', 'success');
+        }
+
+        document.getElementById('themeSelect').addEventListener('change', ()=> saveSettings());
+        document.getElementById('notificationsToggle').addEventListener('change', ()=> saveSettings());
+
+        // wire sync and export
+        document.getElementById('syncBtn').addEventListener('click', async ()=>{
+            if (auth && typeof auth.saveCurrentUser === 'function') {
+                try { await auth.saveCurrentUser(); if (auth.showToast) auth.showToast('Synced with server', 'success'); } catch(e){ console.warn(e); if (auth.showToast) auth.showToast('Sync failed', 'error'); }
+            } else {
+                if (auth && typeof auth.showToast === 'function') auth.showToast('Sync not available', 'info');
+            }
+        });
+
+        document.getElementById('exportBtn').addEventListener('click', async ()=>{
+            const payload = {
+                user: auth.currentUser || {},
+                badges: (window.lenoxGamification && lenoxGamification.getBadges()) || (auth.currentUser && auth.currentUser.badges) || [],
+                flashcards: []
+            };
+            // attempt to read flashcards from IndexedDB
+            try{
+                if (window.lenoxFlashcards && typeof lenoxFlashcards.getAll === 'function') payload.flashcards = await lenoxFlashcards.getAll();
+            }catch(e){ console.warn('export flashcards failed', e); }
+            const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a'); a.href = url; a.download = `lenox-progress-${auth.currentUser.username || 'user'}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+        });
+
+        function logout() { if (auth) auth.logout(); window.location.href = 'index.html'; }
+
+        // make save button use our function
+        window.saveSettings = saveSettings;
+
+        // Apply simple classes on load for persisted theme
+        const persisted = JSON.parse(localStorage.getItem('user_settings') || '{}');
+        applyTheme(persisted.theme || 'light');
+        applyHighContrast(persisted.highContrast || false);
+        applyRTL(persisted.rtl || false);
+    </script>
+</body>
+</html>

@@ -1,0 +1,115 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lenox French Academy | Learn French Online</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .hero {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: white;
+        }
+        
+        .hero h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+        
+        .feature {
+            text-align: center;
+            padding: 2rem;
+            background: white;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+        
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            margin-top: 2rem;
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                🎓 <span>Lenox French Academy</span>
+            </a>
+            <div class="nav-links">
+                <a href="login.html">Login</a>
+                <a href="signup.html" class="btn btn-primary">Start Free</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="hero">
+            <h1>Master French from A1 to B2 🇫🇷</h1>
+            <p>Interactive lessons, quizzes, certificates, and more. Start your French journey today!</p>
+            <div class="cta-buttons">
+                <a href="signup.html" class="btn btn-primary" style="padding: 1rem 2rem;">Get Started Free</a>
+                <a href="#features" class="btn btn-outline" style="background: white;">Learn More</a>
+            </div>
+        </div>
+
+        <div class="features" id="features">
+            <div class="feature">
+                <div class="feature-icon">📚</div>
+                <h3>Structured Curriculum</h3>
+                <p>From A1 to B2, follow our proven learning path</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎯</div>
+                <h3>Interactive Quizzes</h3>
+                <p>Test your knowledge and track your progress</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎓</div>
+                <h3>Certificates</h3>
+                <p>Earn certificates for each completed level</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🎬</div>
+                <h3>Video Lessons</h3>
+                <p>Learn with C3 Academy's expert instructors</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">🧩</div>
+                <h3>Daily Puzzles</h3>
+                <p>Fun word puzzles to reinforce learning</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">📊</div>
+                <h3>Progress Tracking</h3>
+                <p>See your improvement over time</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

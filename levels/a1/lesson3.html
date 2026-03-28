@@ -1,0 +1,793 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A1 Lesson 3: Introductions | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>
+    .lesson-content {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    
+    /* Enhanced Section Styles */
+    .grammar-section {
+      background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+      border-radius: 16px;
+      padding: 1.5rem;
+      margin: 2rem 0;
+      border-left: 5px solid var(--primary);
+    }
+    
+    .conjugation-table {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 1rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .conjugation-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .conjugation-table th {
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .conjugation-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .conjugation-table tr:last-child td {
+      border-bottom: none;
+    }
+    
+    .conjugation-table tr:hover {
+      background: #f5f5f5;
+    }
+    
+    .phrase-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .phrase-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+      cursor: pointer;
+    }
+    
+    .phrase-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      background: var(--primary-light);
+      color: white;
+    }
+    
+    .phrase-french {
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    
+    .phrase-english {
+      font-size: 0.85rem;
+      color: #666;
+    }
+    
+    .phrase-card:hover .phrase-english {
+      color: white;
+    }
+    
+    .btn-icon {
+      background: none;
+      border: none;
+      font-size: 1.2rem;
+      cursor: pointer;
+      padding: 0.5rem;
+      border-radius: 50%;
+      transition: background 0.3s;
+    }
+    
+    .btn-icon:hover {
+      background: rgba(0,0,0,0.1);
+    }
+    
+    .practice-area {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 2rem 0;
+      color: white;
+    }
+    
+    .roleplay-scenario {
+      background: white;
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin: 1rem 0;
+      cursor: pointer;
+      transition: all 0.3s;
+      color: #333;
+    }
+    
+    .roleplay-scenario:hover {
+      transform: scale(1.02);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .dialogue-line {
+      display: flex;
+      margin: 1rem 0;
+      align-items: flex-start;
+      gap: 1rem;
+    }
+    
+    .speaker {
+      min-width: 80px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .speech-bubble {
+      flex: 1;
+      background: #f0f0f0;
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+      position: relative;
+    }
+    
+    .vocabulary-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .vocab-item {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.3s;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .vocab-item:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-3px);
+    }
+    
+    .cultural-note {
+      background: #fff3e0;
+      border-left: 5px solid #ff9800;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+    }
+    
+    .practice-exercise {
+      background: #f0f7ff;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin: 1.5rem 0;
+    }
+    
+    .fill-blank {
+      background: #fff;
+      padding: 1rem;
+      border-radius: 8px;
+      margin: 0.5rem 0;
+      border: 1px solid #ddd;
+    }
+    
+    .fill-blank input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin: 0 0.5rem;
+      width: 150px;
+    }
+    
+    .pronunciation-tip {
+      background: #e8f5e9;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+    
+    .expandable-section {
+      background: white;
+      border-radius: 12px;
+      margin: 1rem 0;
+      overflow: hidden;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .expandable-header {
+      background: #f5f5f5;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: bold;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    
+    .expandable-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 1rem;
+    }
+    
+    .expandable-content.open {
+      max-height: 500px;
+      padding: 1rem;
+    }
+    
+    @media (max-width: 768px) {
+      .phrase-grid {
+        grid-template-columns: 1fr;
+      }
+      .vocabulary-grid {
+        grid-template-columns: 1fr;
+      }
+      .dialogue-line {
+        flex-direction: column;
+      }
+      .speaker {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="../../dashboard.html">Dashboard</a>
+        <a href="index.html">← Back to A1</a>
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="logout()" style="margin-left: 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="lesson-content container">
+    <h1>👥 Lesson 3: Introductions & Personal Information</h1>
+    <p>Learn how to introduce yourself, ask for someone's name, and exchange basic personal information in French.</p>
+
+    <!-- ========== EXPANDED GRAMMAR SECTION ========== -->
+    <div class="grammar-section">
+      <h2>📖 Grammar: The Verb "S'appeler" (To be called)</h2>
+      <p>The verb <strong>s'appeler</strong> is a reflexive verb used to tell someone's name.</p>
+      
+      <div class="conjugation-table">
+        <table>
+          <thead>
+            <tr><th>Subject</th><th>Conjugation</th><th>Pronunciation</th><th>Meaning</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>Je</td><td>je m'appelle</td><td><button class="btn-icon" onclick="speak('je m\'appelle')">🔊</button></td><td>My name is</td></tr>
+            <tr><td>Tu</td><td>tu t'appelles</td><td><button class="btn-icon" onclick="speak('tu t\'appelles')">🔊</button></td><td>Your name is (informal)</td></tr>
+            <tr><td>Il/Elle/On</td><td>il/elle/on s'appelle</td><td><button class="btn-icon" onclick="speak('il s\'appelle')">🔊</button></td><td>His/her/one's name is</td></tr>
+            <tr><td>Nous</td><td>nous nous appelons</td><td><button class="btn-icon" onclick="speak('nous nous appelons')">🔊</button></td><td>Our names are</td></tr>
+            <tr><td>Vous</td><td>vous vous appelez</td><td><button class="btn-icon" onclick="speak('vous vous appelez')">🔊</button></td><td>Your name is (formal/plural)</td></tr>
+            <tr><td>Ils/Elles</td><td>ils/elles s'appellent</td><td><button class="btn-icon" onclick="speak('ils s\'appellent')">🔊</button></td><td>Their names are</td></tr>
+          </tbody>
+        </table>
+      </div>
+      
+      <div class="pronunciation-tip">
+        <span>🎤</span>
+        <div>
+          <strong>Pronunciation Tip:</strong> The "ll" in "appelle" is pronounced like a soft "y" sound. "Je m'appelle" sounds like "zhuh mah-pel".
+          <button class="btn btn-sm" onclick="speak('je m\'appelle', true)" style="margin-left: 1rem;">Practice Slowly →</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== EXPANDED VOCABULARY SECTION ========== -->
+    <div class="expandable-section">
+      <div class="expandable-header" onclick="toggleExpand(this)">
+        <span>📚 Vocabulary: Questions & Answers (Click to expand)</span>
+        <span>▼</span>
+      </div>
+      <div class="expandable-content">
+        <div class="vocabulary-grid">
+          <div class="vocab-item" onclick="speak('Comment tu t\'appelles?')">
+            <div class="phrase-french">Comment tu t'appelles?</div>
+            <div class="phrase-english">What's your name? (informal)</div>
+          </div>
+          <div class="vocab-item" onclick="speak('Comment vous appelez-vous?')">
+            <div class="phrase-french">Comment vous appelez-vous?</div>
+            <div class="phrase-english">What's your name? (formal)</div>
+          </div>
+          <div class="vocab-item" onclick="speak('Je m\'appelle')">
+            <div class="phrase-french">Je m'appelle...</div>
+            <div class="phrase-english">My name is...</div>
+          </div>
+          <div class="vocab-item" onclick="speak('Enchanté')">
+            <div class="phrase-french">Enchanté(e)</div>
+            <div class="phrase-english">Nice to meet you</div>
+          </div>
+          <div class="vocab-item" onclick="speak('Et toi?')">
+            <div class="phrase-french">Et toi?</div>
+            <div class="phrase-english">And you? (informal)</div>
+          </div>
+          <div class="vocab-item" onclick="speak('Et vous?')">
+            <div class="phrase-french">Et vous?</div>
+            <div class="phrase-english">And you? (formal)</div>
+          </div>
+          <div class="vocab-item" onclick="speak('D\'où viens-tu?')">
+            <div class="phrase-french">D'où viens-tu?</div>
+            <div class="phrase-english">Where are you from?</div>
+          </div>
+          <div class="vocab-item" onclick="speak('Quel âge as-tu?')">
+            <div class="phrase-french">Quel âge as-tu?</div>
+            <div class="phrase-english">How old are you?</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ========== EXPANDED PHRASE PRACTICE ========== -->
+    <h2>🗣️ Key Phrases with Audio</h2>
+    <div class="phrase-grid" id="phrases-list">
+      <div class="phrase-card" data-phrase="Je m'appelle Marie">
+        <div>
+          <div class="phrase-french">Je m'appelle Marie</div>
+          <div class="phrase-english">My name is Marie</div>
+        </div>
+        <div>
+          <button class="btn-icon" data-say>🔊</button>
+          <button class="btn-icon" data-add>📚</button>
+        </div>
+      </div>
+      <div class="phrase-card" data-phrase="Comment tu t'appelles?">
+        <div>
+          <div class="phrase-french">Comment tu t'appelles?</div>
+          <div class="phrase-english">What's your name?</div>
+        </div>
+        <div>
+          <button class="btn-icon" data-say>🔊</button>
+          <button class="btn-icon" data-add>📚</button>
+        </div>
+      </div>
+      <div class="phrase-card" data-phrase="Enchanté">
+        <div>
+          <div class="phrase-french">Enchanté(e)</div>
+          <div class="phrase-english">Nice to meet you</div>
+        </div>
+        <div>
+          <button class="btn-icon" data-say>🔊</button>
+          <button class="btn-icon" data-add>📚</button>
+        </div>
+      </div>
+      <div class="phrase-card" data-phrase="D'où viens-tu?">
+        <div>
+          <div class="phrase-french">D'où viens-tu?</div>
+          <div class="phrase-english">Where are you from?</div>
+        </div>
+        <div>
+          <button class="btn-icon" data-say>🔊</button>
+          <button class="btn-icon" data-add>📚</button>
+        </div>
+      </div>
+      <div class="phrase-card" data-phrase="Je viens du Kenya">
+        <div>
+          <div class="phrase-french">Je viens du Kenya</div>
+          <div class="phrase-english">I come from Kenya</div>
+        </div>
+        <div>
+          <button class="btn-icon" data-say>🔊</button>
+          <button class="btn-icon" data-add>📚</button>
+        </div>
+      </div>
+      <div class="phrase-card" data-phrase="Quel âge as-tu?">
+        <div>
+          <div class="phrase-french">Quel âge as-tu?</div>
+          <div class="phrase-english">How old are you?</div>
+        </div>
+        <div>
+          <button class="btn-icon" data-say>🔊</button>
+          <button class="btn-icon" data-add>📚</button>
+        </div>
+      </div>
+    </div>
+
+    <label>🎧 Speech rate: <input id="rate" type="range" min="0.6" max="1.6" step="0.1" value="1"> <span id="rateValue">1.0x</span></label>
+
+    <!-- ========== ROLEPLAY DIALOGUES ========== -->
+    <div class="practice-area">
+      <h2>🎭 Role-Play Scenarios</h2>
+      <p>Click on any scenario to practice the conversation. Listen, repeat, and try with a partner!</p>
+      
+      <div class="roleplay-scenario" onclick="playDialogue('formal')">
+        <h3>Scenario 1: Formal Introduction</h3>
+        <div class="dialogue-line">
+          <div class="speaker">👩 Marie:</div>
+          <div class="speech-bubble">Bonjour, je m'appelle Marie. Et vous?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👨 Paul:</div>
+          <div class="speech-bubble">Bonjour Marie, je m'appelle Paul. Enchanté!</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👩 Marie:</div>
+          <div class="speech-bubble">Enchantée, Paul. D'où venez-vous?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👨 Paul:</div>
+          <div class="speech-bubble">Je viens de Paris. Et vous?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👩 Marie:</div>
+          <div class="speech-bubble">Je viens de Lyon. Ravie de faire votre connaissance!</div>
+        </div>
+        <small>🔊 Click anywhere to hear the full conversation</small>
+      </div>
+      
+      <div class="roleplay-scenario" onclick="playDialogue('informal')">
+        <h3>Scenario 2: Informal Introduction (Friends)</h3>
+        <div class="dialogue-line">
+          <div class="speaker">🧑 Lucas:</div>
+          <div class="speech-bubble">Salut! Je m'appelle Lucas. Et toi?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👧 Sophie:</div>
+          <div class="speech-bubble">Salut Lucas, moi c'est Sophie. Ça va?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">🧑 Lucas:</div>
+          <div class="speech-bubble">Ça va bien, merci! Tu viens d'où?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👧 Sophie:</div>
+          <div class="speech-bubble">Je viens de Marseille. Et toi?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">🧑 Lucas:</div>
+          <div class="speech-bubble">Je suis de Bordeaux. Enchanté Sophie!</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👧 Sophie:</div>
+          <div class="speech-bubble">Enchantée aussi! À bientôt!</div>
+        </div>
+        <small>🔊 Click anywhere to hear the full conversation</small>
+      </div>
+      
+      <div class="roleplay-scenario" onclick="playDialogue('age')">
+        <h3>Scenario 3: Asking About Age & Origin</h3>
+        <div class="dialogue-line">
+          <div class="speaker">👩 Anna:</div>
+          <div class="speech-bubble">Bonjour! Comment tu t'appelles?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👨 Thomas:</div>
+          <div class="speech-bubble">Je m'appelle Thomas. Et toi?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👩 Anna:</div>
+          <div class="speech-bubble">Je m'appelle Anna. Quel âge as-tu?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👨 Thomas:</div>
+          <div class="speech-bubble">J'ai vingt-cinq ans. Et toi?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👩 Anna:</div>
+          <div class="speech-bubble">J'ai vingt-trois ans. Tu es d'où?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👨 Thomas:</div>
+          <div class="speech-bubble">Je suis de Bruxelles. Et toi?</div>
+        </div>
+        <div class="dialogue-line">
+          <div class="speaker">👩 Anna:</div>
+          <div class="speech-bubble">Je suis de Genève. Enchantée Thomas!</div>
+        </div>
+        <small>🔊 Click anywhere to hear the full conversation</small>
+      </div>
+    </div>
+
+    <!-- ========== FILL-IN-THE-BLANK EXERCISES ========== -->
+    <div class="practice-exercise">
+      <h2>✍️ Practice Exercise: Fill in the Blanks</h2>
+      <p>Complete these sentences with the correct form of "s'appeler" or other vocabulary:</p>
+      
+      <div class="fill-blank">
+        <p>1. Bonjour, je __________ Marie. (My name is)</p>
+        <input type="text" id="blank1" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(1, 'm\'appelle')">Check</button>
+        <span id="result1"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>2. Comment tu __________ ? (What's your name?)</p>
+        <input type="text" id="blank2" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(2, 't\'appelles')">Check</button>
+        <span id="result2"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>3. __________, ravi de vous rencontrer! (Nice to meet you)</p>
+        <input type="text" id="blank3" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(3, 'Enchanté')">Check</button>
+        <span id="result3"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>4. Il __________ Pierre. (His name is)</p>
+        <input type="text" id="blank4" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(4, 's\'appelle')">Check</button>
+        <span id="result4"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>5. Nous __________ Sophie et Marc. (Our names are)</p>
+        <input type="text" id="blank5" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(5, 'nous appelons')">Check</button>
+        <span id="result5"></span>
+      </div>
+    </div>
+
+    <!-- ========== CULTURAL NOTE ========== -->
+    <div class="cultural-note">
+      <h3>🇫🇷 Cultural Note: Formal vs. Informal Address</h3>
+      <p>In French culture, it's important to use the appropriate level of formality:</p>
+      <ul>
+        <li><strong>"Tu"</strong> is used with friends, family, children, and people you know well</li>
+        <li><strong>"Vous"</strong> is used with strangers, elders, authority figures, and in professional settings</li>
+        <li>When in doubt, start with "vous" – the other person will invite you to use "tu" if appropriate</li>
+        <li>Shaking hands is common in formal introductions; cheek kisses (la bise) are for friends and family</li>
+      </ul>
+      <button class="btn btn-sm" onclick="speak('Je vous en prie')">Listen: "Je vous en prie" (You're welcome - formal)</button>
+    </div>
+
+    <!-- ========== QUIZ SECTION ========== -->
+    <h2>📝 Quiz: Test Your Knowledge</h2>
+    <div id="quiz"></div>
+    <div id="quiz-feedback" aria-live="polite" style="margin-top:8px"></div>
+    <div id="done" style="display:none; text-align:center; margin-top:1rem">
+      <button class="btn btn-primary" onclick="completeLesson()">✅ Complete Lesson & Continue →</button>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/sounds.js"></script>
+  <script src="../../js/gamification.js"></script>
+  <script src="../../js/flashcards.js"></script>
+  <script>
+    // ========== INITIALIZATION ==========
+    if (!auth.currentUser) {
+      window.location.href = '../../login.html';
+    }
+    document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+    
+    // Speech rate display
+    const rateSlider = document.getElementById('rate');
+    const rateValue = document.getElementById('rateValue');
+    rateSlider.addEventListener('input', () => {
+      rateValue.textContent = `${rateSlider.value}x`;
+    });
+    
+    // ========== SPEECH FUNCTIONS ==========
+    function getVoice(langPrefix) {
+      const voices = speechSynthesis.getVoices();
+      return voices.find(v => v.lang && v.lang.startsWith(langPrefix)) || voices[0];
+    }
+    
+    function speak(text, slow = false) {
+      const rate = slow ? 0.7 : parseFloat(document.getElementById('rate').value || 1);
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = getVoice('fr');
+      utterance.lang = 'fr-FR';
+      utterance.rate = rate;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+    
+    // ========== PHRASE CARDS ==========
+    document.querySelectorAll('[data-say]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const card = btn.closest('[data-phrase]') || btn.closest('.phrase-card');
+        const phrase = card.getAttribute('data-phrase');
+        if (phrase) speak(phrase);
+      });
+    });
+    
+    document.querySelectorAll('[data-add]').forEach(btn => {
+      btn.addEventListener('click', async (e) => {
+        e.stopPropagation();
+        const card = btn.closest('[data-phrase]') || btn.closest('.phrase-card');
+        const phrase = card.getAttribute('data-phrase');
+        if (window.lenoxFlashcards && window.lenoxFlashcards.addCard) {
+          await window.lenoxFlashcards.addCard({
+            front: phrase,
+            back: 'Practice phrase',
+            level: 'A1',
+            category: 'Introductions'
+          });
+          if (auth.showToast) auth.showToast('📚 Added to flashcards!', 'success');
+        } else {
+          if (auth.showToast) auth.showToast('Flashcard feature coming soon!', 'info');
+        }
+      });
+    });
+    
+    // ========== ROLEPLAY DIALOGUES ==========
+    const dialogues = {
+      formal: [
+        'Bonjour, je m\'appelle Marie. Et vous?',
+        'Bonjour Marie, je m\'appelle Paul. Enchanté!',
+        'Enchantée, Paul. D\'où venez-vous?',
+        'Je viens de Paris. Et vous?',
+        'Je viens de Lyon. Ravie de faire votre connaissance!'
+      ],
+      informal: [
+        'Salut! Je m\'appelle Lucas. Et toi?',
+        'Salut Lucas, moi c\'est Sophie. Ça va?',
+        'Ça va bien, merci! Tu viens d\'où?',
+        'Je viens de Marseille. Et toi?',
+        'Je suis de Bordeaux. Enchanté Sophie!',
+        'Enchantée aussi! À bientôt!'
+      ],
+      age: [
+        'Bonjour! Comment tu t\'appelles?',
+        'Je m\'appelle Thomas. Et toi?',
+        'Je m\'appelle Anna. Quel âge as-tu?',
+        'J\'ai vingt-cinq ans. Et toi?',
+        'J\'ai vingt-trois ans. Tu es d\'où?',
+        'Je suis de Bruxelles. Et toi?',
+        'Je suis de Genève. Enchantée Thomas!'
+      ]
+    };
+    
+    function playDialogue(type) {
+      const lines = dialogues[type];
+      let index = 0;
+      
+      function speakNext() {
+        if (index < lines.length) {
+          speak(lines[index]);
+          index++;
+          setTimeout(speakNext, 2000);
+        }
+      }
+      speakNext();
+    }
+    
+    window.playDialogue = playDialogue;
+    
+    // ========== FILL-IN-THE-BLANK CHECKER ==========
+    function checkBlank(number, correctAnswer) {
+      const input = document.getElementById(`blank${number}`);
+      const resultSpan = document.getElementById(`result${number}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      const normalizedCorrect = correctAnswer.toLowerCase();
+      
+      if (userAnswer === normalizedCorrect) {
+        resultSpan.innerHTML = ' ✅ Correct!';
+        resultSpan.style.color = 'green';
+        if (window.lenoxSounds) lenoxSounds.playSound('correct');
+      } else {
+        resultSpan.innerHTML = ` ❌ Incorrect. The answer is "${correctAnswer}".`;
+        resultSpan.style.color = 'red';
+        if (window.lenoxSounds) lenoxSounds.playSound('incorrect');
+      }
+    }
+    
+    window.checkBlank = checkBlank;
+    
+    // ========== EXPANDABLE SECTIONS ==========
+    function toggleExpand(header) {
+      const content = header.nextElementSibling;
+      const arrow = header.querySelector('span:last-child');
+      content.classList.toggle('open');
+      arrow.textContent = content.classList.contains('open') ? '▲' : '▼';
+    }
+    
+    window.toggleExpand = toggleExpand;
+    
+    // ========== QUIZ ==========
+    const quizQuestions = [
+      { q: 'How do you say "My name is"?', opts: ['Je m\'appelle', 'Comment', 'Enchanté'], correct: 0 },
+      { q: 'What is a polite reply to "Enchanté"?', opts: ['Au revoir', 'Enchanté(e)', 'Salut'], correct: 1 },
+      { q: 'Translate: "What is your name?" (informal)', opts: ['Comment tu t\'appelles?', 'Je m\'appelle', 'Merci'], correct: 0 },
+      { q: 'Which pronoun is used for formal address?', opts: ['Tu', 'Vous', 'Il'], correct: 1 },
+      { q: 'What does "D\'où viens-tu?" mean?', opts: ['How old are you?', 'Where are you from?', 'What is your name?'], correct: 1 },
+      { q: 'Complete: "Je _____ du Kenya." (I come from)', opts: ['viens', 'vais', 'suis'], correct: 0 }
+    ];
+    
+    const quizDiv = document.getElementById('quiz');
+    
+    function renderQuiz() {
+      quizDiv.innerHTML = quizQuestions.map((q, i) => `
+        <div class="quiz-question" style="background: #f9f9f9; padding: 1rem; border-radius: 12px; margin: 1rem 0;">
+          <p><strong>${i + 1}. ${q.q}</strong></p>
+          ${q.opts.map((opt, oi) => `
+            <label><input type="radio" name="q${i}" value="${oi}"> ${opt}</label><br>
+          `).join('')}
+        </div>
+      `).join('') + '<button class="btn btn-primary" id="submitQuiz">Submit Quiz</button>';
+      
+      document.getElementById('submitQuiz').addEventListener('click', submitQuiz);
+    }
+    
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.innerHTML = `<strong>Score: ${score}/${quizQuestions.length}</strong>`;
+      
+      if (score === quizQuestions.length) {
+        feedback.innerHTML += '<p style="color: green;">🎉 Perfect! You\'ve mastered introductions!</p>';
+        document.getElementById('done').style.display = 'block';
+        if (window.lenoxSounds) lenoxSounds.playSound('levelComplete');
+        if (window.lenoxGamification) {
+          window.lenoxGamification.addXp(150);
+          window.lenoxGamification.awardBadge('intro-master', 'Introduction Master', 'Completed all introduction exercises', '🗣️');
+        }
+      } else {
+        feedback.innerHTML += `<p style="color: orange;">You got ${score}/${quizQuestions.length}. Review the lesson and try again to earn your badge!</p>`;
+        if (window.lenoxSounds) lenoxSounds.playSound('incorrect');
+        if (auth.showToast) auth.showToast(`Score: ${score}/${quizQuestions.length} - Try again!`, 'info');
+      }
+    }
+    
+    renderQuiz();
+    
+    // ========== COMPLETE LESSON ==========
+    function completeLesson() {
+      if (auth.updateProgress) {
+        auth.updateProgress('A1', 'lesson3', 100);
+      }
+      window.location.href = 'lesson4.html';
+    }
+    
+    window.completeLesson = completeLesson;
+    
+    function logout() {
+      auth.logout();
+      window.location.href = '../../index.html';
+    }
+    
+    window.logout = logout;
+    
+    // Initialize voices after page load
+    window.speechSynthesis.onvoiceschanged = () => {
+      console.log('Voices loaded');
+    };
+  </script>
+</body>
+</html>

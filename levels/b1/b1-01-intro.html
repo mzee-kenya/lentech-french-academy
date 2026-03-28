@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B1 Sample Lesson | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>.lesson{max-width:900px;margin:2rem auto;padding:1rem}</style>
+</head>
+<body>
+  <nav class="navbar"><div class="nav-container"><a href="../../index.html" class="logo">🎓 Lenox French Academy</a><div class="nav-links"><a href="index.html">← Back to B1</a><span id="userName"></span></div></div></nav>
+  <main class="lesson container">
+    <h1>Welcome to B1</h1>
+    <p>This is a placeholder B1 lesson. Replace with full content later.</p>
+    <button class="btn btn-primary" onclick="complete()">Mark Complete</button>
+  </main>
+  <script src="../../js/auth.js"></script>
+  <script>
+    if (!auth.currentUser) window.location.href='../../login.html';
+    document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+    function complete(){ if (auth.updateProgress) auth.updateProgress('B1','lesson1',100); alert('Marked complete (placeholder)'); }
+  </script>
+</body>
+</html>

@@ -1,0 +1,75 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily Challenges | Lenox French Academy</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .daily-wrap { max-width:900px; margin:2rem auto; padding:1rem }
+    .challenge-list { display:grid; gap:.75rem }
+    .challenge { display:flex; justify-content:space-between; align-items:center; padding:.75rem; background:var(--card-bg,#fff); border-radius:8px }
+    .challenge .meta { display:flex; gap:.75rem; align-items:center }
+    .btn-claim { background:var(--primary); color:#fff; padding:.5rem .75rem; border-radius:8px }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="badges.html">Badges</a>
+        <span id="userName"></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="daily-wrap">
+    <h1>🔥 Daily Challenges</h1>
+    <p>Complete today's challenges for bonus XP. Each challenge can be completed once per day.</p>
+    <div id="challenges" class="challenge-list"></div>
+    <div id="dailyMsg" style="margin-top:1rem;color:#666"></div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/gamification.js"></script>
+  <script>
+    (function(){
+      if (window.auth && auth.currentUser) document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+      const CHALLENGES = [
+        { id:'daily_vocab', title:'Review 10 vocabulary cards', xp:30, desc:'Use the flashcards to review 10 words.' },
+        { id:'daily_listen', title:'10 minutes listening practice', xp:40, desc:'Complete a listening exercise.' },
+        { id:'daily_quiz', title:'Finish a quiz with 80%+', xp:60, desc:'Pass a short quiz with high accuracy.' }
+      ];
+      const container = document.getElementById('challenges');
+      const msg = document.getElementById('dailyMsg');
+
+      function render(){
+        container.innerHTML = '';
+        const state = JSON.parse(localStorage.getItem('lenox_daily')||'{}');
+        const today = new Date().toISOString().slice(0,10);
+        CHALLENGES.forEach(ch => {
+          const done = state[ch.id] && state[ch.id].lastCompleted === today;
+          const el = document.createElement('div'); el.className='challenge';
+          el.innerHTML = `<div class="meta"><div style="font-weight:700">${ch.title}</div><div style="font-size:.9rem;color:#666">${ch.desc}</div></div><div><button class="btn-claim" data-id="${ch.id}" ${done? 'disabled': ''}>${done? 'Claimed':'Claim '+ch.xp+' XP'}</button></div>`;
+          container.appendChild(el);
+        });
+      }
+
+      container.addEventListener('click', (e)=>{
+        const btn = e.target.closest('.btn-claim'); if(!btn) return;
+        const id = btn.dataset.id; const ch = CHALLENGES.find(c=>c.id===id); if(!ch) return;
+        const ok = lenoxGamification.completeDaily(ch.id, ch.xp);
+        if (ok) {
+          btn.textContent = 'Claimed'; btn.disabled = true; msg.textContent = `+${ch.xp} XP awarded!`;
+        } else { msg.textContent = 'Already completed today.'; }
+        setTimeout(()=> msg.textContent = '', 3500);
+      });
+
+      render();
+    })();
+  </script>
+</body>
+</html>

@@ -1,0 +1,65 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Flashcards | Lenox French Academy</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .fc-wrap { max-width:900px; margin:2rem auto; padding:1rem }
+    .card { background:var(--card-bg,#fff); padding:2rem; border-radius:12px; box-shadow:var(--shadow-md); text-align:center; min-height:220px; display:flex; flex-direction:column; justify-content:center }
+    .card-front { font-size:1.75rem; font-weight:700 }
+    .card-back { margin-top:1rem; color:#333 }
+    .controls { display:flex; gap:.5rem; margin-top:1rem; justify-content:center; flex-wrap:wrap }
+    .small { font-size:.9rem }
+    .meta { display:flex; justify-content:space-between; margin-bottom:.75rem }
+    .bookmark { background:#fff3f0; color:#a00; padding:.5rem .75rem; border-radius:8px }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <a href="badges.html">Badges</a>
+        <a href="bookmarks.html">Bookmarks</a>
+        <span id="userName"></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="fc-wrap">
+    <h1>🃏 Flashcards — Spaced Repetition</h1>
+    <p>Review due vocabulary using the spaced repetition system (SRS). Mark correct to move a card forward, incorrect to repeat sooner.</p>
+
+    <div class="meta">
+      <div><strong id="dueCount">0</strong> cards due</div>
+      <div class="small">Box: <span id="cardBox">—</span></div>
+    </div>
+
+    <div id="cardArea" class="card" role="article" aria-live="polite">
+      <div id="cardFront" class="card-front">Loading…</div>
+      <div id="cardBack" class="card-back" style="display:none"></div>
+    </div>
+
+    <div class="controls">
+      <button class="btn btn-outline" id="prevBtn">◀ Prev</button>
+      <button class="btn" id="flipBtn">Reveal</button>
+      <button class="btn btn-outline" id="nextBtn">Next ▶</button>
+      <button class="btn bookmark" id="bookmarkBtn">☆ Bookmark</button>
+    </div>
+
+    <div style="margin-top:1rem; text-align:center">
+      <button class="btn btn-primary" id="addSample">Add Sample Cards</button>
+      <button class="btn btn-outline" id="resetBtn">Reset SRS</button>
+    </div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/sounds.js"></script>
+  <script src="js/gamification.js"></script>
+  <script src="js/flashcards.js"></script>
+</body>
+</html>

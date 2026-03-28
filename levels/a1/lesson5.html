@@ -1,0 +1,717 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A1 Lesson 5: Basic Verbs | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>
+    .lesson-content {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    
+    /* Verb Conjugation Tables */
+    .verb-table {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .verb-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .verb-table th {
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      text-align: left;
+      font-weight: 600;
+    }
+    
+    .verb-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .verb-table tr:hover {
+      background: #f5f5f5;
+    }
+    
+    .verb-header {
+      background: linear-gradient(135deg, var(--primary), var(--primary-light));
+      color: white;
+      padding: 1rem;
+      border-radius: 12px 12px 0 0;
+      font-size: 1.2rem;
+      font-weight: bold;
+    }
+    
+    /* Conjugation Practice */
+    .conjugation-practice {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+    }
+    
+    .conjugation-item {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    
+    .conjugation-item input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+      width: 150px;
+    }
+    
+    /* Sentence Builder */
+    .sentence-builder {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      color: white;
+    }
+    
+    .word-bank {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    
+    .word-tile {
+      background: rgba(255,255,255,0.2);
+      padding: 0.5rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .word-tile:hover {
+      background: rgba(255,255,255,0.4);
+      transform: scale(1.05);
+    }
+    
+    .sentence-area {
+      background: white;
+      color: #333;
+      padding: 1rem;
+      border-radius: 12px;
+      min-height: 80px;
+      margin: 1rem 0;
+    }
+    
+    /* Verb Matching Game */
+    .matching-game {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .match-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      margin: 1rem 0;
+    }
+    
+    .match-item {
+      background: #f0f0f0;
+      padding: 0.75rem;
+      text-align: center;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s;
+    }
+    
+    .match-item.selected {
+      background: var(--primary);
+      color: white;
+    }
+    
+    .match-item.matched {
+      background: var(--success);
+      color: white;
+      cursor: default;
+      opacity: 0.7;
+    }
+    
+    /* Story Reading */
+    .story-card {
+      background: #fff3e0;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      border-left: 5px solid #ff9800;
+    }
+    
+    /* Verb Rap Section */
+    .verb-rap {
+      background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      color: white;
+      text-align: center;
+    }
+    
+    .rap-lyrics {
+      background: rgba(0,0,0,0.3);
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      font-family: monospace;
+      line-height: 1.8;
+    }
+    
+    /* Progress Tracker */
+    .progress-tracker {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+      .match-grid {
+        grid-template-columns: 1fr;
+      }
+      .conjugation-item {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="../../dashboard.html">Dashboard</a>
+        <a href="index.html">← Back to A1</a>
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="logout()" style="margin-left: 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="lesson-content container">
+    <h1>🔧 Lesson 5: Essential French Verbs</h1>
+    <p>Master the four most important French verbs: <strong>être</strong> (to be), <strong>avoir</strong> (to have), <strong>aller</strong> (to go), and <strong>faire</strong> (to do/make). These verbs are essential for everyday conversation!</p>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker" id="progressTracker">
+      <span>📊 Lesson Progress</span>
+      <div class="progress-container" style="flex: 1; margin: 0 1rem;">
+        <div class="progress-bar" id="lessonProgress" style="width: 0%;"></div>
+      </div>
+      <span id="progressPercent">0%</span>
+    </div>
+
+    <!-- Verb: ÊTRE -->
+    <div class="verb-table">
+      <div class="verb-header">✨ ÊTRE (to be) - The Most Important Verb</div>
+      <table>
+        <thead>
+          <tr><th>Subject</th><th>Conjugation</th><th>Pronunciation</th><th>Example</th><th>Listen</th> </tr>
+        </thead>
+        <tbody>
+          <tr><td>Je</td><td>suis</td><td>swee</td><td>Je suis étudiant</td><td><button class="btn btn-sm" onclick="speakVerb('je suis')">🔊</button></td></tr>
+          <tr><td>Tu</td><td>es</td><td>eh</td><td>Tu es gentil</td><td><button class="btn btn-sm" onclick="speakVerb('tu es')">🔊</button></td></tr>
+          <tr><td>Il/Elle/On</td><td>est</td><td>eh</td><td>Elle est française</td><td><button class="btn btn-sm" onclick="speakVerb('il est')">🔊</button></td></tr>
+          <tr><td>Nous</td><td>sommes</td><td>sum</td><td>Nous sommes amis</td><td><button class="btn btn-sm" onclick="speakVerb('nous sommes')">🔊</button></td></tr>
+          <tr><td>Vous</td><td>êtes</td><td>et</td><td>Vous êtes professeur</td><td><button class="btn btn-sm" onclick="speakVerb('vous êtes')">🔊</button></td></tr>
+          <tr><td>Ils/Elles</td><td>sont</td><td>sohn</td><td>Ils sont contents</td><td><button class="btn btn-sm" onclick="speakVerb('ils sont')">🔊</button></td></tr>
+        </tbody>
+      </table>
+      <div style="padding: 0.5rem 1rem;">
+        <button class="btn btn-sm" onclick="speakVerb('être', true)">🔊 Listen to full conjugation</button>
+        <button class="btn btn-sm" onclick="addFlashcard('être', 'to be')">📚 Add to Flashcards</button>
+      </div>
+    </div>
+
+    <!-- Verb: AVOIR -->
+    <div class="verb-table">
+      <div class="verb-header">💪 AVOIR (to have)</div>
+      <table>
+        <thead><tr><th>Subject</th><th>Conjugation</th><th>Pronunciation</th><th>Example</th><th>Listen</th></tr></thead>
+        <tbody>
+          <tr><td>J'</td><td>ai</td><td>ay</td><td>J'ai 20 ans</td><td><button class="btn btn-sm" onclick="speakVerb('j\'ai')">🔊</button></td></tr>
+          <tr><td>Tu</td><td>as</td><td>ah</td><td>Tu as un chien</td><td><button class="btn btn-sm" onclick="speakVerb('tu as')">🔊</button></td></tr>
+          <tr><td>Il/Elle/On</td><td>a</td><td>ah</td><td>Elle a une voiture</td><td><button class="btn btn-sm" onclick="speakVerb('elle a')">🔊</button></td></tr>
+          <tr><td>Nous</td><td>avons</td><td>ah-vohn</td><td>Nous avons faim</td><td><button class="btn btn-sm" onclick="speakVerb('nous avons')">🔊</button></td></tr>
+          <tr><td>Vous</td><td>avez</td><td>ah-vay</td><td>Vous avez raison</td><td><button class="btn btn-sm" onclick="speakVerb('vous avez')">🔊</button></td></tr>
+          <tr><td>Ils/Elles</td><td>ont</td><td>ohn</td><td>Ils ont des livres</td><td><button class="btn btn-sm" onclick="speakVerb('ils ont')">🔊</button></td></tr>
+        </tbody>
+      </table>
+      <div style="padding: 0.5rem 1rem;">
+        <button class="btn btn-sm" onclick="addFlashcard('avoir', 'to have')">📚 Add to Flashcards</button>
+      </div>
+    </div>
+
+    <!-- Verb: ALLER -->
+    <div class="verb-table">
+      <div class="verb-header">🚀 ALLER (to go)</div>
+      <table>
+        <thead><tr><th>Subject</th><th>Conjugation</th><th>Pronunciation</th><th>Example</th><th>Listen</th></tr></thead>
+        <tbody>
+          <tr><td>Je</td><td>vais</td><td>vay</td><td>Je vais à l'école</td><td><button class="btn btn-sm" onclick="speakVerb('je vais')">🔊</button></td></tr>
+          <tr><td>Tu</td><td>vas</td><td>vah</td><td>Tu vas au marché</td><td><button class="btn btn-sm" onclick="speakVerb('tu vas')">🔊</button></td></tr>
+          <tr><td>Il/Elle/On</td><td>va</td><td>vah</td><td>Elle va à Paris</td><td><button class="btn btn-sm" onclick="speakVerb('elle va')">🔊</button></td></tr>
+          <tr><td>Nous</td><td>allons</td><td>ah-lohn</td><td>Nous allons ensemble</td><td><button class="btn btn-sm" onclick="speakVerb('nous allons')">🔊</button></td></tr>
+          <tr><td>Vous</td><td>allez</td><td>ah-lay</td><td>Vous allez bien?</td><td><button class="btn btn-sm" onclick="speakVerb('vous allez')">🔊</button></td></tr>
+          <tr><td>Ils/Elles</td><td>vont</td><td>vohn</td><td>Ils vont au cinéma</td><td><button class="btn btn-sm" onclick="speakVerb('ils vont')">🔊</button></td></tr>
+        </tbody>
+      </table>
+      <div style="padding: 0.5rem 1rem;">
+        <button class="btn btn-sm" onclick="addFlashcard('aller', 'to go')">📚 Add to Flashcards</button>
+      </div>
+    </div>
+
+    <!-- Verb: FAIRE -->
+    <div class="verb-table">
+      <div class="verb-header">🎨 FAIRE (to do / to make)</div>
+      <table>
+        <thead><tr><th>Subject</th><th>Conjugation</th><th>Pronunciation</th><th>Example</th><th>Listen</th></tr></thead>
+        <tbody>
+          <tr><td>Je</td><td>fais</td><td>fay</td><td>Je fais du sport</td><td><button class="btn btn-sm" onclick="speakVerb('je fais')">🔊</button></td></tr>
+          <tr><td>Tu</td><td>fais</td><td>fay</td><td>Tu fais tes devoirs</td><td><button class="btn btn-sm" onclick="speakVerb('tu fais')">🔊</button></td></tr>
+          <tr><td>Il/Elle/On</td><td>fait</td><td>fay</td><td>Elle fait la cuisine</td><td><button class="btn btn-sm" onclick="speakVerb('elle fait')">🔊</button></td></tr>
+          <tr><td>Nous</td><td>faisons</td><td>fuh-zohn</td><td>Nous faisons un gâteau</td><td><button class="btn btn-sm" onclick="speakVerb('nous faisons')">🔊</button></td></tr>
+          <tr><td>Vous</td><td>faites</td><td>fet</td><td>Vous faites du bruit</td><td><button class="btn btn-sm" onclick="speakVerb('vous faites')">🔊</button></td></tr>
+          <tr><td>Ils/Elles</td><td>font</td><td>fohn</td><td>Ils font du vélo</td><td><button class="btn btn-sm" onclick="speakVerb('ils font')">🔊</button></td></tr>
+        </tbody>
+      </table>
+      <div style="padding: 0.5rem 1rem;">
+        <button class="btn btn-sm" onclick="addFlashcard('faire', 'to do/make')">📚 Add to Flashcards</button>
+      </div>
+    </div>
+
+    <label>🎧 Speech rate: <input id="rate" type="range" min="0.6" max="1.6" step="0.1" value="1"> <span id="rateValue">1.0x</span></label>
+
+    <!-- Verb Rap -->
+    <div class="verb-rap">
+      <h3>🎤 Verb Rap Song!</h3>
+      <div class="rap-lyrics">
+        <p>Être, avoir, aller, faire - these are verbs you need to know! 🎵<br>
+        Je suis, tu es, il est - that's how you say "to be"!<br>
+        J'ai, tu as, elle a - "to have" is on its way!<br>
+        Je vais, tu vas, on va - "to go" is what you say!<br>
+        Je fais, tu fais, il fait - "to do" is great! 🎵</p>
+      </div>
+      <button class="btn btn-primary" onclick="speakVerbRap()">🎧 Listen to the Rap</button>
+    </div>
+
+    <!-- Conjugation Practice -->
+    <div class="conjugation-practice">
+      <h3>✍️ Conjugation Practice</h3>
+      <p>Fill in the correct form of each verb:</p>
+      
+      <div class="conjugation-item">
+        <span>1. Je _____ (être) étudiant.</span>
+        <input type="text" id="conj1" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(1, 'suis')">Check</button>
+        <span id="conjResult1"></span>
+      </div>
+      
+      <div class="conjugation-item">
+        <span>2. Tu _____ (avoir) un frère.</span>
+        <input type="text" id="conj2" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(2, 'as')">Check</button>
+        <span id="conjResult2"></span>
+      </div>
+      
+      <div class="conjugation-item">
+        <span>3. Elle _____ (aller) à Paris.</span>
+        <input type="text" id="conj3" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(3, 'va')">Check</button>
+        <span id="conjResult3"></span>
+      </div>
+      
+      <div class="conjugation-item">
+        <span>4. Nous _____ (faire) du sport.</span>
+        <input type="text" id="conj4" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(4, 'faisons')">Check</button>
+        <span id="conjResult4"></span>
+      </div>
+      
+      <div class="conjugation-item">
+        <span>5. Ils _____ (être) contents.</span>
+        <input type="text" id="conj5" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(5, 'sont')">Check</button>
+        <span id="conjResult5"></span>
+      </div>
+    </div>
+
+    <!-- Verb Matching Game -->
+    <div class="matching-game">
+      <h3>🎮 Match the Verb Forms</h3>
+      <p>Match the French verb with its English meaning:</p>
+      <div class="match-grid" id="matchGame"></div>
+      <div id="matchFeedback"></div>
+    </div>
+
+    <!-- Story Reading -->
+    <div class="story-card">
+      <h3>📖 Read and Understand</h3>
+      <p><strong>Une Journée Typique</strong></p>
+      <p>Je <strong>suis</strong> Marie. Je <strong>ai</strong> 25 ans. Le matin, je <strong>vais</strong> au travail. Je <strong>fais</strong> du café. Mon ami Paul <strong>est</strong> professeur. Il <strong>a</strong> une voiture. Nous <strong>allons</strong> au restaurant ensemble. Nous <strong>faisons</strong> des projets pour le weekend. Ils <strong>sont</strong> très intéressants!</p>
+      <button class="btn btn-sm" onclick="speakStory()">🔊 Listen to the story</button>
+      <button class="btn btn-sm" onclick="translateStory()">📖 Show Translation</button>
+      <div id="storyTranslation" style="display: none; margin-top: 1rem; padding: 1rem; background: white; border-radius: 8px;">
+        <strong>A Typical Day</strong><br>
+        I am Marie. I am 25 years old. In the morning, I go to work. I make coffee. My friend Paul is a teacher. He has a car. We go to the restaurant together. We make plans for the weekend. They are very interesting!
+      </div>
+    </div>
+
+    <!-- Sentence Builder -->
+    <div class="sentence-builder">
+      <h3>🏗️ Sentence Builder</h3>
+      <p>Click words to build a sentence in French:</p>
+      <div class="word-bank" id="wordBank"></div>
+      <div class="sentence-area" id="sentenceArea">Your sentence will appear here...</div>
+      <button class="btn btn-primary" onclick="checkSentence()">Check Sentence</button>
+      <button class="btn btn-outline" onclick="clearSentence()">Clear</button>
+      <div id="sentenceFeedback"></div>
+    </div>
+
+    <!-- Final Quiz -->
+    <h2>📝 Final Quiz</h2>
+    <div id="quiz"></div>
+    <div id="quiz-feedback" style="margin-top: 1rem;"></div>
+    <div id="done" style="display:none; text-align: center; margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--success), var(--primary-light)); border-radius: 16px; color: white;">
+      <h2>🎉 FÉLICITATIONS! 🎉</h2>
+      <p>You've completed the A1 level!</p>
+      <p>You now know the four essential French verbs: ÊTRE, AVOIR, ALLER, FAIRE</p>
+      <button class="btn btn-secondary" onclick="completeA1()">Claim Your A1 Certificate →</button>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/sounds.js"></script>
+  <script src="../../js/gamification.js"></script>
+  <script src="../../js/flashcards.js"></script>
+  <script src="../../js/confetti-loader.js"></script>
+  <script>
+    // ========== INITIALIZATION ==========
+    if (!auth.currentUser) {
+      window.location.href = '../../login.html';
+    }
+    document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+    
+    let lessonProgress = 0;
+    let conjugationScore = 0;
+    let matchScore = 0;
+    let quizCompleted = false;
+    
+    // Speech rate
+    const rateSlider = document.getElementById('rate');
+    const rateValue = document.getElementById('rateValue');
+    rateSlider.addEventListener('input', () => {
+      rateValue.textContent = `${rateSlider.value}x`;
+    });
+    
+    // ========== SPEECH FUNCTIONS ==========
+    function getVoice(langPrefix) {
+      const voices = speechSynthesis.getVoices();
+      return voices.find(v => v.lang && v.lang.startsWith(langPrefix)) || voices[0];
+    }
+    
+    function speakVerb(text, slow = false) {
+      const rate = slow ? 0.7 : parseFloat(document.getElementById('rate').value || 1);
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = getVoice('fr');
+      utterance.lang = 'fr-FR';
+      utterance.rate = rate;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+    
+    window.speakVerb = speakVerb;
+    
+    function speakVerbRap() {
+      const rap = "Être, avoir, aller, faire. Je suis, tu es, il est. J'ai, tu as, elle a. Je vais, tu vas, on va. Je fais, tu fais, il fait.";
+      speakVerb(rap);
+    }
+    
+    window.speakVerbRap = speakVerbRap;
+    
+    function speakStory() {
+      const story = "Je suis Marie. J'ai vingt-cinq ans. Le matin, je vais au travail. Je fais du café. Mon ami Paul est professeur. Il a une voiture. Nous allons au restaurant. Nous faisons des projets.";
+      speakVerb(story);
+    }
+    
+    window.speakStory = speakStory;
+    
+    function translateStory() {
+      const translation = document.getElementById('storyTranslation');
+      translation.style.display = translation.style.display === 'none' ? 'block' : 'none';
+    }
+    
+    window.translateStory = translateStory;
+    
+    // ========== FLASHCARDS ==========
+    function addFlashcard(word, meaning) {
+      if (window.lenoxFlashcards && window.lenoxFlashcards.addCard) {
+        window.lenoxFlashcards.addCard({
+          front: word,
+          back: meaning,
+          level: 'A1',
+          category: 'Verbs'
+        });
+        if (auth.showToast) auth.showToast(`📚 Added "${word}" to flashcards!`, 'success');
+      } else {
+        if (auth.showToast) auth.showToast('Flashcard feature coming soon!', 'info');
+      }
+    }
+    
+    window.addFlashcard = addFlashcard;
+    
+    // ========== CONJUGATION PRACTICE ==========
+    function checkConjugation(number, correctAnswer) {
+      const input = document.getElementById(`conj${number}`);
+      const resultSpan = document.getElementById(`conjResult${number}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      
+      if (userAnswer === correctAnswer) {
+        resultSpan.innerHTML = '✅ Correct!';
+        resultSpan.style.color = 'green';
+        if (!input.hasAttribute('data-completed')) {
+          conjugationScore++;
+          input.setAttribute('data-completed', 'true');
+          if (window.lenoxGamification) window.lenoxGamification.addXp(20);
+          updateProgress();
+        }
+      } else {
+        resultSpan.innerHTML = `❌ Incorrect. Correct: "${correctAnswer}"`;
+        resultSpan.style.color = 'red';
+      }
+    }
+    
+    window.checkConjugation = checkConjugation;
+    
+    // ========== MATCHING GAME ==========
+    const matchPairs = [
+      { french: 'suis', english: 'am' },
+      { french: 'as', english: 'have (you)' },
+      { french: 'va', english: 'goes' },
+      { french: 'fait', english: 'does/makes' },
+      { french: 'sommes', english: 'are (we)' },
+      { french: 'ont', english: 'have (they)' }
+    ];
+    
+    let selectedMatch = null;
+    let matchedPairs = [];
+    
+    function renderMatchGame() {
+      const container = document.getElementById('matchGame');
+      container.innerHTML = '';
+      
+      const frenchWords = matchPairs.map((p, i) => ({ text: p.french, type: 'french', pairId: i }));
+      const englishWords = matchPairs.map((p, i) => ({ text: p.english, type: 'english', pairId: i }));
+      const allItems = [...frenchWords, ...englishWords].sort(() => Math.random() - 0.5);
+      
+      allItems.forEach((item, idx) => {
+        const isMatched = matchedPairs.some(p => p.pairId === item.pairId);
+        const div = document.createElement('div');
+        div.className = `match-item ${isMatched ? 'matched' : ''}`;
+        div.textContent = item.text;
+        div.dataset.type = item.type;
+        div.dataset.pairId = item.pairId;
+        if (!isMatched) {
+          div.onclick = () => selectMatchItem(div, item);
+        }
+        container.appendChild(div);
+      });
+    }
+    
+    function selectMatchItem(element, item) {
+      if (!selectedMatch) {
+        document.querySelectorAll('.match-item.selected').forEach(el => el.classList.remove('selected'));
+        element.classList.add('selected');
+        selectedMatch = { element, ...item };
+      } else {
+        if (selectedMatch.pairId === item.pairId && selectedMatch.type !== item.type) {
+          matchedPairs.push({ pairId: item.pairId });
+          selectedMatch.element.classList.add('matched');
+          element.classList.add('matched');
+          selectedMatch.element.onclick = null;
+          element.onclick = null;
+          document.getElementById('matchFeedback').innerHTML = '<span style="color: green;">✅ Correct match!</span>';
+          matchScore++;
+          if (window.lenoxSounds) window.lenoxSounds.playSound('correct');
+          if (window.lenoxGamification) window.lenoxGamification.addXp(10);
+          updateProgress();
+        } else {
+          document.getElementById('matchFeedback').innerHTML = '<span style="color: red;">❌ Wrong match! Try again.</span>';
+          if (window.lenoxSounds) window.lenoxSounds.playSound('incorrect');
+        }
+        selectedMatch.element.classList.remove('selected');
+        selectedMatch = null;
+      }
+    }
+    
+    window.selectMatchItem = selectMatchItem;
+    
+    // ========== SENTENCE BUILDER ==========
+    const wordBankWords = ['Je', 'suis', 'étudiant', 'Tu', 'as', 'un chien', 'Elle', 'va', 'à Paris', 'Nous', 'faisons', 'du sport'];
+    let sentenceWords = [];
+    
+    function renderWordBank() {
+      const bank = document.getElementById('wordBank');
+      bank.innerHTML = wordBankWords.map(word => `
+        <div class="word-tile" onclick="addToSentence('${word}')">${word}</div>
+      `).join('');
+    }
+    
+    function addToSentence(word) {
+      sentenceWords.push(word);
+      document.getElementById('sentenceArea').innerHTML = sentenceWords.join(' ') + ' ';
+    }
+    
+    function clearSentence() {
+      sentenceWords = [];
+      document.getElementById('sentenceArea').innerHTML = 'Your sentence will appear here...';
+      document.getElementById('sentenceFeedback').innerHTML = '';
+    }
+    
+    function checkSentence() {
+      const sentence = sentenceWords.join(' ').toLowerCase();
+      const validSentences = ['je suis étudiant', 'tu as un chien', 'elle va à paris', 'nous faisons du sport'];
+      
+      if (validSentences.includes(sentence)) {
+        document.getElementById('sentenceFeedback').innerHTML = '<span style="color: green;">✅ Excellent! That\'s a correct French sentence!</span>';
+        if (window.lenoxGamification) window.lenoxGamification.addXp(20);
+        updateProgress();
+      } else {
+        document.getElementById('sentenceFeedback').innerHTML = '<span style="color: red;">❌ Try to make one of: "Je suis étudiant", "Tu as un chien", "Elle va à Paris", or "Nous faisons du sport"</span>';
+      }
+    }
+    
+    window.addToSentence = addToSentence;
+    window.clearSentence = clearSentence;
+    window.checkSentence = checkSentence;
+    
+    // ========== QUIZ ==========
+    const quizQuestions = [
+      { q: 'What does "je suis" mean?', opts: ['I have', 'I am', 'I go'], correct: 1 },
+      { q: 'What is "tu as" in English?', opts: ['you are', 'you have', 'you go'], correct: 1 },
+      { q: 'How do you say "she goes" in French?', opts: ['elle fait', 'elle va', 'elle est'], correct: 1 },
+      { q: 'What is the correct form: Nous _____ (être)', opts: ['sommes', 'sont', 'avez'], correct: 0 },
+      { q: 'What does "ils font" mean?', opts: ['they go', 'they are', 'they do'], correct: 2 },
+      { q: 'Complete: J\' _____ un livre (avoir)', opts: ['ai', 'as', 'a'], correct: 0 }
+    ];
+    
+    function renderQuiz() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = quizQuestions.map((q, i) => `
+        <div style="background: #f9f9f9; padding: 1rem; border-radius: 12px; margin: 1rem 0;">
+          <p><strong>${i + 1}. ${q.q}</strong></p>
+          ${q.opts.map((opt, oi) => `
+            <label><input type="radio" name="q${i}" value="${oi}"> ${opt}</label><br>
+          `).join('')}
+        </div>
+      `).join('') + '<button class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>';
+    }
+    
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.innerHTML = `<strong>Score: ${score}/${quizQuestions.length}</strong>`;
+      
+      if (score >= 5) {
+        feedback.innerHTML += '<p style="color: green;">🎉 Excellent! You\'ve mastered the basic verbs!</p>';
+        document.getElementById('done').style.display = 'block';
+        quizCompleted = true;
+        updateProgress();
+        if (window.lenoxGamification) {
+          window.lenoxGamification.addXp(150);
+        }
+        if (window.lenoxSounds) window.lenoxSounds.playSound('levelComplete');
+      } else {
+        feedback.innerHTML += '<p style="color: orange;">Review the verbs and try again!</p>';
+      }
+    }
+    
+    window.submitQuiz = submitQuiz;
+    
+    // ========== PROGRESS TRACKING ==========
+    function updateProgress() {
+      const activities = [
+        conjugationScore >= 5,
+        matchScore >= 6,
+        quizCompleted,
+        sentenceWords.length > 0
+      ];
+      const completedActivities = activities.filter(Boolean).length;
+      lessonProgress = Math.min(100, (completedActivities / 4) * 100);
+      
+      document.getElementById('lessonProgress').style.width = `${lessonProgress}%`;
+      document.getElementById('progressPercent').textContent = `${Math.round(lessonProgress)}%`;
+    }
+    
+    // ========== COMPLETE A1 ==========
+    function completeA1() {
+      if (window.lenoxConfetti) window.lenoxConfetti.launchConfetti();
+      if (window.lenoxGamification) {
+        window.lenoxGamification.addXp(500);
+        window.lenoxGamification.awardBadge('a1-complete', 'A1 Complete', 'Finished A1 level with mastery', '🏁');
+      }
+      if (auth.updateProgress) {
+        auth.updateProgress('A1', 'complete', 100);
+        auth.generateCertificate('A1');
+      }
+      if (auth.showToast) auth.showToast('🎉 Congratulations! You completed A1! Your certificate is ready!', 'success');
+      setTimeout(() => {
+        window.location.href = '../../certificate.html';
+      }, 2000);
+    }
+    
+    window.completeA1 = completeA1;
+    
+    function logout() {
+      auth.logout();
+      window.location.href = '../../index.html';
+    }
+    
+    window.logout = logout;
+    
+    // ========== INITIALIZE ==========
+    renderMatchGame();
+    renderWordBank();
+    renderQuiz();
+    
+    window.speechSynthesis.onvoiceschanged = () => {
+      console.log('Voices ready');
+    };
+  </script>
+</body>
+</html>

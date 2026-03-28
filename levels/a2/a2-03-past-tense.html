@@ -1,0 +1,606 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A2 Lesson: Past Tense (Passé Composé) | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>
+    .lesson {
+      max-width: 1000px;
+      margin: 2rem auto;
+      padding: 1rem;
+    }
+    
+    /* Enhanced Styles */
+    .grammar-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+    }
+    
+    .verb-table {
+      background: white;
+      border-radius: 12px;
+      overflow: hidden;
+      margin: 1rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .verb-table table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    .verb-table th {
+      background: var(--primary);
+      color: white;
+      padding: 12px;
+      text-align: left;
+    }
+    
+    .verb-table td {
+      padding: 10px 12px;
+      border-bottom: 1px solid #eee;
+    }
+    
+    .verb-table tr:hover {
+      background: #f5f5f5;
+    }
+    
+    .formula-box {
+      background: #e8f5e9;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      font-size: 1.2rem;
+      font-weight: bold;
+      margin: 1rem 0;
+    }
+    
+    .examples-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1rem;
+      margin: 1.5rem 0;
+    }
+    
+    .example-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.3s;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .example-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .french-example {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .english-example {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-top: 0.25rem;
+    }
+    
+    .dr-mrs-vandertramp {
+      background: #fff3e0;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      border-left: 5px solid #ff9800;
+    }
+    
+    .verb-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin: 1rem 0;
+    }
+    
+    .verb-tag {
+      background: #ff9800;
+      color: white;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+    }
+    
+    .conjugation-practice {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+    }
+    
+    .fill-blank {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 0.5rem 0;
+      border: 1px solid #e0e0e0;
+    }
+    
+    .fill-blank input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin: 0 0.5rem;
+      width: 180px;
+    }
+    
+    .dialogue-practice {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .dialogue-line {
+      display: flex;
+      margin: 1rem 0;
+      gap: 1rem;
+    }
+    
+    .speaker {
+      min-width: 80px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .speech-bubble {
+      flex: 1;
+      background: #f0f0f0;
+      padding: 0.75rem 1rem;
+      border-radius: 18px;
+    }
+    
+    .progress-tracker {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    .irregular-past-participle {
+      background: #e3f2fd;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+    }
+    
+    @media (max-width: 768px) {
+      .dialogue-line {
+        flex-direction: column;
+      }
+      .speaker {
+        min-width: auto;
+      }
+      .fill-blank {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="../../dashboard.html">Dashboard</a>
+        <a href="index.html">← Back to A2</a>
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="logout()" style="margin-left: 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="lesson container">
+    <h1>⏳ Lesson 3: Past Tense (Passé Composé)</h1>
+    <p>Learn how to talk about completed actions in the past using the Passé Composé - essential for telling stories and sharing experiences!</p>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker" id="progressTracker">
+      <span>📊 Lesson Progress</span>
+      <div class="progress-container" style="flex: 1; margin: 0 1rem;">
+        <div class="progress-bar" id="lessonProgress" style="width: 0%;"></div>
+      </div>
+      <span id="progressPercent">0%</span>
+    </div>
+
+    <!-- Introduction -->
+    <div class="grammar-card">
+      <h2>📖 What is Passé Composé?</h2>
+      <p>The Passé Composé is used to talk about completed actions in the past. It's like saying "I ate," "She went," or "We finished" in English.</p>
+      <div class="formula-box">
+        📝 FORMULA: Auxiliary Verb (avoir/être) + Past Participle
+      </div>
+    </div>
+
+    <!-- AVOIR Verbs (Most Common) -->
+    <h2>🔵 AVOIR Verbs (90% of verbs)</h2>
+    <div class="verb-table">
+      <table>
+        <thead>
+          <tr><th>Subject</th><th>Auxiliary</th><th>Past Participle</th><th>Example</th><th>Listen</th></tr>
+        </thead>
+        <tbody>
+          <tr><td>J'</td><td>ai</td><td>mangé</td><td>J'ai mangé (I ate)</td><td><button class="btn btn-sm" onclick="speakFrench('J\'ai mangé')">🔊</button></td></tr>
+          <tr><td>Tu</td><td>as</td><td>fini</td><td>Tu as fini (You finished)</td><td><button class="btn btn-sm" onclick="speakFrench('Tu as fini')">🔊</button></td></tr>
+          <tr><td>Il/Elle</td><td>a</td><td>parlé</td><td>Elle a parlé (She spoke)</td><td><button class="btn btn-sm" onclick="speakFrench('Elle a parlé')">🔊</button></td></tr>
+          <tr><td>Nous</td><td>avons</td><td>choisi</td><td>Nous avons choisi (We chose)</td><td><button class="btn btn-sm" onclick="speakFrench('Nous avons choisi')">🔊</button></td></tr>
+          <tr><td>Vous</td><td>avez</td><td>attendu</td><td>Vous avez attendu (You waited)</td><td><button class="btn btn-sm" onclick="speakFrench('Vous avez attendu')">🔊</button></td></tr>
+          <tr><td>Ils/Elles</td><td>ont</td><td>vendu</td><td>Ils ont vendu (They sold)</td><td><button class="btn btn-sm" onclick="speakFrench('Ils ont vendu')">🔊</button></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- ÊTRE Verbs (DR MRS VANDERTRAMP) -->
+    <div class="dr-mrs-vandertramp">
+      <h3>🟢 ÊTRE Verbs (DR MRS VANDERTRAMP)</h3>
+      <p>These 17 verbs use <strong>être</strong> as the auxiliary verb. The past participle must agree with the subject!</p>
+      <div class="verb-list" id="drMrsVerbs"></div>
+      <div class="verb-table" style="margin-top: 1rem;">
+        <table>
+          <thead><tr><th>Subject</th><th>Auxiliary</th><th>Past Participle</th><th>Example</th><th>Listen</th></tr></thead>
+          <tbody>
+            <tr><td>Je</td><td>suis</td><td>allé(e)</td><td>Je suis allé (I went - masc)</td><td><button class="btn btn-sm" onclick="speakFrench('Je suis allé')">🔊</button></td></tr>
+            <tr><td>Elle</td><td>est</td><td>allée</td><td>Elle est allée (She went)</td><td><button class="btn btn-sm" onclick="speakFrench('Elle est allée')">🔊</button></td></tr>
+            <tr><td>Nous</td><td>sommes</td><td>allé(e)s</td><td>Nous sommes allés (We went)</td><td><button class="btn btn-sm" onclick="speakFrench('Nous sommes allés')">🔊</button></td></tr>
+            <tr><td>Ils</td><td>sont</td><td>allés</td><td>Ils sont allés (They went - masc)</td><td><button class="btn btn-sm" onclick="speakFrench('Ils sont allés')">🔊</button></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Examples Section -->
+    <h2>📚 Examples in Context</h2>
+    <div class="examples-grid" id="examplesGrid"></div>
+
+    <!-- Irregular Past Participles -->
+    <div class="irregular-past-participle">
+      <h3>⚠️ Common Irregular Past Participles</h3>
+      <div class="verb-list">
+        <span class="verb-tag" onclick="speakFrench('avoir → eu')">avoir → eu</span>
+        <span class="verb-tag" onclick="speakFrench('être → été')">être → été</span>
+        <span class="verb-tag" onclick="speakFrench('faire → fait')">faire → fait</span>
+        <span class="verb-tag" onclick="speakFrench('prendre → pris')">prendre → pris</span>
+        <span class="verb-tag" onclick="speakFrench('voir → vu')">voir → vu</span>
+        <span class="verb-tag" onclick="speakFrench('lire → lu')">lire → lu</span>
+        <span class="verb-tag" onclick="speakFrench('écrire → écrit')">écrire → écrit</span>
+        <span class="verb-tag" onclick="speakFrench('dire → dit')">dire → dit</span>
+        <span class="verb-tag" onclick="speakFrench('ouvrir → ouvert')">ouvrir → ouvert</span>
+        <span class="verb-tag" onclick="speakFrench('offrir → offert')">offrir → offert</span>
+      </div>
+    </div>
+
+    <!-- Conjugation Practice -->
+    <div class="conjugation-practice">
+      <h3>✍️ Practice: Conjugate in Passé Composé</h3>
+      
+      <div class="fill-blank">
+        <p>1. Hier, je _____ (manger) une pizza.</p>
+        <input type="text" id="conj1" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(1, 'ai mangé')">Check</button>
+        <span id="conjResult1"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>2. Elle _____ (aller) au cinéma hier soir.</p>
+        <input type="text" id="conj2" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(2, 'est allée')">Check</button>
+        <span id="conjResult2"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>3. Nous _____ (finir) nos devoirs.</p>
+        <input type="text" id="conj3" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(3, 'avons fini')">Check</button>
+        <span id="conjResult3"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>4. Ils _____ (faire) du sport ce matin.</p>
+        <input type="text" id="conj4" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(4, 'ont fait')">Check</button>
+        <span id="conjResult4"></span>
+      </div>
+      
+      <div class="fill-blank">
+        <p>5. Tu _____ (prendre) le train?</p>
+        <input type="text" id="conj5" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(5, 'as pris')">Check</button>
+        <span id="conjResult5"></span>
+      </div>
+    </div>
+
+    <!-- Dialogue Practice -->
+    <div class="dialogue-practice">
+      <h3>🗣️ Dialogue: Talking About Yesterday</h3>
+      
+      <div class="dialogue-line">
+        <div class="speaker">👩 Sophie:</div>
+        <div class="speech-bubble">Qu'est-ce que tu as fait hier?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Qu\'est-ce que tu as fait hier?')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👨 Thomas:</div>
+        <div class="speech-bubble">Je suis allé au musée avec ma sœur. Et toi?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Je suis allé au musée avec ma sœur')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👩 Sophie:</div>
+        <div class="speech-bubble">J'ai regardé un film. C'était super!</div>
+        <button class="btn btn-sm" onclick="speakFrench('J\'ai regardé un film')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👨 Thomas:</div>
+        <div class="speech-bubble">Quel film as-tu vu?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Quel film as-tu vu?')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👩 Sophie:</div>
+        <div class="speech-bubble">J'ai vu "Les Misérables". Tu as aimé?</div>
+        <button class="btn btn-sm" onclick="speakFrench('J\'ai vu Les Misérables')">🔊</button>
+      </div>
+      
+      <button class="btn btn-primary" onclick="playFullDialogue()">▶️ Listen to Full Dialogue</button>
+    </div>
+
+    <!-- Quiz Section -->
+    <h2>📝 Final Quiz</h2>
+    <div id="quiz"></div>
+    <div id="quiz-feedback" style="margin-top: 1rem;"></div>
+    
+    <div id="completion" style="display:none; text-align:center; margin-top: 2rem;">
+      <button class="btn btn-primary" onclick="completeLesson()">✅ Complete A2 Level & Continue →</button>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/gamification.js"></script>
+  <script src="../../js/sounds.js"></script>
+  <script src="../../js/flashcards.js"></script>
+  <script>
+    // ========== INITIALIZATION ==========
+    if (!auth.currentUser) {
+      window.location.href = '../../login.html';
+    }
+    document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+    
+    let lessonProgress = 0;
+    let conjugationScore = 0;
+    let quizCompleted = false;
+    
+    // ========== DR MRS VANDERTRAMP VERBS ==========
+    const drMrsVerbs = [
+      'Devenir (devenu)', 'Revenir (revenu)', 'Monter (monté)', 'Rester (resté)',
+      'Sortir (sorti)', 'Venir (venu)', 'Aller (allé)', 'Naître (né)',
+      'Descendre (descendu)', 'Entrer (entré)', 'Retourner (retourné)',
+      'Tomber (tombé)', 'Rentrer (rentré)', 'Arriver (arrivé)',
+      'Mourir (mort)', 'Partir (parti)', 'Passer (passé)'
+    ];
+    
+    function renderDrMrsVerbs() {
+      const container = document.getElementById('drMrsVerbs');
+      container.innerHTML = drMrsVerbs.map(verb => `
+        <span class="verb-tag" onclick="speakFrench('${verb.split(' ')[0]}')">${verb}</span>
+      `).join('');
+    }
+    
+    // ========== EXAMPLES ==========
+    const examples = [
+      { french: 'J\'ai mangé une pomme', english: 'I ate an apple', verb: 'manger' },
+      { french: 'Elle est allée à Paris', english: 'She went to Paris', verb: 'aller' },
+      { french: 'Nous avons regardé la télé', english: 'We watched TV', verb: 'regarder' },
+      { french: 'Ils sont arrivés tard', english: 'They arrived late', verb: 'arriver' },
+      { french: 'Tu as fait tes devoirs', english: 'You did your homework', verb: 'faire' }
+    ];
+    
+    function renderExamples() {
+      const container = document.getElementById('examplesGrid');
+      container.innerHTML = examples.map(example => `
+        <div class="example-card" onclick="speakFrench('${example.french}')">
+          <div class="french-example">${example.french}</div>
+          <div class="english-example">${example.english}</div>
+          <button class="btn btn-sm" onclick="event.stopPropagation(); addFlashcard('${example.french}', '${example.english}')">📚 +Flashcard</button>
+        </div>
+      `).join('');
+    }
+    
+    // ========== SPEECH FUNCTIONS ==========
+    function getVoice() {
+      const voices = speechSynthesis.getVoices();
+      return voices.find(v => v.lang && v.lang.startsWith('fr')) || voices[0];
+    }
+    
+    function speakFrench(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = getVoice();
+      utterance.lang = 'fr-FR';
+      utterance.rate = 0.8;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+    
+    window.speakFrench = speakFrench;
+    
+    function playFullDialogue() {
+      const dialogue = [
+        "Qu'est-ce que tu as fait hier?",
+        "Je suis allé au musée avec ma sœur. Et toi?",
+        "J'ai regardé un film. C'était super!",
+        "Quel film as-tu vu?",
+        "J'ai vu Les Misérables. Tu as aimé?"
+      ];
+      
+      let index = 0;
+      function speakNext() {
+        if (index < dialogue.length) {
+          speakFrench(dialogue[index]);
+          index++;
+          setTimeout(speakNext, 2500);
+        }
+      }
+      speakNext();
+    }
+    
+    window.playFullDialogue = playFullDialogue;
+    
+    // ========== FLASHCARDS ==========
+    function addFlashcard(french, english) {
+      if (window.lenoxFlashcards && window.lenoxFlashcards.addCard) {
+        window.lenoxFlashcards.addCard({
+          front: french,
+          back: english,
+          level: 'A2',
+          category: 'Passé Composé'
+        });
+        if (auth.showToast) auth.showToast(`📚 Added to flashcards!`, 'success');
+      } else {
+        let saved = JSON.parse(localStorage.getItem('study_list') || '[]');
+        saved.push({ french, english, level: 'A2' });
+        localStorage.setItem('study_list', JSON.stringify(saved));
+        if (auth.showToast) auth.showToast(`📚 Saved to study list!`, 'success');
+      }
+    }
+    
+    window.addFlashcard = addFlashcard;
+    
+    // ========== CONJUGATION CHECK ==========
+    function checkConjugation(number, correctAnswer) {
+      const input = document.getElementById(`conj${number}`);
+      const resultSpan = document.getElementById(`conjResult${number}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      const normalizedCorrect = correctAnswer.toLowerCase();
+      
+      if (userAnswer === normalizedCorrect) {
+        resultSpan.innerHTML = '✅ Correct!';
+        resultSpan.style.color = 'green';
+        if (!input.hasAttribute('data-completed')) {
+          conjugationScore++;
+          input.setAttribute('data-completed', 'true');
+          if (window.lenoxGamification) window.lenoxGamification.addXp(20);
+          updateProgress();
+        }
+      } else {
+        resultSpan.innerHTML = `❌ Incorrect. Correct: "${correctAnswer}"`;
+        resultSpan.style.color = 'red';
+      }
+    }
+    
+    window.checkConjugation = checkConjugation;
+    
+    // ========== QUIZ ==========
+    const quizQuestions = [
+      { q: 'What is the Passé Composé of "manger" for "je"?', opts: ['je mange', 'j\'ai mangé', 'je suis mangé'], correct: 1 },
+      { q: 'Which auxiliary verb is used with "aller"?', opts: ['avoir', 'être', 'faire'], correct: 1 },
+      { q: 'What is "J\'ai fini" in English?', opts: ['I finish', 'I finished', 'I will finish'], correct: 1 },
+      { q: 'Complete: "Elle _____ allée à Paris."', opts: ['a', 'est', 'as'], correct: 1 },
+      { q: 'What is the past participle of "faire"?', opts: ['fais', 'fait', 'faire'], correct: 1 },
+      { q: 'How do you say "We went" in French?', opts: ['Nous avons allé', 'Nous sommes allés', 'Nous allons'], correct: 1 }
+    ];
+    
+    function renderQuiz() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = quizQuestions.map((q, i) => `
+        <div style="background: #f9f9f9; padding: 1rem; border-radius: 12px; margin: 1rem 0;">
+          <p><strong>${i + 1}. ${q.q}</strong></p>
+          ${q.opts.map((opt, oi) => `
+            <label><input type="radio" name="q${i}" value="${oi}"> ${opt}</label><br>
+          `).join('')}
+        </div>
+      `).join('') + '<button class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>';
+    }
+    
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.innerHTML = `<strong>Score: ${score}/${quizQuestions.length}</strong>`;
+      
+      if (score >= 5) {
+        feedback.innerHTML += '<p style="color: green;">🎉 Excellent! You\'ve mastered the Passé Composé!</p>';
+        document.getElementById('completion').style.display = 'block';
+        quizCompleted = true;
+        updateProgress();
+        if (window.lenoxGamification) {
+          window.lenoxGamification.addXp(150);
+        }
+        if (window.lenoxSounds) window.lenoxSounds.playSound('levelComplete');
+      } else {
+        feedback.innerHTML += '<p style="color: orange;">Review the conjugation rules and try again!</p>';
+      }
+    }
+    
+    window.submitQuiz = submitQuiz;
+    
+    // ========== PROGRESS TRACKING ==========
+    function updateProgress() {
+      const activities = [
+        conjugationScore >= 5,
+        quizCompleted
+      ];
+      const completedActivities = activities.filter(Boolean).length;
+      lessonProgress = Math.min(100, (completedActivities / 2) * 100);
+      
+      document.getElementById('lessonProgress').style.width = `${lessonProgress}%`;
+      document.getElementById('progressPercent').textContent = `${Math.round(lessonProgress)}%`;
+    }
+    
+    // ========== COMPLETE LESSON ==========
+    function completeLesson() {
+      if (auth.updateProgress) {
+        auth.updateProgress('A2', 'lesson3', lessonProgress);
+      }
+      if (window.lenoxGamification) {
+        window.lenoxGamification.addXp(140);
+        window.lenoxGamification.awardBadge('a2-past', 'Passé Composé', 'Completed Past Tense lesson', '🕰️');
+      }
+      if (auth.showToast) auth.showToast('🎉 Congratulations! You completed A2 level!', 'success');
+      setTimeout(() => {
+        window.location.href = 'index.html';
+      }, 1500);
+    }
+    
+    window.completeLesson = completeLesson;
+    
+    function logout() {
+      auth.logout();
+      window.location.href = '../../index.html';
+    }
+    
+    window.logout = logout;
+    
+    // ========== INITIALIZE ==========
+    renderDrMrsVerbs();
+    renderExamples();
+    renderQuiz();
+    
+    window.speechSynthesis.onvoiceschanged = () => {
+      console.log('Voices ready');
+    };
+  </script>
+</body>
+</html>

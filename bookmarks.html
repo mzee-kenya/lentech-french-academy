@@ -1,0 +1,70 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bookmarks | Lenox French Academy</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .bm-wrap { max-width:900px; margin:2rem auto; padding:1rem }
+    .bm-list { display:grid; gap:.6rem }
+    .bm-item { padding:.75rem; background:var(--card-bg,#fff); border-radius:8px; display:flex; justify-content:space-between; align-items:center }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="flashcards.html">Flashcards</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <span id="userName"></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="bm-wrap">
+    <h1>🔖 Bookmarks</h1>
+    <p>Saved words & questions you marked for review.</p>
+    <div id="bmList" class="bm-list"></div>
+    <div id="bmEmpty" style="display:none; text-align:center; padding:2rem">No bookmarks yet.</div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script>
+    (async function(){
+      if (window.auth && auth.currentUser) document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+      // Read from IndexedDB used by flashcards
+      async function openDB(){
+        return new Promise((resolve,reject)=>{
+          const req = indexedDB.open('lenox_flashcards_db');
+          req.onsuccess = ()=> resolve(req.result);
+          req.onerror = (e)=> reject(e.target.error);
+        });
+      }
+      try{
+        const db = await openDB();
+        const tx = db.transaction('cards','readonly');
+        const store = tx.objectStore('cards');
+        const req = store.index('bookmarked').getAll(true);
+        req.onsuccess = ()=>{
+          const res = req.result || [];
+          const list = document.getElementById('bmList');
+          if (res.length === 0) { document.getElementById('bmEmpty').style.display='block'; return; }
+          res.forEach(c=>{
+            const el = document.createElement('div'); el.className='bm-item';
+            el.innerHTML = `<div><strong>${c.front}</strong><div style="color:#666">${c.back||''}</div></div><div><button class="btn btn-outline" data-id="${c.id}">Remove</button></div>`;
+            list.appendChild(el);
+          });
+          list.addEventListener('click', async (e)=>{
+            const btn = e.target.closest('button'); if(!btn) return;
+            const id = btn.dataset.id; const tx2 = db.transaction('cards','readwrite'); const s2 = tx2.objectStore('cards');
+            const recReq = s2.get(id);
+            recReq.onsuccess = ()=>{ const rec = recReq.result; if(!rec) return; rec.bookmarked=false; s2.put(rec); btn.closest('.bm-item').remove(); };
+          });
+        };
+      }catch(e){ console.warn('Bookmarks load failed', e); document.getElementById('bmEmpty').style.display='block'; }
+    })();
+  </script>
+</body>
+</html>

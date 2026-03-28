@@ -1,0 +1,24 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>B1 Intermediate | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>.lessons{max-width:900px;margin:2rem auto;padding:1rem}</style>
+</head>
+<body>
+  <nav class="navbar"><div class="nav-container"><a href="../../index.html" class="logo">🎓 Lenox French Academy</a><div class="nav-links"><a href="../../dashboard.html">Dashboard</a><a href="../a1/index.html">A1</a><a href="../a2/index.html">A2</a><span id="userName"></span></div></div></nav>
+  <main class="lessons container">
+    <h1>B1 — Intermediate</h1>
+    <p>Intermediate lessons coming soon. Start with the sample lesson below.</p>
+    <div class="lesson-list">
+      <div class="lesson-item"><a href="b1-01-intro.html">1. Introduction to B1 – Sample Lesson</a></div>
+    </div>
+  </main>
+  <script src="../../js/auth.js"></script>
+  <script>
+    if (auth && auth.currentUser) document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+  </script>
+</body>
+</html>

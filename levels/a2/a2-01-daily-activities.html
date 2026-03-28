@@ -1,0 +1,555 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>A2 Lesson: Daily Activities | Lenox French Academy</title>
+  <link rel="stylesheet" href="../../styles/main.css">
+  <style>
+    .lesson { max-width: 1000px; margin: 2rem auto; padding: 1rem }
+    .activities { display: grid; gap: 1rem; margin: 1.5rem 0 }
+    
+    /* Enhanced Styles */
+    .activity-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      transition: all 0.3s;
+    }
+    
+    .activity-card:hover {
+      transform: translateX(5px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .activity-french {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+    
+    .activity-english {
+      color: var(--gray);
+    }
+    
+    .time-badge {
+      background: #f0f0f0;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    
+    .reflexive-note {
+      background: #e8f5e9;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      border-left: 4px solid var(--success);
+    }
+    
+    .conjugation-practice {
+      background: #f8f9fa;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+    }
+    
+    .time-line {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      color: white;
+    }
+    
+    .time-line-item {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin: 1rem 0;
+      background: rgba(255,255,255,0.1);
+      padding: 0.75rem;
+      border-radius: 12px;
+    }
+    
+    .dialogue-practice {
+      background: white;
+      padding: 1.5rem;
+      border-radius: 16px;
+      margin: 1.5rem 0;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    
+    .dialogue-line {
+      display: flex;
+      margin: 1rem 0;
+      gap: 1rem;
+    }
+    
+    .speaker {
+      min-width: 80px;
+      font-weight: bold;
+      color: var(--primary);
+    }
+    
+    .fill-blank {
+      background: #fff3e0;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 0.5rem 0;
+    }
+    
+    .fill-blank input {
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 6px;
+      margin: 0 0.5rem;
+      width: 150px;
+    }
+    
+    .progress-tracker {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      margin: 1rem 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+    
+    @media (max-width: 768px) {
+      .activity-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .dialogue-line {
+        flex-direction: column;
+      }
+      .speaker {
+        min-width: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="../../dashboard.html">Dashboard</a>
+        <a href="index.html">← Back to A2</a>
+        <span id="userName"></span>
+        <button class="btn btn-outline" onclick="logout()" style="margin-left: 1rem;">Logout</button>
+      </div>
+    </div>
+  </nav>
+  
+  <main class="lesson container">
+    <h1>🗓️ Lesson 1: Daily Activities (Les activités quotidiennes)</h1>
+    <p>Learn to describe your daily routine using reflexive verbs and time expressions in French.</p>
+
+    <!-- Progress Tracker -->
+    <div class="progress-tracker" id="progressTracker">
+      <span>📊 Lesson Progress</span>
+      <div class="progress-container" style="flex: 1; margin: 0 1rem;">
+        <div class="progress-bar" id="lessonProgress" style="width: 0%;"></div>
+      </div>
+      <span id="progressPercent">0%</span>
+    </div>
+
+    <!-- Reflexive Verbs Explanation -->
+    <div class="reflexive-note">
+      <strong>🔄 Understanding Reflexive Verbs</strong>
+      <p>In French, many daily activities use reflexive verbs (verbs that reflect back on the subject). They are formed with a reflexive pronoun: <strong>me, te, se, nous, vous, se</strong>.</p>
+      <button class="btn btn-sm" onclick="speakFrench('Je me lève à sept heures')">🔊 Example: "Je me lève" (I get up)</button>
+    </div>
+
+    <!-- Vocabulary Section with Audio -->
+    <h2>📚 Daily Routine Vocabulary</h2>
+    <p>Click any phrase to hear pronunciation. Click the flashcard icon to save for later!</p>
+    <div class="activities" id="activitiesList"></div>
+
+    <!-- Time Expressions -->
+    <div class="time-line">
+      <h3>⏰ My Typical Day</h3>
+      <div class="time-line-item">
+        <span>🌅 7:00</span>
+        <span>Je me réveille - I wake up</span>
+        <button class="btn btn-sm" onclick="speakFrench('Je me réveille à sept heures')">🔊</button>
+      </div>
+      <div class="time-line-item">
+        <span>🍳 7:30</span>
+        <span>Je prends le petit-déjeuner - I have breakfast</span>
+        <button class="btn btn-sm" onclick="speakFrench('Je prends le petit-déjeuner')">🔊</button>
+      </div>
+      <div class="time-line-item">
+        <span>🚗 8:30</span>
+        <span>Je vais au travail - I go to work</span>
+        <button class="btn btn-sm" onclick="speakFrench('Je vais au travail')">🔊</button>
+      </div>
+      <div class="time-line-item">
+        <span>🍽️ 12:30</span>
+        <span>Je déjeune - I have lunch</span>
+        <button class="btn btn-sm" onclick="speakFrench('Je déjeune à midi et demie')">🔊</button>
+      </div>
+      <div class="time-line-item">
+        <span>🏠 18:00</span>
+        <span>Je rentre à la maison - I return home</span>
+        <button class="btn btn-sm" onclick="speakFrench('Je rentre à la maison')">🔊</button>
+      </div>
+      <div class="time-line-item">
+        <span>🍲 19:30</span>
+        <span>Je dîne - I have dinner</span>
+        <button class="btn btn-sm" onclick="speakFrench('Je dîne')">🔊</button>
+      </div>
+      <div class="time-line-item">
+        <span>😴 22:30</span>
+        <span>Je me couche - I go to bed</span>
+        <button class="btn btn-sm" onclick="speakFrench('Je me couche')">🔊</button>
+      </div>
+    </div>
+
+    <!-- Conjugation Practice -->
+    <div class="conjugation-practice">
+      <h3>✍️ Reflexive Verb Conjugation: SE LEVER (to get up)</h3>
+      <div class="fill-blank">
+        <p>Je _____ (me lève / me lèvent)</p>
+        <input type="text" id="conj1" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(1, 'me lève')">Check</button>
+        <span id="conjResult1"></span>
+      </div>
+      <div class="fill-blank">
+        <p>Tu _____ (te lève / te lèves)</p>
+        <input type="text" id="conj2" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(2, 'te lèves')">Check</button>
+        <span id="conjResult2"></span>
+      </div>
+      <div class="fill-blank">
+        <p>Nous _____ (nous levons / nous lèvent)</p>
+        <input type="text" id="conj3" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkConjugation(3, 'nous levons')">Check</button>
+        <span id="conjResult3"></span>
+      </div>
+    </div>
+
+    <!-- Dialogue Practice -->
+    <div class="dialogue-practice">
+      <h3>🗣️ Dialogue: Talking About Daily Routine</h3>
+      <div class="dialogue-line">
+        <div class="speaker">👩 Marie:</div>
+        <div class="speech-bubble">À quelle heure tu te réveilles?</div>
+        <button class="btn btn-sm" onclick="speakFrench('À quelle heure tu te réveilles?')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👨 Paul:</div>
+        <div class="speech-bubble">Je me réveille à sept heures. Et toi?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Je me réveille à sept heures')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👩 Marie:</div>
+        <div class="speech-bubble">Moi, je me réveille à six heures trente. Je prends le petit-déjeuner à sept heures.</div>
+        <button class="btn btn-sm" onclick="speakFrench('Je me réveille à six heures trente')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👨 Paul:</div>
+        <div class="speech-bubble">Qu'est-ce que tu prends pour le petit-déjeuner?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Qu\'est-ce que tu prends pour le petit-déjeuner?')">🔊</button>
+      </div>
+      <div class="dialogue-line">
+        <div class="speaker">👩 Marie:</div>
+        <div class="speech-bubble">Je prends du café et une tartine. Et toi?</div>
+        <button class="btn btn-sm" onclick="speakFrench('Je prends du café et une tartine')">🔊</button>
+      </div>
+      <button class="btn btn-primary" onclick="playFullDialogue()">▶️ Listen to Full Dialogue</button>
+    </div>
+
+    <!-- Fill in the Blanks Exercise -->
+    <div class="conjugation-practice">
+      <h3>📝 Complete the Sentences</h3>
+      <div class="fill-blank">
+        <p>1. Le matin, je _____ (se réveiller) à 7 heures.</p>
+        <input type="text" id="blank1" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(1, 'me réveille')">Check</button>
+        <span id="blankResult1"></span>
+      </div>
+      <div class="fill-blank">
+        <p>2. Elle _____ (prendre) le petit-déjeuner à 8 heures.</p>
+        <input type="text" id="blank2" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(2, 'prend')">Check</button>
+        <span id="blankResult2"></span>
+      </div>
+      <div class="fill-blank">
+        <p>3. Nous _____ (aller) au travail en voiture.</p>
+        <input type="text" id="blank3" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(3, 'allons')">Check</button>
+        <span id="blankResult3"></span>
+      </div>
+      <div class="fill-blank">
+        <p>4. Ils _____ (se coucher) à 23 heures.</p>
+        <input type="text" id="blank4" placeholder="Your answer">
+        <button class="btn btn-sm" onclick="checkBlank(4, 'se couchent')">Check</button>
+        <span id="blankResult4"></span>
+      </div>
+    </div>
+
+    <!-- Quiz Section -->
+    <h2>📝 Final Quiz</h2>
+    <div id="quiz"></div>
+    <div id="quiz-feedback" style="margin-top: 1rem;"></div>
+    <div id="completion" style="display:none; text-align:center; margin-top: 2rem;">
+      <button class="btn btn-primary" onclick="complete()">✅ Complete Lesson & Continue →</button>
+    </div>
+  </main>
+
+  <script src="../../js/auth.js"></script>
+  <script src="../../js/gamification.js"></script>
+  <script src="../../js/sounds.js"></script>
+  <script src="../../js/flashcards.js"></script>
+  <script>
+    // ========== INITIALIZATION ==========
+    if (!auth.currentUser) {
+      window.location.href = '../../login.html';
+    }
+    document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+    
+    let lessonProgress = 0;
+    let conjugationScore = 0;
+    let blankScore = 0;
+    let quizCompleted = false;
+    
+    // ========== VOCABULARY DATA ==========
+    const activities = [
+      { french: 'Je me réveille', english: 'I wake up', time: 'morning', reflexive: true },
+      { french: 'Je me lève', english: 'I get up', time: 'morning', reflexive: true },
+      { french: 'Je prends le petit-déjeuner', english: 'I have breakfast', time: 'morning', reflexive: false },
+      { french: 'Je me douche', english: 'I shower', time: 'morning', reflexive: true },
+      { french: 'Je m\'habille', english: 'I get dressed', time: 'morning', reflexive: true },
+      { french: 'Je vais au travail', english: 'I go to work', time: 'day', reflexive: false },
+      { french: 'Je déjeune', english: 'I have lunch', time: 'day', reflexive: false },
+      { french: 'Je rentre à la maison', english: 'I return home', time: 'evening', reflexive: false },
+      { french: 'Je dîne', english: 'I have dinner', time: 'evening', reflexive: false },
+      { french: 'Je me couche', english: 'I go to bed', time: 'night', reflexive: true }
+    ];
+    
+    // ========== RENDER ACTIVITIES ==========
+    function renderActivities() {
+      const container = document.getElementById('activitiesList');
+      container.innerHTML = activities.map(act => `
+        <div class="activity-card">
+          <div>
+            <div class="activity-french">${act.french} ${act.reflexive ? '🔄' : ''}</div>
+            <div class="activity-english">${act.english}</div>
+            <div class="time-badge">${act.time}</div>
+          </div>
+          <div>
+            <button class="btn btn-sm" onclick="speakFrench('${act.french}')">🔊 Listen</button>
+            <button class="btn btn-sm" onclick="addFlashcard('${act.french}', '${act.english}')">📚 +Flashcard</button>
+          </div>
+        </div>
+      `).join('');
+    }
+    
+    // ========== SPEECH FUNCTIONS ==========
+    function getVoice() {
+      const voices = speechSynthesis.getVoices();
+      return voices.find(v => v.lang && v.lang.startsWith('fr')) || voices[0];
+    }
+    
+    function speakFrench(text) {
+      const utterance = new SpeechSynthesisUtterance(text);
+      utterance.voice = getVoice();
+      utterance.lang = 'fr-FR';
+      utterance.rate = 0.8;
+      speechSynthesis.cancel();
+      speechSynthesis.speak(utterance);
+    }
+    
+    window.speakFrench = speakFrench;
+    
+    function playFullDialogue() {
+      const dialogue = [
+        "À quelle heure tu te réveilles?",
+        "Je me réveille à sept heures. Et toi?",
+        "Moi, je me réveille à six heures trente.",
+        "Je prends le petit-déjeuner à sept heures.",
+        "Qu'est-ce que tu prends pour le petit-déjeuner?",
+        "Je prends du café et une tartine."
+      ];
+      
+      let index = 0;
+      function speakNext() {
+        if (index < dialogue.length) {
+          speakFrench(dialogue[index]);
+          index++;
+          setTimeout(speakNext, 2500);
+        }
+      }
+      speakNext();
+    }
+    
+    window.playFullDialogue = playFullDialogue;
+    
+    // ========== FLASHCARDS ==========
+    function addFlashcard(french, english) {
+      if (window.lenoxFlashcards && window.lenoxFlashcards.addCard) {
+        window.lenoxFlashcards.addCard({
+          front: french,
+          back: english,
+          level: 'A2',
+          category: 'Daily Activities'
+        });
+        if (auth.showToast) auth.showToast(`📚 Added "${french}" to flashcards!`, 'success');
+      } else {
+        if (auth.showToast) auth.showToast('Saved to study list!', 'success');
+        // Store locally as backup
+        let saved = JSON.parse(localStorage.getItem('study_list') || '[]');
+        saved.push({ french, english, level: 'A2' });
+        localStorage.setItem('study_list', JSON.stringify(saved));
+      }
+    }
+    
+    window.addFlashcard = addFlashcard;
+    
+    // ========== CONJUGATION CHECK ==========
+    function checkConjugation(number, correctAnswer) {
+      const input = document.getElementById(`conj${number}`);
+      const resultSpan = document.getElementById(`conjResult${number}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      
+      if (userAnswer === correctAnswer) {
+        resultSpan.innerHTML = '✅ Correct!';
+        resultSpan.style.color = 'green';
+        if (!input.hasAttribute('data-completed')) {
+          conjugationScore++;
+          input.setAttribute('data-completed', 'true');
+          if (window.lenoxGamification) window.lenoxGamification.addXp(15);
+          updateProgress();
+        }
+      } else {
+        resultSpan.innerHTML = `❌ Incorrect. Correct: "${correctAnswer}"`;
+        resultSpan.style.color = 'red';
+      }
+    }
+    
+    window.checkConjugation = checkConjugation;
+    
+    // ========== BLANK CHECK ==========
+    function checkBlank(number, correctAnswer) {
+      const input = document.getElementById(`blank${number}`);
+      const resultSpan = document.getElementById(`blankResult${number}`);
+      const userAnswer = input.value.trim().toLowerCase();
+      
+      if (userAnswer === correctAnswer) {
+        resultSpan.innerHTML = '✅ Correct!';
+        resultSpan.style.color = 'green';
+        if (!input.hasAttribute('data-completed')) {
+          blankScore++;
+          input.setAttribute('data-completed', 'true');
+          if (window.lenoxGamification) window.lenoxGamification.addXp(15);
+          updateProgress();
+        }
+      } else {
+        resultSpan.innerHTML = `❌ Incorrect. Correct: "${correctAnswer}"`;
+        resultSpan.style.color = 'red';
+      }
+    }
+    
+    window.checkBlank = checkBlank;
+    
+    // ========== QUIZ ==========
+    const quizQuestions = [
+      { q: 'What is "Je me réveille" in English?', opts: ['I go to bed', 'I wake up', 'I eat'], correct: 1 },
+      { q: 'Which phrase means "I have breakfast"?', opts: ['Je travaille', 'Je prends le petit-déjeuner', 'Je dors'], correct: 1 },
+      { q: 'What is the correct reflexive form: "Je _____" (to get up)', opts: ['me lève', 'te lèves', 'se lève'], correct: 0 },
+      { q: 'How do you say "I go to work"?', opts: ['Je rentre', 'Je vais au travail', 'Je dîne'], correct: 1 },
+      { q: 'What does "Je me couche" mean?', opts: ['I wake up', 'I go to bed', 'I shower'], correct: 1 },
+      { q: 'Complete: "Elle _____ à 8 heures." (she wakes up)', opts: ['se réveille', 'me réveille', 'te réveilles'], correct: 0 }
+    ];
+    
+    function renderQuiz() {
+      const quizDiv = document.getElementById('quiz');
+      quizDiv.innerHTML = quizQuestions.map((q, i) => `
+        <div style="background: #f9f9f9; padding: 1rem; border-radius: 12px; margin: 1rem 0;">
+          <p><strong>${i + 1}. ${q.q}</strong></p>
+          ${q.opts.map((opt, oi) => `
+            <label><input type="radio" name="q${i}" value="${oi}"> ${opt}</label><br>
+          `).join('')}
+        </div>
+      `).join('') + '<button class="btn btn-primary" onclick="submitQuiz()">Submit Quiz</button>';
+    }
+    
+    function submitQuiz() {
+      let score = 0;
+      quizQuestions.forEach((q, i) => {
+        const selected = document.querySelector(`input[name="q${i}"]:checked`);
+        if (selected && parseInt(selected.value) === q.correct) score++;
+      });
+      
+      const feedback = document.getElementById('quiz-feedback');
+      feedback.innerHTML = `<strong>Score: ${score}/${quizQuestions.length}</strong>`;
+      
+      if (score >= 5) {
+        feedback.innerHTML += '<p style="color: green;">🎉 Excellent! You\'ve mastered daily activities vocabulary!</p>';
+        document.getElementById('completion').style.display = 'block';
+        quizCompleted = true;
+        updateProgress();
+        if (window.lenoxGamification) {
+          window.lenoxGamification.addXp(100);
+          window.lenoxGamification.awardBadge('a2-daily', 'Daily Activities', 'Completed Daily Activities lesson', '📅');
+        }
+        if (window.lenoxSounds) window.lenoxSounds.playSound('levelComplete');
+      } else {
+        feedback.innerHTML += '<p style="color: orange;">Review the vocabulary and try again to earn your badge!</p>';
+      }
+    }
+    
+    window.submitQuiz = submitQuiz;
+    
+    // ========== PROGRESS TRACKING ==========
+    function updateProgress() {
+      const activities = [
+        conjugationScore >= 3,
+        blankScore >= 4,
+        quizCompleted
+      ];
+      const completedActivities = activities.filter(Boolean).length;
+      lessonProgress = Math.min(100, (completedActivities / 3) * 100);
+      
+      document.getElementById('lessonProgress').style.width = `${lessonProgress}%`;
+      document.getElementById('progressPercent').textContent = `${Math.round(lessonProgress)}%`;
+    }
+    
+    // ========== COMPLETE LESSON ==========
+    function complete() {
+      if (auth.updateProgress) {
+        auth.updateProgress('A2', 'lesson1', lessonProgress);
+      }
+      window.location.href = 'a2-02-directions-places.html';
+    }
+    
+    window.complete = complete;
+    
+    function logout() {
+      auth.logout();
+      window.location.href = '../../index.html';
+    }
+    
+    window.logout = logout;
+    
+    // ========== INITIALIZE ==========
+    renderActivities();
+    renderQuiz();
+    
+    window.speechSynthesis.onvoiceschanged = () => {
+      console.log('Voices ready');
+    };
+  </script>
+</body>
+</html>

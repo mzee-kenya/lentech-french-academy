@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Lesson 1: French Alphabet | Lenox French Academy</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        .lesson-content {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .alphabet-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .letter-card {
+            background: var(--light);
+            padding: 1rem;
+            text-align: center;
+            border-radius: var(--radius);
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .letter-card:hover {
+            background: var(--primary-light);
+            color: white;
+            transform: scale(1.05);
+        }
+        
+        .quiz-question {
+            background: #f9f9f9;
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+        }
+        
+        .video-highlight {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 1rem;
+            border-radius: var(--radius);
+            margin: 1rem 0;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+            <div class="nav-links">
+                <a href="../../dashboard.html">Dashboard</a>
+                <a href="../a1/index.html">Back to A1</a>
+                <span id="userName"></span>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <h1>🔤 Lesson 1: French Alphabet</h1>
+        
+        <div class="lesson-content">
+            <h2>📖 Lesson Overview</h2>
+            <p>The French alphabet has 26 letters, just like English, but they are pronounced differently. Let's learn them!</p>
+            
+            <div class="video-highlight">
+                <h3>🎬 Watch: French Alphabet Song</h3>
+                <div class="video-container">
+                    <iframe width="560" height="315">
+                        src="https://www.youtube.com/embed/golDmUTCx_A?list=RDgolDmUTCx_A"  
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            </div>
+            
+            <h3>🔊 Click each letter to hear pronunciation:</h3>
+            <div class="alphabet-grid" id="alphabetGrid"></div>
+            
+            <h3>📝 Practice Quiz</h3>
+            <div id="quiz"></div>
+            
+            <div id="completionMessage" style="display: none; text-align: center; margin-top: 2rem;">
+                <p style="color: var(--success); font-size: 1.2rem;">✅ Congratulations! You completed this lesson!</p>
+                <button class="btn btn-primary" onclick="completeLesson()">Next Lesson →</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script src="../../js/sounds.js"></script>
+    <script src="../../js/confetti-loader.js"></script>
+    <script src="../../js/gamification.js"></script>
+    <script>
+        if (!auth.currentUser) {
+            window.location.href = '../../login.html';
+        }
+        
+        document.getElementById('userName').innerHTML = `👤 ${auth.currentUser.username}`;
+        
+        // Alphabet letters
+        const letters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'.split('');
+        const grid = document.getElementById('alphabetGrid');
+        
+        letters.forEach(letter => {
+            const card = document.createElement('div');
+            card.className = 'letter-card';
+            card.textContent = letter;
+            card.onclick = () => speakLetter(letter);
+            grid.appendChild(card);
+        });
+        
+        function speakLetter(letter) {
+            const utterance = new SpeechSynthesisUtterance(letter);
+            utterance.lang = 'fr-FR';
+            speechSynthesis.speak(utterance);
+        }
+        
+        // Quiz
+        const quiz = document.getElementById('quiz');
+        const questions = [
+            { text: 'How is "J" pronounced in French?', options: ['Zhee', 'Jay', 'Jee'], correct: 0 },
+            { text: 'How is "E" pronounced?', options: ['Ee', 'Uh', 'Ay'], correct: 1 },
+            { text: 'Which letter sounds like "ah"?', options: ['A', 'E', 'O'], correct: 0 }
+        ];
+        
+        let quizHTML = '';
+        questions.forEach((q, idx) => {
+            quizHTML += `
+                <div class="quiz-question">
+                    <p><strong>${idx + 1}. ${q.text}</strong></p>
+                    ${q.options.map((opt, optIdx) => `
+                        <label>
+                            <input type="radio" name="q${idx}" value="${optIdx}"> ${opt}
+                        </label><br>
+                    `).join('')}
+                </div>
+            `;
+        });
+        quizHTML += '<button class="btn btn-primary" onclick="checkQuiz()">Submit Answers</button>';
+        quiz.innerHTML = quizHTML;
+        
+        function checkQuiz() {
+            let score = 0;
+            questions.forEach((q, idx) => {
+                const selected = document.querySelector(`input[name="q${idx}"]:checked`);
+                if (selected && parseInt(selected.value) === q.correct) {
+                    score++;
+                }
+            });
+            
+            if (score === questions.length) {
+                document.getElementById('completionMessage').style.display = 'block';
+                auth.showToast('🎉 Perfect score! Lesson completed!', 'success');
+                // Save progress
+                if (auth.updateProgress) auth.updateProgress('A1', 'lesson1', 100);
+                // Gamification: award XP and badge
+                if (window.lenoxGamification) {
+                    lenoxGamification.addXp(120);
+                    lenoxGamification.awardBadge('a1-lesson1','A1 Lesson 1 Complete','Completed Lesson 1: French Alphabet','🔤');
+                }
+            } else {
+                auth.showToast(`You got ${score}/${questions.length}. Try again!`, 'error');
+                // play incorrect sound briefly
+                if (window.lenoxSounds) lenoxSounds.playSound('incorrect');
+            }
+        }
+        
+        function completeLesson() {
+            // Award smaller XP for simply completing lesson via Next
+            if (window.lenoxGamification) lenoxGamification.addXp(40);
+            window.location.href = 'lesson2.html';
+        }
+        
+        // Check if lesson already completed
+        const progress = auth.getProgress();
+        if (progress && progress.A1 && progress.A1.lessons && progress.A1.lessons['lesson1']) {
+            document.getElementById('completionMessage').style.display = 'block';
+        }
+
+        // Keyboard shortcuts: space -> next when completion visible, arrows -> nav
+        document.addEventListener('keydown', (e) => {
+            if (e.code === 'Space') {
+                const cm = document.getElementById('completionMessage');
+                if (cm && cm.style.display !== 'none') { e.preventDefault(); completeLesson(); }
+            }
+            if (e.key === 'ArrowRight') {
+                window.location.href = 'lesson2.html';
+            }
+            if (e.key === 'ArrowLeft') {
+                window.location.href = 'index.html';
+            }
+        });
+    </script>
+</body>
+</html>

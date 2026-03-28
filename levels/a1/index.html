@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A1 Beginner Level | Lenox French Academy</title>
+    <link rel="stylesheet" href="../../styles/main.css">
+    <style>
+        .lessons-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+        
+        .lesson-item {
+            background: white;
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+        
+        .lesson-item:hover {
+            transform: translateX(10px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .lesson-item.completed {
+            border-left: 5px solid var(--success);
+            background: #f0fff4;
+        }
+        
+        .lesson-item.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+        
+        .lesson-info h3 {
+            margin-bottom: 0.5rem;
+        }
+        
+        .lesson-status {
+            font-size: 1.5rem;
+        }
+        
+        .level-progress {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            margin-bottom: 2rem;
+        }
+        
+        .badge {
+            display: inline-block;
+            padding: 0.25rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .badge-completed {
+            background: var(--success);
+            color: white;
+        }
+        
+        .badge-locked {
+            background: var(--gray);
+            color: white;
+        }
+        
+        .xp-bar {
+            background: #e0e0e0;
+            border-radius: 10px;
+            height: 8px;
+            margin-top: 0.5rem;
+            overflow: hidden;
+        }
+        
+        .xp-fill {
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            height: 100%;
+            width: 0%;
+            transition: width 0.5s;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="../../index.html" class="logo">🎓 Lenox French Academy</a>
+            <div class="nav-links">
+                <a href="../../dashboard.html">Dashboard</a>
+                <a href="../../levels/a1/index.html" class="active">A1</a>
+                <a href="../../levels/a2/index.html">A2</a>
+                <a href="../../levels/b1/index.html">B1</a>
+                <a href="../../levels/b2/index.html">B2</a>
+                <a href="../../certificate.html">Certificates</a>
+                <span id="userName"></span>
+                <button class="btn btn-outline" onclick="logout()">Logout</button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+            <div>
+                <h1>🇫🇷 A1 - Beginner Level</h1>
+                <p>Start your French journey with these essential lessons</p>
+            </div>
+            <div class="badge" id="levelBadge">In Progress</div>
+        </div>
+
+        <div class="level-progress">
+            <h3>📊 Level Progress</h3>
+            <div class="progress-container">
+                <div class="progress-bar" id="levelProgress" style="width: 0%"></div>
+            </div>
+            <p id="progressText">0/5 lessons completed</p>
+            <div class="xp-bar">
+                <div class="xp-fill" id="xpFill" style="width: 0%"></div>
+            </div>
+            <p id="xpText">0 XP earned</p>
+        </div>
+
+        <div class="lessons-list" id="lessonsList"></div>
+
+        <div id="completionCelebration" style="display: none; text-align: center; margin-top: 2rem; padding: 2rem; background: linear-gradient(135deg, var(--success), var(--primary-light)); border-radius: var(--radius-lg); color: white;">
+            <h2>🎉 FÉLICITATIONS! 🎉</h2>
+            <p>You've completed the A1 level!</p>
+            <button class="btn btn-secondary" onclick="claimCertificate()">Claim Your Certificate →</button>
+        </div>
+    </div>
+
+    <script src="../../js/auth.js"></script>
+    <script>
+        if (!auth.currentUser) {
+            window.location.href = '../../login.html';
+        }
+        
+        document.getElementById('userName').innerHTML = `👤 ${auth.currentUser.username}`;
+        
+        const lessons = [
+            { id: 'lesson1', title: 'French Alphabet', description: 'Learn the 26 letters and their pronunciation', duration: '15 min', xp: 100, video: '_LYy3P2ok6w' },
+            { id: 'lesson2', title: 'Greetings & Salutations', description: 'Master basic greetings and introductions', duration: '20 min', xp: 100, video: 'hBvFw5KvqP8' },
+            { id: 'lesson3', title: 'Introductions', description: 'Learn to introduce yourself and others', duration: '20 min', xp: 100, video: '5jBkKqk5H3Y' },
+            { id: 'lesson4', title: 'Numbers 1-100', description: 'Count and use numbers in French', duration: '25 min', xp: 100, video: 'Gt0yqXqXxRw' },
+            { id: 'lesson5', title: 'Basic Verbs', description: 'Essential verbs: être, avoir, aller', duration: '30 min', xp: 100, video: '4QqWzqYtqPk' }
+        ];
+        
+        const progress = auth.getProgress();
+        const completedLessons = progress.A1.lessons || {};
+        
+        function updateProgress() {
+            const completedCount = Object.keys(completedLessons).length;
+            const percentage = (completedCount / lessons.length) * 100;
+            const xpEarned = Object.values(completedLessons).reduce((sum, l) => sum + (l.score || 0), 0);
+            const totalXP = lessons.length * 100;
+            
+            document.getElementById('levelProgress').style.width = `${percentage}%`;
+            document.getElementById('progressText').textContent = `${completedCount}/${lessons.length} lessons completed`;
+            document.getElementById('xpFill').style.width = `${(xpEarned / totalXP) * 100}%`;
+            document.getElementById('xpText').textContent = `${xpEarned}/${totalXP} XP earned`;
+            
+            if (percentage === 100 && !progress.A1.completed) {
+                document.getElementById('completionCelebration').style.display = 'block';
+                document.getElementById('levelBadge').innerHTML = '🎓 Completed!';
+                document.getElementById('levelBadge').className = 'badge badge-completed';
+            } else if (percentage > 0) {
+                document.getElementById('levelBadge').innerHTML = '📖 In Progress';
+            }
+        }
+        
+        function renderLessons() {
+            const container = document.getElementById('lessonsList');
+            container.innerHTML = '';
+            
+            lessons.forEach((lesson, index) => {
+                const isCompleted = completedLessons[lesson.id];
+                const isLocked = index > 0 && !completedLessons[lessons[index-1]?.id] && !completedLessons[lesson.id];
+                
+                const lessonDiv = document.createElement('div');
+                lessonDiv.className = `lesson-item ${isCompleted ? 'completed' : ''} ${isLocked ? 'locked' : ''}`;
+                
+                if (!isLocked) {
+                    lessonDiv.onclick = () => window.location.href = `lesson${index + 1}.html`;
+                }
+                
+                lessonDiv.innerHTML = `
+                    <div class="lesson-info">
+                        <h3>${index + 1}. ${lesson.title}</h3>
+                        <p>${lesson.description}</p>
+                        <small>⏱️ ${lesson.duration} | 🎯 ${lesson.xp} XP</small>
+                    </div>
+                    <div class="lesson-status">
+                        ${isCompleted ? '✅' : (isLocked ? '🔒' : '📘')}
+                    </div>
+                `;
+                
+                container.appendChild(lessonDiv);
+            });
+        }
+        
+        function claimCertificate() {
+            auth.generateCertificate('A1');
+            window.location.href = '../../certificate.html';
+        }
+        
+        function logout() {
+            auth.logout();
+            window.location.href = '../../index.html';
+        }
+        
+        renderLessons();
+        updateProgress();
+    </script>
+</body>
+</html>

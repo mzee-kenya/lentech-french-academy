@@ -1,0 +1,55 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Badge Collection | Lenox French Academy</title>
+  <link rel="stylesheet" href="styles/main.css">
+  <style>
+    .badges-wrap { max-width:980px; margin:2rem auto; padding:1rem }
+    .badges-grid { display:grid; grid-template-columns: repeat(auto-fit,minmax(160px,1fr)); gap:1rem }
+    .badge-card { padding:1rem; border-radius:10px; background:var(--card-bg,#fff); text-align:center; box-shadow:var(--shadow-sm); }
+    .badge-icon { width:72px; height:72px; margin:0 auto 0.5rem; border-radius:12px; background:#f2f2f2; display:flex;align-items:center;justify-content:center;font-size:1.25rem }
+    .badge-title { font-weight:700 }
+    .badge-earned { font-size:.85rem;color:#666 }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="nav-container">
+      <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+      <div class="nav-links">
+        <a href="dashboard.html">Dashboard</a>
+        <a href="leaderboard.html">Leaderboard</a>
+        <span id="userName"></span>
+      </div>
+    </div>
+  </nav>
+
+  <main class="badges-wrap">
+    <h1>🏅 Badge Collection</h1>
+    <p>Your earned badges are shown below. Earn more by completing lessons and challenges.</p>
+
+    <div id="badgesGrid" class="badges-grid"></div>
+    <div id="noBadges" style="display:none; text-align:center; padding:2rem">No badges earned yet — keep learning!</div>
+  </main>
+
+  <script src="js/auth.js"></script>
+  <script src="js/gamification.js"></script>
+  <script>
+    (function(){
+      const grid = document.getElementById('badgesGrid');
+      const no = document.getElementById('noBadges');
+      if (window.auth && auth.currentUser) document.getElementById('userName').textContent = `👤 ${auth.currentUser.username}`;
+
+      const badges = (window.lenoxGamification && lenoxGamification.getBadges()) || [];
+      if (!badges || badges.length === 0) { no.style.display='block'; return; }
+      badges.forEach(b => {
+        const c = document.createElement('div'); c.className='badge-card';
+        c.innerHTML = `<div class="badge-icon">${b.icon || '🏅'}</div><div class="badge-title">${b.title}</div><div class="badge-earned">Earned ${new Date(b.earnedAt).toLocaleDateString()}</div><div style="font-size:.9rem;color:#666;margin-top:.5rem">${b.description||''}</div>`;
+        grid.appendChild(c);
+      });
+    })();
+  </script>
+</body>
+</html>

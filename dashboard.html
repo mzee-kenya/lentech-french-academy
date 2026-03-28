@@ -1,0 +1,213 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Lenox French Academy</title>
+    <link rel="stylesheet" href="styles/main.css">
+    <style>
+        .welcome-section {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white;
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin-bottom: 2rem;
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: var(--radius);
+            text-align: center;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .stat-number {
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--primary);
+        }
+        
+        .c3-academy {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            padding: 2rem;
+            border-radius: var(--radius-lg);
+            margin: 2rem 0;
+            color: white;
+        }
+        
+        .puzzle-section {
+            background: white;
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                🎓 <span>Lenox French Academy</span>
+            </a>
+            <div class="nav-links">
+                <a href="dashboard.html">Dashboard</a>
+                <a href="levels/a1/index.html">A1</a>
+                <a href="levels/a2/index.html">A2</a>
+                <a href="levels/b1/index.html">B1</a>
+                <a href="levels/b2/index.html">B2</a>
+                <a href="certificate.html">Certificates</a>
+                <div id="userMenu" class="user-menu">
+                    <span id="userName"></span>
+                    <button class="btn btn-outline" onclick="logout()">Logout</button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="welcome-section" id="welcomeSection">
+            <h1>Welcome back, <span id="welcomeName"></span>! 🇫🇷</h1>
+            <p>Continue your French learning journey. You're making great progress!</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-number" id="totalLessons">0</div>
+                <div>Lessons Completed</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="totalScore">0</div>
+                <div>Average Score</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="certificatesCount">0</div>
+                <div>Certificates Earned</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="streakDays">0</div>
+                <div>Day Streak</div>
+            </div>
+        </div>
+
+        <div class="level-grid" id="levelGrid"></div>
+
+        <!-- C3 Academy YouTube Integration -->
+        <div class="c3-academy">
+            <h2>🎬 Featured: C3 Academy French Lessons</h2>
+            <p>Learn French with expert instructors from C3 Academy</p>
+            <div class="video-container">
+                <iframe 
+                    src="https://www.youtube.com/embed/videoseries?list=PL_rtCz5jDvP8XqRZWqXQrZqXQrZqXQrZ" 
+                    frameborder="0" 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                    allowfullscreen>
+                </iframe>
+            </div>
+        </div>
+
+        <!-- Daily Puzzle Section -->
+        <div class="puzzle-section">
+            <h2>🧩 Daily French Puzzle</h2>
+            <p>Solve the puzzle to earn bonus points!</p>
+            <div id="puzzleContainer"></div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+    <script src="js/progress.js"></script>
+    <script src="js/puzzles.js"></script>
+    <script>
+        // Check authentication
+        if (!auth.currentUser) {
+            window.location.href = 'login.html';
+        }
+
+        // Display user info
+        document.getElementById('welcomeName').textContent = auth.currentUser.username;
+        document.getElementById('userName').innerHTML = `👤 ${auth.currentUser.username}`;
+
+        // Load levels
+        const levels = [
+            { name: 'A1', title: 'Beginner', description: 'Start your French journey', color: '#2e7d32', lessons: 5, icon: '🇫🇷' },
+            { name: 'A2', title: 'Elementary', description: 'Build your foundation', color: '#1976d2', lessons: 3, icon: '🗣️' },
+            { name: 'B1', title: 'Intermediate', description: 'Express yourself', color: '#f57c00', lessons: 2, icon: '💬' },
+            { name: 'B2', title: 'Upper Intermediate', description: 'Master the language', color: '#7b1fa2', lessons: 2, icon: '🎯' }
+        ];
+
+        const levelGrid = document.getElementById('levelGrid');
+        const progress = auth.getProgress();
+
+        levels.forEach(level => {
+            const completedLessons = progress[level.name].lessons ? Object.keys(progress[level.name].lessons).length : 0;
+            const percentage = (completedLessons / level.lessons) * 100;
+            const isCompleted = progress[level.name].completed;
+
+            const card = document.createElement('div');
+            card.className = `level-card level-${level.name}`;
+            card.innerHTML = `
+                <div class="level-header" style="background: linear-gradient(135deg, ${level.color}, ${level.color}aa);">
+                    <div class="level-title">${level.icon} ${level.name} - ${level.title}</div>
+                    <div class="level-description">${level.description}</div>
+                </div>
+                <div class="level-content">
+                    <div class="progress-container" style="margin-bottom: 1rem;">
+                        <div class="progress-bar" style="width: ${percentage}%;"></div>
+                    </div>
+                    <p>${completedLessons}/${level.lessons} lessons completed</p>
+                    ${isCompleted ? '<p style="color: var(--success);">✅ Level Completed! 🎓</p>' : ''}
+                    <button class="btn btn-primary" onclick="location.href='levels/${level.name.toLowerCase()}/index.html'" style="margin-top: 1rem; width: 100%;">
+                        ${isCompleted ? 'Review Level' : 'Start Learning'} →
+                    </button>
+                </div>
+            `;
+            levelGrid.appendChild(card);
+        });
+
+        // Update stats
+        function updateStats() {
+            const progress = auth.getProgress();
+            let totalLessons = 0;
+            let totalScore = 0;
+            let levelCount = 0;
+            
+            for (let level in progress) {
+                const completed = Object.keys(progress[level].lessons).length;
+                totalLessons += completed;
+                totalScore += progress[level].score;
+                levelCount++;
+            }
+            
+            document.getElementById('totalLessons').textContent = totalLessons;
+            document.getElementById('totalScore').textContent = Math.round(totalScore / levelCount) || 0;
+            document.getElementById('certificatesCount').textContent = auth.currentUser.certificates.length;
+            
+            // Calculate streak (simplified)
+            const lastLogin = localStorage.getItem('lastLogin');
+            const today = new Date().toDateString();
+            let streak = 0;
+            if (lastLogin === today) {
+                streak = parseInt(localStorage.getItem('streak')) || 1;
+            }
+            document.getElementById('streakDays').textContent = streak;
+        }
+        
+        updateStats();
+        
+        // Load daily puzzle
+        loadDailyPuzzle();
+
+        function logout() {
+            auth.logout();
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>
