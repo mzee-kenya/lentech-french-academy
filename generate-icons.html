@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Icon Generator - Lenox French Academy</title>
+  <title>Icon Generator - Lentech French Academy</title>
   <style>
     body {
       font-family: 'Poppins', sans-serif;
@@ -131,7 +131,7 @@
 </head>
 <body>
   <div class="container">
-    <h1>🎨 Lenox French Academy - Icon Generator</h1>
+    <h1>🎨 Lentech French Academy - Icon Generator</h1>
     <p>Generate all required icons for your PWA. Click on any icon to download it as PNG.</p>
     
     <div class="tabs">
@@ -249,7 +249,7 @@
         <rect x="${width/2 + logoSize * 0.1}" y="${height/2 - logoSize * 0.8}" width="${logoSize * 0.2}" height="${logoSize * 0.4}" fill="#EF4135" rx="${logoSize * 0.03}"/>
         
         <!-- Text -->
-        <text x="${width/2}" y="${height/2 + logoSize * 0.5}" text-anchor="middle" fill="white" font-size="${fontSize}" font-weight="bold" font-family="Poppins, sans-serif">Lenox French Academy</text>
+        <text x="${width/2}" y="${height/2 + logoSize * 0.5}" text-anchor="middle" fill="white" font-size="${fontSize}" font-weight="bold" font-family="Poppins, sans-serif">Lentech French Academy</text>
         <text x="${width/2}" y="${height/2 + logoSize * 0.5 + fontSize}" text-anchor="middle" fill="white" font-size="${fontSize * 0.6}" font-family="Poppins, sans-serif">Learn French from A1 to B2</text>
         
         <!-- Loading Animation -->
@@ -347,7 +347,7 @@
     
     window.downloadAllIcons = async () => {
       const zip = new JSZip();
-      const folder = zip.folder('lenox-french-icons');
+      const folder = zip.folder('lentech-french-icons');
       
       for (const icon of icons) {
         const svg = createIconSVG(icon.size);
@@ -362,7 +362,7 @@
       }
       
       const content = await zip.generateAsync({ type: 'blob' });
-      saveAs(content, 'lenox-french-academy-icons.zip');
+      saveAs(content, 'lentech-french-academy-icons.zip');
     };
     
     window.switchTab = (tab) => {
@@ -395,7 +395,7 @@
       
       // Manifest code
       const manifestCode = `{
-  "name": "Lenox French Academy",
+  "name": "Lentech French Academy",
   "short_name": "French Academy",
   "description": "Learn French from A1 to B2 with interactive lessons",
   "start_url": "/index.html",

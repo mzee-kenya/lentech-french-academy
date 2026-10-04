@@ -1,4 +1,4 @@
-﻿// Service Worker for Lenox French Academy
+﻿// Service Worker for Lentech French Academy
 const CACHE_NAME = 'lenox-french-v1';
 const STATIC_CACHE = 'lenox-static-v1';
 const DYNAMIC_CACHE = 'lenox-dynamic-v1';

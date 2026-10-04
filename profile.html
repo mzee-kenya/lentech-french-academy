@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Profile | Lenox French Academy</title>
+    <title>My Profile | Lentech French Academy</title>
     <link rel="stylesheet" href="styles/main.css">
     <style>
         .profile-header {
@@ -92,7 +92,7 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+            <a href="index.html" class="logo">🎓 Lentech French Academy</a>
             <div class="nav-links">
                 <a href="dashboard.html">Dashboard</a>
                 <a href="levels/a1/index.html">Learning</a>
@@ -272,7 +272,7 @@
             }catch(e){ console.warn('export flashcards failed', e); }
             const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
-            const a = document.createElement('a'); a.href = url; a.download = `lenox-progress-${auth.currentUser.username || 'user'}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
+            const a = document.createElement('a'); a.href = url; a.download = `lentech-progress-${auth.currentUser.username || 'user'}.json`; document.body.appendChild(a); a.click(); a.remove(); URL.revokeObjectURL(url);
         });
 
         function logout() { if (auth) auth.logout(); window.location.href = 'index.html'; }

@@ -1,5 +1,5 @@
 ﻿{
-  "name": "Lenox French Academy",
+  "name": "Lentech French Academy",
   "short_name": "French Academy",
   "description": "Learn French from A1 to B2 with interactive lessons, quizzes, and certificates",
   "start_url": "/index.html",
@@ -63,14 +63,14 @@
       "sizes": "1280x720",
       "type": "image/png",
       "form_factor": "wide",
-      "label": "Desktop view of Lenox French Academy"
+      "label": "Desktop view of Lentech French Academy"
     },
     {
       "src": "/assets/screenshots/mobile.png",
       "sizes": "360x640",
       "type": "image/png",
       "form_factor": "narrow",
-      "label": "Mobile view of Lenox French Academy"
+      "label": "Mobile view of Lentech French Academy"
     }
   ],
   "categories": ["education", "language"],

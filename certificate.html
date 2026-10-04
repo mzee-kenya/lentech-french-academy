@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>My Certificates | Lenox French Academy</title>
+    <title>My Certificates | Lentech French Academy</title>
     <!-- Open Graph / Social Preview (base values, updated dynamically for shared links) -->
-    <meta property="og:title" content="Lenox French Academy Certificate" />
+    <meta property="og:title" content="Lentech French Academy Certificate" />
     <meta property="og:description" content="Celebrate achievements in learning French — view and share certificates." />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="" id="og-url" />
@@ -65,7 +65,7 @@
 <body>
     <nav class="navbar">
         <div class="nav-container">
-            <a href="index.html" class="logo">🎓 Lenox French Academy</a>
+            <a href="index.html" class="logo">🎓 Lentech French Academy</a>
             <div class="nav-links">
                 <a href="dashboard.html">Dashboard</a>
                 <a href="levels/a1/index.html">Learning</a>
@@ -130,7 +130,7 @@
             const student = cert.studentName || cert.user || (auth.currentUser && auth.currentUser.username) || 'Learner';
             card.innerHTML = `
                 <div class="certificate-preview" id="cert-${cert.id}">
-                    <h2>LENOX FRENCH ACADEMY</h2>
+                    <h2>LENTECH FRENCH ACADEMY</h2>
                     <h3>CERTIFICATE OF COMPLETION</h3>
                     <p>This is to certify that</p>
                     <h3>${student}</h3>
@@ -173,7 +173,7 @@
             const shareUrl = buildShareUrl(publicCert.studentName, publicCert.level);
             updateMetaTags({
                 title: `${publicCert.studentName} — ${publicCert.levelName} Certificate`,
-                description: `${publicCert.studentName} completed ${publicCert.levelName} at Lenox French Academy.`,
+                description: `${publicCert.studentName} completed ${publicCert.levelName} at Lentech French Academy.`,
                 url: shareUrl
             });
             // open modal to encourage sharing (only for public preview)
@@ -194,7 +194,7 @@
             const element = document.getElementById(elementId);
             const canvas = await html2canvas(element, { scale: 2 });
             const link = document.createElement('a');
-            link.download = `lenox-french-${level}-certificate.png`;
+            link.download = `lentech-french-${level}-certificate.png`;
             link.href = canvas.toDataURL('image/png');
             link.click();
             if (auth && auth.showToast) auth.showToast('Certificate downloaded!', 'success');
@@ -217,7 +217,7 @@
             const user = decodeURIComponent(btn.dataset.user || (auth.currentUser && auth.currentUser.username) || 'Learner');
             const level = decodeURIComponent(btn.dataset.level || 'A1');
             const url = buildShareUrl(user, level);
-            const text = `${user} completed ${level} at Lenox French Academy!`;
+            const text = `${user} completed ${level} at Lentech French Academy!`;
             if (provider === 'copy') {
                 copyToClipboard(url).then(ok => {
                     if (ok && auth && auth.showToast) auth.showToast('Link copied to clipboard', 'success');
@@ -243,7 +243,7 @@
 
         function showShareModal(user, level, url) {
             shareModal.dataset.url = url || buildShareUrl(user, level);
-            shareModal.dataset.text = `${user} completed ${level} at Lenox French Academy!`;
+            shareModal.dataset.text = `${user} completed ${level} at Lentech French Academy!`;
             modalText.textContent = `${user} just completed ${level}. Share your achievement with friends!`;
             shareModal.classList.add('show');
         }
